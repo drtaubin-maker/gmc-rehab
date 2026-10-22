@@ -2,2529 +2,470 @@
 <html lang="he" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>ניהול תוכניות שיקום GMC - Galilee Medical Center</title>
-  <!-- Tailwind CSS -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ניהול תוכניות שיקום GMC</title>
+  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Google Fonts: Assistant & Rubik -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700;800&family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Assistant', 'Rubik', 'sans-serif'],
-          },
-          colors: {
-            gmc: {
-              50: '#f0f7ff',
-              100: '#e0effe',
-              500: '#0284c7',
-              600: '#0369a1',
-              700: '#075985',
-              800: '#0c4a6e',
-              900: '#082f49',
-            }
-          }
-        }
-      }
-    }
-  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700;800&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Assistant', sans-serif; background-color: #f8fafc; }
+    body { font-family: 'Assistant', sans-serif; }
+    .badge-approved { background-color: #10b981; color: white; }
+    .badge-reason { background-color: #f59e0b; color: white; }
+    .badge-denied { background-color: #ef4444; color: white; }
+    .badge-noresponse { background-color: #f97316; color: white; }
+    .badge-draft { background-color: #3b82f6; color: white; }
     .tooth-box { transition: all 0.15s ease-in-out; }
     .tooth-box:hover { transform: translateY(-2px); }
-    .tooth-box.selected { border-color: #0284c7; background-color: #e0f2fe; }
-    .tooth-missing { opacity: 0.45; filter: grayscale(100%); text-decoration: line-through; }
-    .tooth-implant { border-style: dashed; border-color: #8b5cf6 !important; background-color: #f5f3ff; }
-    @media print {
-      body * { visibility: hidden; }
-      #printable-area, #printable-area * { visibility: visible; }
-      #printable-area { position: absolute; left: 0; top: 0; width: 100%; display: block; }
-      .no-print { display: none !important; }
-    }
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #f1f5f9; }
-    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
   </style>
 </head>
-<body class="text-slate-800 antialiased min-h-screen flex flex-col selection:bg-sky-100 selection:text-sky-900">
+<body class="bg-slate-100 text-slate-800 min-h-screen">
 
-  <!-- TOP HEADER -->
-  <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-      <div class="flex items-center space-x-3 space-x-reverse cursor-pointer" id="nav-brand">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-600 to-cyan-500 flex items-center justify-center text-white font-bold shadow-md shadow-sky-100">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
-          </svg>
-        </div>
+  <!-- Header -->
+  <header class="bg-slate-900 text-white shadow-md sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <div class="bg-blue-600 text-white font-black text-xl px-2.5 py-1 rounded shadow">GMC</div>
         <div>
-          <div class="flex items-center gap-2">
-            <h1 class="text-lg font-bold text-slate-900 leading-tight">ניהול תוכניות שיקום GMC</h1>
-            <span class="text-xs px-2 py-0.5 rounded-full bg-sky-100 text-sky-800 font-semibold">נהריה</span>
-          </div>
-          <p class="text-xs text-slate-500">מחלקת שיקום הפה • הקולג' למדעי רפואת השיניים</p>
+          <h1 class="text-lg font-bold leading-tight">ניהול תוכניות שיקום – מרכז רפואי לגליל</h1>
+          <p class="text-xs text-slate-400">מחלקת שיקום הפה | מערכת תכנון קליני וסנכרון קופות</p>
         </div>
       </div>
-
-      <!-- Header actions -->
       <div class="flex items-center gap-2">
-        <button id="btn-open-catalog" class="px-3 py-1.5 text-xs sm:text-sm font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition flex items-center gap-1.5">
-          <svg class="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg>
+        <button id="btn-open-catalog" onclick="toggleCatalogModal(true)" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs sm:text-sm px-3 py-1.5 rounded-lg border border-slate-700 flex items-center gap-1.5">
+          <span>📖</span>
           <span>קטלוג ומחירון</span>
         </button>
-        <button id="btn-sync-info" class="p-2 text-slate-500 hover:text-sky-600 rounded-lg hover:bg-slate-100 transition" title="סנכרון Google Sheets">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+        <button id="btn-sync-sheets" onclick="syncWithGoogleSheets()" class="bg-blue-600 hover:bg-blue-500 text-white text-xs sm:text-sm px-3 py-1.5 rounded-lg font-medium shadow flex items-center gap-1.5">
+          <span>🔄</span>
+          <span>סנכרון Sheets</span>
         </button>
-        <div class="hidden sm:flex items-center gap-2 px-3 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-full text-xs font-medium">
-          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-          <span>מחובר למחלקה</span>
-        </div>
       </div>
     </div>
   </header>
 
-  <!-- MAIN CONTAINER (ROUTER) -->
-  <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
+  <!-- Main Container -->
+  <main class="max-w-7xl mx-auto px-3 sm:px-6 py-6 space-y-6">
 
-    <!-- VIEW 1: DASHBOARD -->
-    <section id="view-dashboard" class="space-y-6">
-      
-      <!-- Top banner -->
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-gradient-to-r from-sky-900 via-sky-800 to-indigo-900 rounded-2xl p-6 text-white shadow-lg">
+    <!-- Top Card: תכנון תוכנית ופרטי מטופל ורופאים -->
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 sm:p-6 space-y-5">
+      <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-4">
         <div>
-          <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-white/20 text-sky-100 backdrop-blur-sm">המרכז הרפואי לגליל • נהריה</span>
-          <h2 class="text-2xl font-black mt-2 tracking-tight">ניהול תוכניות שיקום הפה</h2>
-          <p class="text-sky-200 text-sm mt-1 max-w-xl">תכנון שיקומי מותאם אישית, מעקב החזרי קופות חולים, צילום דפי תשובה וניהול לולאת אישורים.</p>
+          <h2 class="text-base sm:text-lg font-bold text-slate-900">פרטי מטופל וצוות רפואי</h2>
+          <p class="text-xs text-slate-500">הגדרת רופא מטפל, רופאים מעורבים ממחלקות נוספות ושיוך קליני</p>
         </div>
-        <div class="flex items-center gap-3">
-          <button id="btn-new-patient" class="px-5 py-3 bg-white text-sky-900 hover:bg-sky-50 font-bold rounded-xl shadow-md text-sm transition flex items-center gap-2 transform active:scale-95">
-            <svg class="w-5 h-5 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-            <span>הוספת מטופל חדש</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- Search & Filters -->
-      <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
-        <div class="flex flex-col md:flex-row gap-3">
-          <div class="flex-1 relative">
-            <svg class="w-5 h-5 text-slate-400 absolute right-3.5 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-            <input type="text" id="search-patients" placeholder="חיפוש מהיר לפי שם פרטי או משפחה..." class="w-full pr-11 pl-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
-          </div>
-          
-          <div class="w-full md:w-56">
-            <select id="filter-treating-doctor" class="w-full px-3 py-2.5 border border-slate-200 rounded-xl text-sm bg-white focus:ring-2 focus:ring-sky-500 focus:outline-none">
-              <option value="">כל הרופאים המטפלים</option>
-            </select>
-          </div>
-
-          <div class="w-full md:w-56">
-            <select id="filter-planning-doctor" class="w-full px-3 py-2.5 border border-slate-200 rounded-xl text-sm bg-white focus:ring-2 focus:ring-sky-500 focus:outline-none">
-              <option value="">כל הרופאים המתכננים</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- Filter Chips: Track -->
-        <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-100">
-          <div class="flex flex-wrap items-center gap-1.5" id="track-filter-chips">
-            <span class="text-xs font-semibold text-slate-500 ml-1">שיוך מטופל:</span>
-            <button class="track-chip px-3 py-1 rounded-full text-xs font-medium bg-sky-600 text-white transition" data-track="ALL">הכל</button>
-            <button class="track-chip px-3 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition" data-track="UNDECIDED">עוד לא הוחלט (אפור)</button>
-            <button class="track-chip px-3 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition" data-track="RESIDENCY">התמחות (כחול)</button>
-            <button class="track-chip px-3 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition" data-track="THURSDAY">ימי חמישי (סגול)</button>
-            <button class="track-chip px-3 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition" data-track="SHARAN">שר"ן - ד"ר נתנאל (זהב)</button>
-          </div>
-
-          <div class="text-xs text-slate-500">
-            נמצאו <span id="patients-count" class="font-bold text-slate-800">0</span> מטופלים
-          </div>
-        </div>
-      </div>
-
-      <!-- Patients Grid -->
-      <div id="patients-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      </div>
-    </section>
-
-    <!-- VIEW 2: NEW PATIENT & TREATMENT PLANNER -->
-    <section id="view-planner" class="hidden space-y-6">
-      
-      <!-- Back button and title -->
-      <div class="flex items-center justify-between">
-        <button id="btn-back-to-dashboard" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-medium flex items-center gap-1.5 transition">
-          <svg class="w-4 h-4 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-          <span>חזרה לדשבורד</span>
-        </button>
-        <span class="text-xs px-2.5 py-1 bg-amber-100 text-amber-900 rounded-md font-medium" id="planner-mode-badge">בניית תוכנית טיפול</span>
-      </div>
-
-      <!-- SECTION 1: MANDATORY PATIENT DETAILS -->
-      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
-        <div class="flex items-center gap-2 pb-2 border-b border-slate-100">
-          <div class="w-7 h-7 rounded-lg bg-sky-100 text-sky-600 flex items-center justify-center font-bold text-xs">1</div>
-          <h3 class="text-base font-bold text-slate-900">פרטי מטופל (ללא ת"ז או פרטים מזהים עודפים)</h3>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div>
-            <label class="block text-xs font-semibold text-slate-700 mb-1">שם פרטי *</label>
-            <input type="text" id="patient-first-name" required placeholder="שם פרטי" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-700 mb-1">שם משפחה *</label>
-            <input type="text" id="patient-last-name" required placeholder="שם משפחה" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-700 mb-1">קופת חולים / ביטוח *</label>
-            <select id="patient-insurance" required class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm bg-white focus:ring-2 focus:ring-sky-500 focus:outline-none">
-              <option value="LEUMIT_GOLD">לאומית זהב</option>
-              <option value="LEUMIT_SILVER">לאומית כסף</option>
-              <option value="PRIVATE">מטופל פרטי</option>
-              <option value="MACCABI">מכבי</option>
-              <option value="MEUHEDET">מאוחדת</option>
-              <option value="CLALIT">כללית</option>
-              <option value="MOD">משרד הביטחון (משהב"ט)</option>
-            </select>
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-700 mb-1">שיוך מטופל *</label>
-            <select id="patient-track" required class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm bg-white focus:ring-2 focus:ring-sky-500 focus:outline-none">
-              <option value="UNDECIDED">עוד לא הוחלט (אפור)</option>
-              <option value="RESIDENCY">מטופל/ת התמחות (כחול)</option>
-              <option value="THURSDAY">מטופל ימי חמישי (סגול)</option>
-              <option value="SHARAN">מטופל שר"ן - ד"ר נתנאל (זהב)</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
-          <div>
-            <label class="block text-xs font-semibold text-slate-700 mb-1">רופא מטפל (משויך קלינית) *</label>
-            <select id="patient-treating-doctor" required class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm bg-white focus:ring-2 focus:ring-sky-500 focus:outline-none">
-            </select>
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-700 mb-1">רופא מתכנן (כותב התוכנית) *</label>
-            <select id="patient-planning-doctor" required class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm bg-white focus:ring-2 focus:ring-sky-500 focus:outline-none">
-            </select>
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-700 mb-1">סיווג התוכנית *</label>
-            <div class="grid grid-cols-2 gap-2 mt-1">
-              <label class="flex items-center gap-2 p-2 border border-slate-200 rounded-xl cursor-pointer hover:bg-slate-50 transition" id="lbl-plan-initial">
-                <input type="radio" name="plan-type" value="INITIAL" checked class="text-sky-600 focus:ring-sky-500">
-                <span class="text-xs font-bold text-slate-700">תוכנית ראשונית</span>
-              </label>
-              <label class="flex items-center gap-2 p-2 border border-slate-200 rounded-xl cursor-pointer hover:bg-slate-50 transition" id="lbl-plan-final">
-                <input type="radio" name="plan-type" value="FINAL" class="text-sky-600 focus:ring-sky-500">
-                <span class="text-xs font-bold text-slate-700">תוכנית סופית</span>
-              </label>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- SECTION 2: PROGNOSIS CHART -->
-      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
-        <div class="flex items-center justify-between pb-2 border-b border-slate-100">
-          <div class="flex items-center gap-2">
-            <div class="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold text-xs">2</div>
-            <div>
-              <h3 class="text-base font-bold text-slate-900">טבלת פרוגנוזת שיניים (אופציונלי)</h3>
-              <p class="text-xs text-slate-500">מספור FDI: עליונה 18-28, תחתונה 48-38. מוצג ב-PDF במידה ומולא.</p>
-            </div>
-          </div>
-          <button id="btn-toggle-prognosis" type="button" class="px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 rounded-xl text-xs font-bold transition flex items-center gap-1.5">
-            <span id="prognosis-btn-icon">+</span>
-            <span id="prognosis-btn-text">פתיחת טבלת פרוגנוזה</span>
-          </button>
-        </div>
-
-        <div id="prognosis-chart-container" class="hidden space-y-4 pt-2">
-          <div class="p-3 bg-slate-50 rounded-xl flex flex-wrap items-center justify-between gap-3 text-xs">
-            <span class="font-semibold text-slate-700">מקרא צבעים ומצבים:</span>
-            <div class="flex items-center gap-3">
-              <span class="inline-flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-emerald-500"></span> <strong>G</strong> = Good (ירוק)</span>
-              <span class="inline-flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-amber-400"></span> <strong>Q</strong> = Questionable (צהוב)</span>
-              <span class="inline-flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-rose-500"></span> <strong>I</strong> = Irrational (אדום)</span>
-              <span class="inline-flex items-center gap-1"><span class="w-3 h-3 rounded border border-purple-500 border-dashed bg-purple-50"></span> שתל</span>
-              <span class="inline-flex items-center gap-1 text-slate-400 line-through">שן חסרה (X)</span>
-            </div>
-          </div>
-
-          <div>
-            <div class="text-xs font-bold text-slate-500 mb-1.5 text-center">לסת עליונה (18 עד 28)</div>
-            <div class="grid grid-cols-8 sm:grid-cols-16 gap-1.5" id="prognosis-upper-teeth"></div>
-          </div>
-
-          <div>
-            <div class="text-xs font-bold text-slate-500 mb-1.5 text-center">לסת תחתונה (48 עד 38)</div>
-            <div class="grid grid-cols-8 sm:grid-cols-16 gap-1.5" id="prognosis-lower-teeth"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- SECTION 3: TREATMENT CHART -->
-      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 border-b border-slate-100">
-          <div class="flex items-center gap-2">
-            <div class="w-7 h-7 rounded-lg bg-sky-100 text-sky-600 flex items-center justify-center font-bold text-xs">3</div>
-            <div>
-              <h3 class="text-base font-bold text-slate-900">טבלת תכנון טיפולי שיניים</h3>
-              <p class="text-xs text-slate-500">לחיצה על מספר השן משנה מצב (קיימת / שתל / חסרה). ניתן לסמן כמה שיניים יחד (למשל גשר).</p>
-            </div>
-          </div>
-          <div class="flex items-center gap-2">
-            <button id="btn-add-multi-treatment" type="button" class="px-3.5 py-1.5 bg-sky-600 hover:bg-sky-700 text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm shadow-sky-200">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-              <span>הוסף טיפול למסומנות (<span id="selected-teeth-count">0</span>)</span>
-            </button>
-            <button id="btn-clear-selection" type="button" class="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl text-xs font-medium transition">נקה סימון</button>
-          </div>
-        </div>
-
-        <div class="space-y-1">
-          <div class="flex justify-between items-center text-xs text-slate-500 px-2 font-semibold">
-            <span>ימין (רביע 1)</span>
-            <span class="font-bold text-slate-700">לסת עליונה</span>
-            <span>שמאל (רביע 2)</span>
-          </div>
-          <div class="grid grid-cols-8 sm:grid-cols-16 gap-1 sm:gap-2" id="treatment-upper-teeth"></div>
-        </div>
-
-        <div class="space-y-1 pt-3 border-t border-slate-100">
-          <div class="flex justify-between items-center text-xs text-slate-500 px-2 font-semibold">
-            <span>ימין (רביע 4)</span>
-            <span class="font-bold text-slate-700">לסת תחתונה</span>
-            <span>שמאל (רביע 3)</span>
-          </div>
-          <div class="grid grid-cols-8 sm:grid-cols-16 gap-1 sm:gap-2" id="treatment-lower-teeth"></div>
-        </div>
-
-        <div class="pt-4 border-t border-slate-100">
-          <h4 class="text-xs font-bold text-slate-700 mb-2">טיפולים שנבחרו ברמת השן:</h4>
-          <div id="applied-tooth-treatments" class="space-y-2 max-h-60 overflow-y-auto pr-1">
-            <p class="text-xs text-slate-400 italic" id="no-tooth-treatments-hint">טרם נוספו טיפולים לשיניים. לחץ על '+' מתחת לשן או סמן שיניים להוספה מרוכזת.</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- SECTION 4: GENERAL TREATMENTS -->
-      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
-        <div class="flex items-center gap-2 pb-2 border-b border-slate-100">
-          <div class="w-7 h-7 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold text-xs">4</div>
-          <div>
-            <h3 class="text-base font-bold text-slate-900">טיפולים כלליים, הכנה ראשונית ושיקום לסת שלמה</h3>
-            <p class="text-xs text-slate-500">סעיפים מחולקים לפי נושאים. ברירת מחדל 0.</p>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="general-categories-container"></div>
-      </div>
-
-      <!-- PLANNER FOOTER -->
-      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div>
-          <div class="text-xs text-slate-500">סה"כ פריטים בתוכנית: <span id="plan-items-total" class="font-bold text-slate-800">0</span></div>
-          <div class="text-base font-black text-sky-800">הערכת מחיר משוערת: <span id="plan-price-estimate">0 ₪</span> <span class="text-xs font-normal text-slate-500">(משוער בלבד)</span></div>
-        </div>
-
-        <div class="flex items-center gap-3 w-full sm:w-auto">
-          <button id="btn-preview-pdf" type="button" class="flex-1 sm:flex-none px-4 py-2.5 bg-slate-800 hover:bg-slate-900 text-white rounded-xl text-sm font-bold transition flex items-center justify-center gap-2 shadow-sm">
-            <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
-            <span>תצוגה מקדימה והפקת PDF</span>
-          </button>
-          <button id="btn-save-plan" type="button" class="flex-1 sm:flex-none px-5 py-2.5 bg-sky-600 hover:bg-sky-700 text-white rounded-xl text-sm font-bold transition flex items-center justify-center gap-2 shadow-md shadow-sky-200">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>
-            <span>שמור תוכנית במערכת</span>
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- VIEW 3: PATIENT CARD & LOOP -->
-    <section id="view-patient-card" class="hidden space-y-6">
-      
-      <!-- Patient Card Header -->
-      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <div class="flex items-center gap-3">
-            <h2 class="text-2xl font-black text-slate-900" id="card-patient-name">שם המטופל</h2>
-            <span id="card-patient-track" class="px-3 py-1 rounded-full text-xs font-bold text-white bg-slate-500">עוד לא הוחלט</span>
-            <span id="card-patient-insurance" class="px-2.5 py-0.5 rounded-md text-xs font-semibold bg-sky-50 text-sky-800 border border-sky-200">לאומית זהב</span>
-          </div>
-          <div class="text-xs text-slate-500 mt-1 flex flex-wrap gap-4">
-            <span>רופא מטפל: <strong class="text-slate-700" id="card-treating-doctor">ד"ר דורון טאובין</strong></span>
-            <span>רופא מתכנן אחרון: <strong class="text-slate-700" id="card-planning-doctor">ד"ר אלדד שרון</strong></span>
-            <span>סה"כ תוכניות: <strong class="text-slate-700" id="card-plans-count">1</strong></span>
-          </div>
-        </div>
-
-        <div class="flex flex-wrap items-center gap-2">
-          <select id="card-quick-track-change" class="text-xs font-medium px-3 py-2 border border-slate-200 rounded-xl bg-slate-50 focus:ring-2 focus:ring-sky-500">
-            <option value="UNDECIDED">שנה שיוך: עוד לא הוחלט (אפור)</option>
-            <option value="RESIDENCY">שנה שיוך: התמחות (כחול)</option>
-            <option value="THURSDAY">שנה שיוך: ימי חמישי (סגול)</option>
-            <option value="SHARAN">שנה שיוך: שר"ן ד"ר נתנאל (זהב)</option>
-          </select>
-
-          <button id="btn-card-new-plan" class="px-3.5 py-2 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl text-xs transition flex items-center gap-1.5 shadow-sm">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-            <span>+ תוכנית חדשה למטופל</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- Plans History Tabs -->
-      <div class="flex items-center gap-2 overflow-x-auto pb-1" id="plans-history-tabs"></div>
-
-      <!-- ACTIVE PLAN CODES -->
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        
-        <div class="lg:col-span-2 bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-100">
-            <div>
-              <h3 class="text-base font-bold text-slate-900" id="active-plan-title">קודים וסטטוס אישורי קופת חולים</h3>
-              <p class="text-xs text-slate-500">לחיצה על תגית הסטטוס מחליפה מצב: אושר (ירוק), סיבה (צהוב), נדחה (אדום), חוסר התייחסות (כתום).</p>
-            </div>
-            <div class="flex items-center gap-2">
-              <button id="btn-card-pdf-current" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold transition flex items-center gap-1">
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
-                <span>PDF תוכנית</span>
-              </button>
-            </div>
-          </div>
-
-          <div class="overflow-x-auto">
-            <table class="w-full text-right text-xs">
-              <thead class="bg-slate-50 text-slate-600 font-bold border-b border-slate-200">
-                <tr>
-                  <th class="py-2.5 px-3">שן / אזור</th>
-                  <th class="py-2.5 px-3">קוד GMC</th>
-                  <th class="py-2.5 px-3">קוד קופה</th>
-                  <th class="py-2.5 px-3">תיאור טיפול</th>
-                  <th class="py-2.5 px-3">מחיר משוער</th>
-                  <th class="py-2.5 px-3">סטטוס קופה</th>
-                  <th class="py-2.5 px-3 text-center">ביצוע קליני</th>
-                </tr>
-              </thead>
-              <tbody id="card-codes-tbody" class="divide-y divide-slate-100"></tbody>
-            </table>
-          </div>
-
-          <!-- UNREQUESTED APPROVED CODES -->
-          <div class="pt-4 border-t border-slate-100">
-            <div class="flex items-center justify-between mb-2">
-              <span class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
-                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                אישורים נוספים ברזרבה (מאחורי הקלעים - לא נכלל בהצעת המחיר)
-              </span>
-              <span class="text-xs text-slate-400" id="extra-codes-count">0 קודים</span>
-            </div>
-            <div id="extra-approved-codes-list" class="bg-emerald-50/50 p-3 rounded-xl border border-emerald-100 text-xs text-slate-600 space-y-1">
-              <p class="text-slate-400 italic" id="no-extra-codes-hint">אין קודים נוספים שאושרו מחוץ לתוכנית.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- RIGHT PANEL: OCR & OUTPUTS -->
-        <div class="space-y-4">
-          
-          <!-- PHOTO INPUT -->
-          <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-3">
-            <div class="flex items-center gap-2">
-              <div class="w-8 h-8 rounded-xl bg-sky-100 text-sky-600 flex items-center justify-center font-bold">📷</div>
-              <div>
-                <h4 class="text-sm font-bold text-slate-900">קלט: צילום דף תשובה מהקופה</h4>
-                <p class="text-xs text-slate-500">צילום מהמצלמה וסריקה אוטומטית</p>
-              </div>
-            </div>
-
-            <div class="p-4 border-2 border-dashed border-sky-200 rounded-xl text-center bg-sky-50/50 space-y-2">
-              <input type="file" id="camera-file-input" accept="image/*" capture="environment" class="hidden">
-              <button id="btn-trigger-camera" type="button" class="w-full py-2.5 px-4 bg-sky-600 hover:bg-sky-700 text-white rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 shadow-sm">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                <span>צלם דף תשובה (נייד)</span>
-              </button>
-              <button id="btn-manual-override" type="button" class="text-xs text-slate-500 hover:text-sky-600 underline">עדכון ידני של סטטוסים (גיבוי)</button>
-              <p class="text-[11px] text-slate-400">התמונות מעובדות בזיכרון בלבד ונמחקות מיד בסיום הפענוח (Zero-Retention).</p>
-            </div>
-
-            <div id="ocr-preview-box" class="hidden p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-2 text-xs">
-              <div class="flex items-center justify-between font-bold text-slate-700">
-                <span>תוצאת פענוח המסמך:</span>
-                <span id="ocr-status-tag" class="text-emerald-600">הושלם בהצלחה</span>
-              </div>
-              <div id="ocr-blur-warning" class="hidden p-2 bg-rose-50 border border-rose-200 text-rose-700 rounded-lg text-xs font-semibold">
-                ⚠️ שים לב: חלק מהשורות בדף היו מטושטשות. אנא אמת את הסטטוסים לפני אישור סופי.
-              </div>
-              <div id="ocr-summary-counts" class="text-slate-600 space-y-0.5"></div>
-              <div class="flex items-center gap-2 pt-1">
-                <button id="btn-confirm-ocr" class="flex-1 py-1.5 bg-emerald-600 text-white rounded-lg text-xs font-bold hover:bg-emerald-700 transition">אשר עדכון סטטוסים</button>
-                <button id="btn-cancel-ocr" class="px-3 py-1.5 bg-slate-200 text-slate-700 rounded-lg text-xs font-medium hover:bg-slate-300 transition">ביטול</button>
-              </div>
-            </div>
-          </div>
-
-          <!-- OUTPUTS / DOCUMENTS CARD -->
-          <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-3">
-            <div class="flex items-center gap-2">
-              <div class="w-8 h-8 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center font-bold">📑</div>
-              <div>
-                <h4 class="text-sm font-bold text-slate-900">פלט חוזר: מסמכי בירור לקופה</h4>
-                <p class="text-xs text-slate-500">הפקת PDF להמשך טיפול לאחר קבלת התשובה</p>
-              </div>
-            </div>
-
-            <div class="space-y-2.5">
-              <button id="btn-generate-discrepancies-pdf" type="button" class="w-full text-right p-3 border border-slate-200 hover:border-slate-300 rounded-xl bg-slate-50 hover:bg-slate-100 transition space-y-1">
-                <div class="flex items-center justify-between text-xs font-bold text-slate-800">
-                  <span>1. דו"ח חריגים לקופה (3 חלקים)</span>
-                  <span class="text-sky-600 font-mono">&gt;</span>
-                </div>
-                <p class="text-xs text-slate-500">מרכז רק טיפולים שנדחו, דורשים סיבה, או שלא נענו (ללא מאושרים).</p>
-              </button>
-
-              <button id="btn-generate-justification-letter" type="button" class="w-full text-right p-3 border border-amber-200 hover:border-amber-300 rounded-xl bg-amber-50/50 hover:bg-amber-100/50 transition space-y-1">
-                <div class="flex items-center justify-between text-xs font-bold text-amber-900">
-                  <span>2. מכתב הנמקה רשמי (עבור סעיפי "סיבה")</span>
-                  <span class="text-amber-700 font-mono">&gt;</span>
-                </div>
-                <p class="text-xs text-slate-600">ניסוח רשמי של בית חולים נהריה לקודים בצהוב עם אפשרות להערה חופשית.</p>
-              </button>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
-
-    <!-- VIEW 4: CATALOG & CODES MANAGEMENT -->
-    <section id="view-catalog" class="hidden space-y-6">
-      <div class="flex items-center justify-between">
-        <button id="btn-back-from-catalog" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-medium flex items-center gap-1.5 transition">
-          <svg class="w-4 h-4 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-          <span>חזרה לדשבורד</span>
-        </button>
         <div class="flex items-center gap-2">
-          <button id="btn-add-new-code" class="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-            <span>+ הוסף קוד / טיפול חדש</span>
-          </button>
-          <button id="btn-export-catalog-json" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-medium transition">ייצוא נתונים</button>
-          <button id="btn-reset-catalog" class="px-3 py-1.5 bg-slate-100 hover:bg-rose-100 text-slate-600 hover:text-rose-700 rounded-xl text-xs font-medium transition">איפוס מחירון</button>
+          <label class="text-xs font-semibold text-slate-600">סיווג תוכנית:</label>
+          <select id="plan-type" class="bg-slate-50 border border-slate-300 rounded-lg text-xs sm:text-sm p-1.5 font-bold text-blue-700">
+            <option value="initial">תוכנית ראשונית (אינה סופית)</option>
+            <option value="final">תוכנית סופית (ייתכנו שינויים)</option>
+          </select>
         </div>
       </div>
 
-      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+      <!-- Fields Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs sm:text-sm">
+        <!-- מטופל -->
         <div>
-          <h2 class="text-lg font-bold text-slate-900">ניהול קטלוג טיפולים, קודים ומחירונים</h2>
-          <p class="text-xs text-slate-500">ניתן להוסיף, לערוך, להסיר או לשנות מחירים וקודים ישירות במערכת.</p>
+          <label class="block font-semibold text-slate-700 mb-1">שם פרטי ומשפחה</label>
+          <input type="text" id="patient-name" placeholder="למשל: ישראל ישראלי" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:outline-blue-500">
         </div>
 
-        <div class="flex flex-col sm:flex-row gap-3">
-          <div class="flex-1">
-            <input type="text" id="search-catalog" placeholder="חיפוש לפי שם טיפול, קוד פנימי GMC או קוד קופה..." class="w-full px-3.5 py-2 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-sky-500">
-          </div>
-          <div class="w-full sm:w-64">
-            <select id="catalog-category-filter" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm bg-white focus:ring-2 focus:ring-sky-500">
-              <option value="">כל הקטגוריות</option>
-              <option value="צילומים ואבחון">צילומים ואבחון</option>
-              <option value="חירום ושיננית">חירום וגהות הפה (שיננית)</option>
-              <option value="שחזורים וטיפולי שורש">שחזורים וטיפולי שורש (אנדודונטיה)</option>
-              <option value="כירורגיה ושתלים">כירורגיה ושתלים</option>
-              <option value="שיקום הפה (פרוטטיקה)">שיקום הפה (פרוטטיקה ותותבות)</option>
-              <option value="טיפול חניכיים (פריו)">טיפול חניכיים (פריו)</option>
-            </select>
-          </div>
+        <!-- קופת חולים -->
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">מבטח / קופת חולים</label>
+          <select id="patient-hmo" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:outline-blue-500">
+            <option value="leumit_gold">לאומית זהב</option>
+            <option value="leumit_silver">לאומית כסף</option>
+            <option value="leumit_general">לאומית כללי / סל</option>
+            <option value="maccabi">מכבי</option>
+            <option value="clalit">כללית</option>
+            <option value="meuhedet">מאוחדת</option>
+            <option value="mod">משרד הביטחון</option>
+          </select>
         </div>
 
-        <div class="overflow-x-auto max-h-[600px] overflow-y-auto">
-          <table class="w-full text-right text-xs">
-            <thead class="bg-slate-50 text-slate-600 font-bold sticky top-0 border-b border-slate-200 z-10">
-              <tr>
-                <th class="py-2.5 px-3">קוד פנימי GMC</th>
-                <th class="py-2.5 px-3">קוד לאומית</th>
-                <th class="py-2.5 px-3">קטגוריה</th>
-                <th class="py-2.5 px-3">שם הטיפול</th>
-                <th class="py-2.5 px-3">מחיר כללי</th>
-                <th class="py-2.5 px-3">לאומית כסף</th>
-                <th class="py-2.5 px-3">לאומית זהב</th>
-                <th class="py-2.5 px-3">סל מעל 72</th>
-                <th class="py-2.5 px-3">הערות זכאות</th>
-                <th class="py-2.5 px-3 text-center">פעולות</th>
-              </tr>
-            </thead>
-            <tbody id="catalog-table-tbody" class="divide-y divide-slate-100"></tbody>
-          </table>
+        <!-- רופא מטפל עם "לא שויך" -->
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">רופא מטפל ראשי</label>
+          <select id="primary-doctor" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-800 font-semibold focus:outline-blue-500">
+            <option value="unassigned" class="text-slate-400 font-normal">-- לא שויך --</option>
+            <optgroup label="שיקום הפה (GMC)">
+              <option value="ד&quot;ר אלדד שרון">ד"ר אלדד שרון (ראש היחידה)</option>
+              <option value="ד&quot;ר אלכס פרסון">ד"ר אלכס פרסון (מנהל התמחות)</option>
+              <option value="ד&quot;ר דורון טאובין">ד"ר דורון טאובין</option>
+              <option value="ד&quot;ר אליאס עבסאוי">ד"ר אליאס עבסאוי</option>
+              <option value="ד&quot;ר עינת ורון שחר">ד"ר עינת ורון שחר</option>
+              <option value="ד&quot;ר אמיר סוואעד">ד"ר אמיר סוואעד</option>
+              <option value="ד&quot;ר מרדכי ליפובצקי-אדלר">ד"ר מרדכי ליפובצקי-אדלר</option>
+              <option value="ד&quot;ר ברק מרימסקי">ד"ר ברק מרימסקי</option>
+              <option value="ד&quot;ר נתנאל שורקי">ד"ר נתנאל שורקי</option>
+              <option value="ד&quot;ר עלאא דאוד">ד"ר עלאא דאוד</option>
+              <option value="ד&quot;ר עפרה עבדי">ד"ר עפרה עבדי</option>
+              <option value="ד&quot;ר יארה מנסור">ד"ר יארה מנסור</option>
+            </optgroup>
+          </select>
+        </div>
+
+        <!-- שיוך מסגרת -->
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">שיוך מטופל</label>
+          <select id="patient-tag" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 font-medium">
+            <option value="grey">⚪ עוד לא הוחלט</option>
+            <option value="blue">🔵 התמחות (רגיל)</option>
+            <option value="green">🟢 ימי חמישי</option>
+            <option value="purple">🟣 שר"ן (ד"ר נתנאל)</option>
+          </select>
         </div>
       </div>
-    </section>
+
+      <!-- צוות רב תחומי - בחירה מרובה של רופאים ממחלקות נוספות -->
+      <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 space-y-2">
+        <label class="block font-bold text-slate-700 text-xs sm:text-sm">
+          רופאים מעורבים / צוות רב-תחומי (בחירה מרובה ממחלקות בית החולים):
+        </label>
+        <div class="flex flex-wrap gap-2" id="multidisciplinary-doctors-container">
+          <!-- כפתורי בחירה מרובה ייווצרו דינמית בלחיצה -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Dental Cross & Legend Section -->
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 sm:p-6 space-y-6">
+      <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 pb-3">
+        <div>
+          <h2 class="text-base sm:text-lg font-bold text-slate-900">תצוגת צלב שיניים (Dental Cross)</h2>
+          <p class="text-xs text-slate-500">פירוט קודים טיפוליים וצבעי סטטוס מעל ומתחת לכל שן</p>
+        </div>
+
+        <!-- מקרא צבעים צמוד -->
+        <div class="flex flex-wrap items-center gap-2 text-xs bg-slate-50 p-2 rounded-xl border border-slate-200">
+          <span class="font-bold text-slate-700 ml-1">מקרא סטטוסים:</span>
+          <span class="px-2 py-0.5 rounded text-white font-medium bg-emerald-500">אושר (ירוק)</span>
+          <span class="px-2 py-0.5 rounded text-white font-medium bg-amber-500">סיבה לקופה (צהוב)</span>
+          <span class="px-2 py-0.5 rounded text-white font-medium bg-rose-500">נדחה (אדום)</span>
+          <span class="px-2 py-0.5 rounded text-white font-medium bg-orange-500">ללא מענה (כתום)</span>
+          <span class="px-2 py-0.5 rounded text-white font-medium bg-blue-500">טיוטה להגשה (כחול)</span>
+        </div>
+      </div>
+
+      <!-- מפת הצלב: לסת עליונה ולסת תחתונה מופרדות בציר מרכזי -->
+      <div class="overflow-x-auto pb-4">
+        <div class="min-w-[900px] space-y-6">
+
+          <!-- לסת עליונה: רביע 1 (18-11) ורביע 2 (21-28) -->
+          <div class="bg-slate-50/70 p-3 rounded-xl border border-slate-200/80">
+            <div class="text-xs font-bold text-slate-500 mb-2 flex justify-between px-2">
+              <span>רביע 1 (18 ➔ 11) - עליון ימין</span>
+              <span class="text-blue-700 font-extrabold">לסת עליונה (Maxilla)</span>
+              <span>רביע 2 (21 ➔ 28) - עליון שמאל</span>
+            </div>
+            
+            <div class="grid grid-cols-16 gap-1.5 text-center relative">
+              <!-- קו צלב אנכי מרכזי -->
+              <div class="absolute left-1/2 top-0 bottom-0 w-0.5 bg-blue-400 -translate-x-1/2 z-10 opacity-70"></div>
+
+              <!-- 18 עד 11 -->
+              <div class="tooth-col" data-tooth="18"></div>
+              <div class="tooth-col" data-tooth="17"></div>
+              <div class="tooth-col" data-tooth="16"></div>
+              <div class="tooth-col" data-tooth="15"></div>
+              <div class="tooth-col" data-tooth="14"></div>
+              <div class="tooth-col" data-tooth="13"></div>
+              <div class="tooth-col" data-tooth="12"></div>
+              <div class="tooth-col" data-tooth="11"></div>
+
+              <!-- 21 עד 28 -->
+              <div class="tooth-col" data-tooth="21"></div>
+              <div class="tooth-col" data-tooth="22"></div>
+              <div class="tooth-col" data-tooth="23"></div>
+              <div class="tooth-col" data-tooth="24"></div>
+              <div class="tooth-col" data-tooth="25"></div>
+              <div class="tooth-col" data-tooth="26"></div>
+              <div class="tooth-col" data-tooth="27"></div>
+              <div class="tooth-col" data-tooth="28"></div>
+            </div>
+          </div>
+
+          <!-- קו צלב אופקי מרכזי שמפריד בין הלסתות -->
+          <div class="h-1 bg-gradient-to-r from-blue-200 via-blue-500 to-blue-200 rounded-full my-2"></div>
+
+          <!-- לסת תחתונה: רביע 4 (48-41) ורביע 3 (31-38) -->
+          <div class="bg-slate-50/70 p-3 rounded-xl border border-slate-200/80">
+            <div class="text-xs font-bold text-slate-500 mb-2 flex justify-between px-2">
+              <span>רביע 4 (48 ➔ 41) - תחתון ימין</span>
+              <span class="text-blue-700 font-extrabold">לסת תחתונה (Mandible)</span>
+              <span>רביע 3 (31 ➔ 38) - תחתון שמאל</span>
+            </div>
+            
+            <div class="grid grid-cols-16 gap-1.5 text-center relative">
+              <!-- קו צלב אנכי מרכזי -->
+              <div class="absolute left-1/2 top-0 bottom-0 w-0.5 bg-blue-400 -translate-x-1/2 z-10 opacity-70"></div>
+
+              <!-- 48 עד 41 -->
+              <div class="tooth-col" data-tooth="48"></div>
+              <div class="tooth-col" data-tooth="47"></div>
+              <div class="tooth-col" data-tooth="46"></div>
+              <div class="tooth-col" data-tooth="45"></div>
+              <div class="tooth-col" data-tooth="44"></div>
+              <div class="tooth-col" data-tooth="43"></div>
+              <div class="tooth-col" data-tooth="42"></div>
+              <div class="tooth-col" data-tooth="41"></div>
+
+              <!-- 31 עד 38 -->
+              <div class="tooth-col" data-tooth="31"></div>
+              <div class="tooth-col" data-tooth="32"></div>
+              <div class="tooth-col" data-tooth="33"></div>
+              <div class="tooth-col" data-tooth="34"></div>
+              <div class="tooth-col" data-tooth="35"></div>
+              <div class="tooth-col" data-tooth="36"></div>
+              <div class="tooth-col" data-tooth="37"></div>
+              <div class="tooth-col" data-tooth="38"></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions & Output PDF buttons -->
+    <div class="flex flex-wrap items-center justify-end gap-3 pt-2">
+      <button onclick="exportSummaryPDF('hmo')" class="bg-slate-800 hover:bg-slate-700 text-white text-xs sm:text-sm px-4 py-2.5 rounded-xl font-bold flex items-center gap-1.5 shadow">
+        <span>📄</span>
+        <span>הפקת PDF דרישת קודים לקופה</span>
+      </button>
+      <button onclick="exportSummaryPDF('patient')" class="bg-blue-600 hover:bg-blue-500 text-white text-xs sm:text-sm px-4 py-2.5 rounded-xl font-bold flex items-center gap-1.5 shadow">
+        <span>💰</span>
+        <span>הפקת הצעת מחיר למטופל</span>
+      </button>
+    </div>
 
   </main>
 
-  <!-- MODAL: ADD / EDIT TREATMENT FOR A TOOTH -->
-  <div id="modal-tooth-treatment" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl max-w-xl w-full max-h-[90vh] flex flex-col shadow-2xl border border-slate-200">
-      <div class="p-4 border-b border-slate-100 flex items-center justify-between">
+  <!-- Modal: קטלוג ומחירון אינטראקטיבי -->
+  <div id="catalog-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3">
+    <div class="bg-white w-full max-w-4xl max-h-[90vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden">
+      <div class="px-5 py-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
         <div>
-          <h3 class="font-bold text-slate-900 text-base" id="modal-tooth-title">הוספת טיפול לשן</h3>
-          <p class="text-xs text-slate-500">בחר טיפול בודד או קומפלקס מובנה</p>
+          <h3 class="text-base sm:text-lg font-bold text-slate-900">קטלוג טיפולים ומחירונים אינטראקטיבי</h3>
+          <p class="text-xs text-slate-500">עריכה חופשית של קודים פנימיים, קודי לאומית ותעריפים</p>
         </div>
-        <button id="btn-close-tooth-modal" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg">✕</button>
+        <button onclick="toggleCatalogModal(false)" class="text-slate-400 hover:text-slate-600 text-xl font-bold px-2">&times;</button>
       </div>
 
-      <div class="p-4 overflow-y-auto space-y-4 flex-1">
-        <input type="text" id="search-modal-treatments" placeholder="חיפוש טיפול או קומפלקס..." class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-sky-500">
-
-        <div class="flex border-b border-slate-200 text-xs font-bold">
-          <button id="tab-complexes" class="py-2 px-4 border-b-2 border-sky-600 text-sky-700">קומפלקסים (חבילות מובנות)</button>
-          <button id="tab-single-treatments" class="py-2 px-4 border-b-2 border-transparent text-slate-500 hover:text-slate-700">כל הטיפולים הבודדים</button>
-        </div>
-
-        <div id="modal-complexes-list" class="space-y-2"></div>
-        <div id="modal-single-list" class="hidden space-y-2 max-h-72 overflow-y-auto"></div>
+      <div class="p-4 border-b border-slate-100 flex flex-wrap gap-2 items-center justify-between">
+        <input type="text" id="catalog-search" oninput="filterCatalogTable()" placeholder="חיפוש לפי קוד או שם טיפול..." class="bg-slate-50 border border-slate-300 rounded-lg px-3 py-1.5 text-xs sm:text-sm w-full sm:w-64">
+        <button onclick="addNewCatalogRow()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-3 py-1.5 rounded-lg font-bold">
+          + הוסף קוד חדש
+        </button>
       </div>
-    </div>
-  </div>
 
-  <!-- MODAL: ADD / EDIT CODE IN CATALOG -->
-  <div id="modal-edit-catalog-code" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 space-y-4">
-      <div class="flex items-center justify-between border-b pb-2">
-        <h3 class="font-bold text-slate-900 text-base" id="modal-edit-code-title">עריכת / הוספת קוד בקטלוג</h3>
-        <button id="btn-close-edit-code" class="text-slate-400 hover:text-slate-600">✕</button>
-      </div>
-      <form id="form-edit-code" class="space-y-3 text-xs">
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block font-semibold mb-1">קוד פנימי GMC *</label>
-            <input type="text" id="edit-gmc-code" required class="w-full px-3 py-2 border rounded-xl">
-          </div>
-          <div>
-            <label class="block font-semibold mb-1">קוד לאומית</label>
-            <input type="text" id="edit-leumit-code" class="w-full px-3 py-2 border rounded-xl">
-          </div>
-        </div>
-        <div>
-          <label class="block font-semibold mb-1">שם הטיפול *</label>
-          <input type="text" id="edit-treatment-name" required class="w-full px-3 py-2 border rounded-xl">
-        </div>
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block font-semibold mb-1">קטגוריה *</label>
-            <select id="edit-treatment-category" class="w-full px-3 py-2 border rounded-xl bg-white">
-              <option value="צילומים ואבחון">צילומים ואבחון</option>
-              <option value="חירום ושיננית">חירום ושיננית</option>
-              <option value="שחזורים וטיפולי שורש">שחזורים וטיפולי שורש</option>
-              <option value="כירורגיה ושתלים">כירורגיה ושתלים</option>
-              <option value="שיקום הפה (פרוטטיקה)">שיקום הפה (פרוטטיקה)</option>
-              <option value="טיפול חניכיים (פריו)">טיפול חניכיים (פריו)</option>
-            </select>
-          </div>
-          <div>
-            <label class="block font-semibold mb-1">מחיר כללי / פרטי (₪)</label>
-            <input type="number" id="edit-price-general" class="w-full px-3 py-2 border rounded-xl">
-          </div>
-        </div>
-        <div class="grid grid-cols-3 gap-2">
-          <div>
-            <label class="block font-semibold mb-1">לאומית כסף (₪)</label>
-            <input type="number" id="edit-price-silver" class="w-full px-2 py-2 border rounded-xl">
-          </div>
-          <div>
-            <label class="block font-semibold mb-1">לאומית זהב (₪)</label>
-            <input type="number" id="edit-price-gold" class="w-full px-2 py-2 border rounded-xl">
-          </div>
-          <div>
-            <label class="block font-semibold mb-1">סל מעל 72 (₪)</label>
-            <input type="number" id="edit-price-72" class="w-full px-2 py-2 border rounded-xl">
-          </div>
-        </div>
-        <div>
-          <label class="block font-semibold mb-1">הערות ותנאי זכאות</label>
-          <input type="text" id="edit-notes" class="w-full px-3 py-2 border rounded-xl" placeholder="למשל: יאושר מסיבה רפואית מודגמת">
-        </div>
-        <div class="flex items-center justify-end gap-2 pt-2 border-t">
-          <button type="button" id="btn-cancel-edit-code" class="px-3 py-2 bg-slate-100 rounded-xl">ביטול</button>
-          <button type="submit" class="px-4 py-2 bg-sky-600 text-white font-bold rounded-xl">שמור קוד</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- MODAL: PRINTABLE PDF PREVIEW -->
-  <div id="modal-pdf-preview" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
-    <div class="bg-white rounded-2xl max-w-4xl w-full max-h-[95vh] flex flex-col shadow-2xl border border-slate-200">
-      <div class="p-4 bg-slate-800 text-white rounded-t-2xl flex items-center justify-between">
-        <div class="flex items-center gap-2">
-          <span class="text-xs px-2.5 py-0.5 rounded bg-sky-500 font-bold">PDF רפואי</span>
-          <h3 class="font-bold text-sm sm:text-base" id="pdf-preview-title">תצוגה מקדימה של המסמך</h3>
-        </div>
-        <div class="flex items-center gap-2">
-          <button id="btn-share-pdf" class="px-3 py-1.5 bg-sky-600 hover:bg-sky-500 text-white rounded-lg text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg>
-            <span>שתף</span>
-          </button>
-          <button id="btn-print-pdf" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
-            <span>הדפס / שמור כ-PDF</span>
-          </button>
-          <button id="btn-close-pdf-preview" class="p-1.5 text-slate-400 hover:text-white rounded-lg">✕</button>
-        </div>
-      </div>
-      <div class="p-6 overflow-y-auto flex-1 bg-white text-slate-800 space-y-4" id="printable-area"></div>
-    </div>
-  </div>
-
-  <!-- MODAL: JUSTIFICATION PROMPT -->
-  <div id="modal-justification-prompt" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 space-y-4">
-      <div class="flex items-center justify-between border-b pb-2">
-        <h3 class="font-bold text-slate-900 text-base">הפקת מכתב הנמקה רפואי (קודים בצהוב)</h3>
-        <button id="btn-close-justification-prompt" class="text-slate-400 hover:text-slate-600">✕</button>
-      </div>
-      <div class="text-xs text-slate-600 space-y-2">
-        <p>המכתב יופק עם הנוסח הרשמי של מחלקת שיקום הפה, הקולג' למדעי רפואת השיניים בבית חולים נהריה.</p>
-        <div>
-          <label class="block font-semibold mb-1 text-slate-700">הערה קלינית ספציפית של הרופא (אופציונלי):</label>
-          <textarea id="justification-custom-note" rows="3" placeholder="למשל: שן מאחזת קריטית שדורשת מבנה וכתר לצורך תמיכת שחזור פרותטי..." class="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-sky-500 text-xs"></textarea>
-        </div>
-      </div>
-      <div class="flex justify-end gap-2 pt-2 border-t">
-        <button id="btn-cancel-justification" class="px-3 py-1.5 bg-slate-100 rounded-xl text-xs">ביטול</button>
-        <button id="btn-proceed-justification-letter" class="px-4 py-1.5 bg-sky-600 text-white font-bold rounded-xl text-xs">הפק מכתב PDF</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- CONFIRM DIALOG -->
-  <div id="modal-confirm-dialog" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-slate-200 text-center space-y-4">
-      <div class="w-12 h-12 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center mx-auto text-xl font-bold">⚠️</div>
-      <h3 class="text-base font-bold text-slate-800" id="confirm-modal-title">אישור פעולה</h3>
-      <p class="text-xs text-slate-600" id="confirm-modal-message">האם אתה בטוח שברצונך להמשיך?</p>
-      <div class="flex items-center justify-center gap-2 pt-2 border-t">
-        <button id="btn-confirm-cancel" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold">ביטול</button>
-        <button id="btn-confirm-proceed" class="px-5 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold">אישור</button>
-      </div>
-    </div>
-  </div>
-
-  <div id="toast-container" class="fixed bottom-5 left-5 z-50 space-y-2 pointer-events-none"></div>
-
-  <!-- SCRIPT LOGIC -->
-  <script>
-    const GMC_SHEETS_API_URL = 'https://script.google.com/macros/s/AKfycbxiLM64QuwuG9D9lUCosprm-Yyt2ppExP7A9MrGXEmYThzZSlqxJd2EIl4fappbkSc32w/exec';
-
-    const GMC_DOCTORS = [
-      'ד"ר אלדד שרון',
-      'ד"ר אלכס פרסון',
-      'ד"ר אליאס עבסאוי',
-      'ד"ר עינת ורון שחר',
-      'ד"ר אמיר סוואעד',
-      'ד"ר מרדכי ליפובצקי-אדלר',
-      'ד"ר ברק מרימסקי',
-      'ד"ר נתנאל שורקי',
-      'ד"ר עלאא דאוד',
-      'ד"ר עפרה עבדי',
-      'ד"ר יארה מנסור',
-      'ד"ר דורון טאובין'
-    ];
-
-    const DEFAULT_CATALOG = [
-      { id: 'GMC-001', leumit: '101', cat: 'צילומים ואבחון', name: 'מיפוי פה ראשוני', pGen: 120, pSilv: 41, pGold: 34, p72: 0, notes: 'פטור מאישור מוקדם' },
-      { id: 'GMC-002', leumit: '102', cat: 'צילומים ואבחון', name: 'צילום נשך בודד', pGen: 22.75, pSilv: 18.2, pGold: 14, p72: 0, notes: 'פטור מאישור מוקדם' },
-      { id: 'GMC-003', leumit: '103', cat: 'צילומים ואבחון', name: 'צילום נשך +2', pGen: 45.5, pSilv: 36.4, pGold: 28, p72: 0, notes: 'פטור מאישור מוקדם' },
-      { id: 'GMC-006', leumit: '106', cat: 'צילומים ואבחון', name: 'צילום פנורמי', pGen: 130, pSilv: 104, pGold: 80, p72: 38, notes: 'מעל 72: פעם בשנתיים' },
-      { id: 'GMC-008', leumit: '108', cat: 'צילומים ואבחון', name: 'צילום סטטוס', pGen: 219.38, pSilv: 175.5, pGold: 135, p72: 38, notes: 'אחת ל-3 שנים' },
-      { id: 'GMC-009', leumit: '109', cat: 'צילומים ואבחון', name: 'צילום סטטוס מקביליות', pGen: 321.75, pSilv: 257.4, pGold: 198, p72: 38, notes: 'מעל 72: פעם בשנתיים' },
-      { id: 'GMC-010', leumit: '110', cat: 'צילומים ואבחון', name: 'צילום לסת CT בודדת', pGen: 585, pSilv: 468, pGold: 360, p72: 38, notes: 'לאבחון שתלים' },
-      { id: 'GMC-020', leumit: '201', cat: 'חירום ושיננית', name: 'טיפול חירום (עזרה ראשונה)', pGen: 158, pSilv: 122, pGold: 94, p72: 77, notes: 'פטור מאישור מוקדם' },
-      { id: 'GMC-030', leumit: '301', cat: 'חירום ושיננית', name: 'הסרת אבנית פעם בחצי שנה', pGen: 198, pSilv: 99, pGold: 49, p72: 0, notes: 'כסף: פעם בשנה, זהב/72: פעמיים' },
-      { id: 'GMC-031', leumit: '302', cat: 'חירום ושיננית', name: 'טיפול בפלואור / דוראפאט', pGen: 123, pSilv: 77, pGold: 59, p72: 19, notes: 'מסיבה רפואית מודגמת' },
-      { id: 'GMC-041', leumit: '401', cat: 'שחזורים וטיפולי שורש', name: 'שחזור אמלגם משטח אחד', pGen: 227, pSilv: 175, pGold: 49, p72: 38, notes: 'מסיבה רפואית מודגמת' },
-      { id: 'GMC-044', leumit: '404', cat: 'שחזורים וטיפולי שורש', name: 'שחזור מרוכב קדמי / אחורי', pGen: 308, pSilv: 237, pGold: 49, p72: 38, notes: 'מסיבה רפואית מודגמת' },
-      { id: 'GMC-052', leumit: '501', cat: 'שחזורים וטיפולי שורש', name: 'טיפול שורש - תעלה אחת', pGen: 589, pSilv: 469, pGold: 68, p72: 155, notes: 'מסיבה רפואית מודגמת' },
-      { id: 'GMC-053', leumit: '502', cat: 'שחזורים וטיפולי שורש', name: 'טיפול שורש - 2 תעלות', pGen: 727, pSilv: 582, pGold: 68, p72: 155, notes: 'מסיבה רפואית מודגמת' },
-      { id: 'GMC-054', leumit: '503', cat: 'שחזורים וטיפולי שורש', name: 'טיפול שורש - 3 תעלות', pGen: 914, pSilv: 752, pGold: 68, p72: 155, notes: 'מסיבה רפואית מודגמת' },
-      { id: 'GMC-055', leumit: '504', cat: 'שחזורים וטיפולי שורש', name: 'טיפול שורש - 4 תעלות', pGen: 988, pSilv: 795, pGold: 68, p72: 155, notes: 'מסיבה רפואית מודגמת' },
-      { id: 'GMC-060', leumit: '601', cat: 'שחזורים וטיפולי שורש', name: 'חידוש טיפול שורש - 1 תעלה', pGen: 727, pSilv: 469, pGold: 68, p72: 155, notes: 'מסיבה רפואית מודגמת' },
-      { id: 'GMC-062', leumit: '603', cat: 'שחזורים וטיפולי שורש', name: 'חידוש טיפול שורש - 3 תעלות', pGen: 1167, pSilv: 752, pGold: 68, p72: 155, notes: 'מסיבה רפואית מודגמת' },
-      { id: 'GMC-071', leumit: '701', cat: 'כירורגיה ושתלים', name: 'עקירה רגילה', pGen: 275, pSilv: 161, pGold: 68, p72: 38, notes: 'מסיבה רפואית מודגמת' },
-      { id: 'GMC-072', leumit: '702', cat: 'כירורגיה ושתלים', name: 'עקירה כירורגית / שן בינה', pGen: 511, pSilv: 367, pGold: 68, p72: 77, notes: 'מסיבה רפואית מודגמת' },
-      { id: 'GMC-084', leumit: '804', cat: 'כירורגיה ושתלים', name: 'החלקת עצם', pGen: 962, pSilv: 799, pGold: 320, p72: 38, notes: 'מסיבה רפואית מודגמת' },
-      { id: 'GMC-086', leumit: '806', cat: 'כירורגיה ושתלים', name: 'סד ממוחשב לביצוע שתלים', pGen: 4200, pSilv: 3360, pGold: 2630, p72: 0, notes: 'מסיבה רפואית מודגמת' },
-      { id: 'GMC-087', leumit: '807', cat: 'כירורגיה ושתלים', name: 'שתל דנטלי', pGen: 3864, pSilv: 2053, pGold: 1560, p72: 116, notes: 'מסיבה רפואית (72+: עד 4 לתותבת תחתונה)' },
-      { id: 'GMC-088', leumit: '808', cat: 'כירורגיה ושתלים', name: 'הרמת סינוס (צד אחד)', pGen: 11872, pSilv: 9727, pGold: 6300, p72: 0, notes: 'מסיבה רפואית מודגמת' },
-      { id: 'GMC-089', leumit: '809', cat: 'כירורגיה ושתלים', name: 'השתלת עצם + 0.5 גרם', pGen: 2500, pSilv: 1825, pGold: 1481, p72: 0, notes: 'מסיבה רפואית מודגמת' },
-      { id: 'GMC-090', leumit: '810', cat: 'כירורגיה ושתלים', name: 'השתלת עצם + 0.5 גרם + ממברנה', pGen: 4200, pSilv: 2563, pGold: 1996, p72: 0, notes: 'כפוף לאישור מוקדם' },
-      { id: 'GMC-101', leumit: '901', cat: 'שיקום הפה (פרוטטיקה)', name: 'מבנה מיידי', pGen: 442, pSilv: 301, pGold: 179, p72: 38, notes: 'מסיבה רפואית מודגמת' },
-      { id: 'GMC-103', leumit: '903', cat: 'שיקום הפה (פרוטטיקה)', name: 'מבנה מחומר מרוכב', pGen: 750, pSilv: 602, pGold: 322, p72: 0, notes: 'מסיבה רפואית מודגמת' },
-      { id: 'GMC-104', leumit: '904', cat: 'שיקום הפה (פרוטטיקה)', name: 'מבנה יצוק / בורג קרמי', pGen: 910, pSilv: 555, pGold: 364, p72: 0, notes: 'מסיבה רפואית מודגמת' },
-      { id: 'GMC-105', leumit: '905', cat: 'שיקום הפה (פרוטטיקה)', name: 'מבנה זירקוניה', pGen: 1588, pSilv: 1222, pGold: 810, p72: 0, notes: 'מסיבה רפואית מודגמת' },
-      { id: 'GMC-112', leumit: '912', cat: 'שיקום הפה (פרוטטיקה)', name: 'כתר זמני מאקריל', pGen: 343, pSilv: 165, pGold: 127, p72: 0, notes: 'מסיבה רפואית מודגמת' },
-      { id: 'GMC-113', leumit: '913', cat: 'שיקום הפה (פרוטטיקה)', name: 'כתר זמני מאקריל מבושל', pGen: 447, pSilv: 328, pGold: 153, p72: 116, notes: 'מסיבה רפואית מודגמת' },
-      { id: 'GMC-114', leumit: '914', cat: 'שיקום הפה (פרוטטיקה)', name: 'כתר זמני מוברג', pGen: 520, pSilv: 400, pGold: 280, p72: 0, notes: 'כפוף לאישור מוקדם' },
-      { id: 'GMC-117', leumit: '917', cat: 'שיקום הפה (פרוטטיקה)', name: 'כתר חרסינה', pGen: 1899, pSilv: 1400, pGold: 715, p72: 0, notes: 'מסיבה רפואית מודגמת' },
-      { id: 'GMC-118', leumit: '918', cat: 'שיקום הפה (פרוטטיקה)', name: 'כתר חרסינה בשן להשחזה על מתכת', pGen: 1899, pSilv: 1400, pGold: 715, p72: 233, notes: 'מסיבה רפואית מודגמת' },
-      { id: 'GMC-122', leumit: '922', cat: 'שיקום הפה (פרוטטיקה)', name: 'כתר זירקוניה', pGen: 2688, pSilv: 2187, pGold: 1750, p72: 0, notes: 'מסיבה רפואית מודגמת' },
-      { id: 'GMC-124', leumit: '924', cat: 'שיקום הפה (פרוטטיקה)', name: 'סד לילה', pGen: 960, pSilv: 792, pGold: 474, p72: 0, notes: 'מסיבה רפואית מודגמת' },
-      { id: 'GMC-125', leumit: '925', cat: 'שיקום הפה (פרוטטיקה)', name: 'סד לילה טיפולי - רופא מומחה', pGen: 1920, pSilv: 1044, pGold: 890, p72: 0, notes: 'מסיבה רפואית מודגמת' },
-      { id: 'GMC-126', leumit: '926', cat: 'שיקום הפה (פרוטטיקה)', name: 'תותב שן בודד - פליפר', pGen: 689, pSilv: 574, pGold: 200, p72: 77, notes: 'מסיבה רפואית מודגמת' },
-      { id: 'GMC-128', leumit: '928', cat: 'שיקום הפה (פרוטטיקה)', name: 'תותבת חלקית מאקריל', pGen: 2610, pSilv: 1703, pGold: 880, p72: 349, notes: 'מסיבה רפואית מודגמת' },
-      { id: 'GMC-131', leumit: '931', cat: 'שיקום הפה (פרוטטיקה)', name: 'תותבת שלמה עליונה', pGen: 4877, pSilv: 3107, pGold: 1800, p72: 349, notes: 'מסיבה רפואית מודגמת' },
-      { id: 'GMC-132', leumit: '932', cat: 'שיקום הפה (פרוטטיקה)', name: 'תותבת שלמה תחתונה', pGen: 4877, pSilv: 3107, pGold: 1800, p72: 349, notes: 'מסיבה רפואית מודגמת' },
-      { id: 'GMC-134', leumit: '934', cat: 'שיקום הפה (פרוטטיקה)', name: 'תותבת חלקית יצוקה מכרום קובלט (ויטליום)', pGen: 4877, pSilv: 3200, pGold: 1800, p72: 0, notes: 'מסיבה רפואית מודגמת' },
-      { id: 'GMC-143', leumit: '943', cat: 'שיקום הפה (פרוטטיקה)', name: 'העמדת שיניים בשעווה', pGen: 990, pSilv: 916, pGold: 705, p72: 0, notes: 'כפוף לאישור מוקדם' },
-      { id: 'GMC-144', leumit: '944', cat: 'שיקום הפה (פרוטטיקה)', name: 'מבנה לשתל', pGen: 1854, pSilv: 897, pGold: 690, p72: 0, notes: 'מסיבה רפואית מודגמת' },
-      { id: 'GMC-171', leumit: '971', cat: 'טיפול חניכיים (פריו)', name: 'הקצעת שורשים / גרידת חניכיים לרבע פה', pGen: 715, pSilv: 580, pGold: 299, p72: 116, notes: 'מסיבה רפואית מודגמת' },
-      { id: 'GMC-174', leumit: '974', cat: 'טיפול חניכיים (פריו)', name: 'ניתוח חניכיים רבע פה', pGen: 2150, pSilv: 1702, pGold: 1020, p72: 0, notes: 'מסיבה רפואית מודגמת' },
-      { id: 'GMC-177', leumit: '977', cat: 'טיפול חניכיים (פריו)', name: 'הארכת כותרת לשן אחת', pGen: 1039, pSilv: 707, pGold: 483, p72: 0, notes: 'מסיבה רפואית מודגמת' },
-      { id: 'GMC-178', leumit: '978', cat: 'טיפול חניכיים (פריו)', name: 'קיבוע שיניים (ספלינט)', pGen: 1030, pSilv: 875, pGold: 442, p72: 0, notes: 'מסיבה רפואית מודגמת' }
-    ];
-
-    const DEFAULT_COMPLEXES = [
-      {
-        id: 'C-01',
-        name: 'קומפלקס כתר על שן (מבנה + כתר זמני + כתר זירקוניה)',
-        codes: ['GMC-101', 'GMC-112', 'GMC-122'],
-        desc: 'מבנה מיידי, כתר זמני אקריל, וכתר זירקוניה קבוע'
-      },
-      {
-        id: 'C-02',
-        name: 'קומפלקס כתר חרסינה קלאסי (מבנה יצוק + זמני מבושל + כתר חרסינה)',
-        codes: ['GMC-104', 'GMC-113', 'GMC-117'],
-        desc: 'מבנה יצוק, כתר זמני מבושל, וכתר חרסינה על מתכת'
-      },
-      {
-        id: 'C-03',
-        name: 'קומפלקס שיקום על שתל (מבנה שתל + כתר זמני מוברג + כתר זירקוניה)',
-        codes: ['GMC-144', 'GMC-114', 'GMC-122'],
-        desc: 'מבנה טיטניום/זירקוניה לשתל, כתר זמני, וכתר זירקוניה סופי'
-      },
-      {
-        id: 'C-04',
-        name: 'קומפלקס עקירה והשתלה מיידית (עקירה כירורגית + שתל + עצם/ממברנה)',
-        codes: ['GMC-072', 'GMC-087', 'GMC-090'],
-        desc: 'עקירה כירורגית, החדרת שתל דנטלי, והשתלת עצם עם ממברנה'
-      }
-    ];
-
-    const DEFAULT_GENERAL_ITEMS = [
-      { id: 'GEN-01', cat: 'צילומים ואבחון', name: 'צילום סטטוס מקביליות', code: 'GMC-009', qty: 0 },
-      { id: 'GEN-02', cat: 'צילומים ואבחון', name: 'צילום CT לסת בודדת', code: 'GMC-010', qty: 0 },
-      { id: 'GEN-03', cat: 'חירום ושיננית', name: 'הסרת אבנית תקופתית', code: 'GMC-030', qty: 0 },
-      { id: 'GEN-04', cat: 'טיפול חניכיים (פריו)', name: 'הקצעת שורשים (רבעי פה)', code: 'GMC-171', qty: 0 },
-      { id: 'GEN-05', cat: 'כירורגיה ושתלים', name: 'הרמת סינוס צד אחד', code: 'GMC-088', qty: 0 },
-      { id: 'GEN-06', cat: 'כירורגיה ושתלים', name: 'סד ממוחשב לשתלים', code: 'GMC-086', qty: 0 },
-      { id: 'GEN-07', cat: 'שיקום הפה (פרוטטיקה)', name: 'תותבת שלמה עליונה', code: 'GMC-131', qty: 0 },
-      { id: 'GEN-08', cat: 'שיקום הפה (פרוטטיקה)', name: 'תותבת שלמה תחתונה', code: 'GMC-132', qty: 0 },
-      { id: 'GEN-09', cat: 'שיקום הפה (פרוטטיקה)', name: 'סד לילה טיפולי', code: 'GMC-125', qty: 0 },
-      { id: 'GEN-10', cat: 'שיקום הפה (פרוטטיקה)', name: 'העמדת שיניים בשעווה', code: 'GMC-143', qty: 0 }
-    ];
-
-    const DEFAULT_PATIENTS = [
-      {
-        id: 'PT-1001',
-        firstName: 'יוסף',
-        lastName: 'חדאד',
-        insurance: 'LEUMIT_GOLD',
-        track: 'THURSDAY',
-        treatingDoc: 'ד"ר דורון טאובין',
-        planningDoc: 'ד"ר אלדד שרון',
-        plans: [
-          {
-            planId: 'PLAN-1',
-            type: 'INITIAL',
-            createdAt: '22/10/2026 11:30',
-            creatorDoc: 'ד"ר אלדד שרון',
-            treatingDoc: 'ד"ר דורון טאובין',
-            prognosis: {
-              '11': { status: 'NATURAL', prog: 'G' },
-              '12': { status: 'NATURAL', prog: 'G' },
-              '21': { status: 'NATURAL', prog: 'Q' },
-              '26': { status: 'MISSING', prog: 'I' }
-            },
-            teethStatus: {
-              '26': 'MISSING',
-              '46': 'IMPLANT'
-            },
-            items: [
-              { tooth: '11', codeId: 'GMC-101', name: 'מבנה מיידי', hmoCode: '901', price: 179, status: 'APPROVED', clinicalDone: true },
-              { tooth: '11', codeId: 'GMC-112', name: 'כתר זמני מאקריל', hmoCode: '912', price: 127, status: 'APPROVED', clinicalDone: true },
-              { tooth: '11', codeId: 'GMC-122', name: 'כתר זירקוניה', hmoCode: '922', price: 1750, status: 'REASON_REQUIRED', clinicalDone: false },
-              { tooth: '21', codeId: 'GMC-122', name: 'כתר זירקוניה', hmoCode: '922', price: 1750, status: 'IGNORED', clinicalDone: false },
-              { tooth: '26', codeId: 'GMC-087', name: 'שתל דנטלי', hmoCode: '807', price: 1560, status: 'REJECTED', clinicalDone: false },
-              { tooth: 'לסת', codeId: 'GMC-009', name: 'צילום סטטוס מקביליות', hmoCode: '109', price: 198, status: 'APPROVED', clinicalDone: true }
-            ],
-            extraApproved: [
-              { codeId: 'GMC-002', name: 'צילום נשך בודד', hmoCode: '102', price: 14 }
-            ]
-          }
-        ]
-      }
-    ];
-
-    let AppState = {
-      catalog: [],
-      complexes: [],
-      generalItems: [],
-      patients: [],
-      currentPatientId: null,
-      activePlanIndex: 0,
-      planner: {
-        patientId: null,
-        firstName: '',
-        lastName: '',
-        insurance: 'LEUMIT_GOLD',
-        track: 'UNDECIDED',
-        treatingDoc: GMC_DOCTORS[0],
-        planningDoc: GMC_DOCTORS[0],
-        planType: 'INITIAL',
-        prognosisOpen: false,
-        prognosisData: {},
-        teethStatus: {},
-        selectedTeeth: new Set(),
-        toothTreatments: [],
-        generalQuantities: {}
-      },
-      modalToothTarget: null
-    };
-
-    let pendingConfirmAction = null;
-
-    async function syncWithGoogleSheets() {
-      if (!GMC_SHEETS_API_URL) return;
-      try {
-        const syncBadge = document.getElementById('btn-sync-info');
-        if (syncBadge) syncBadge.classList.add('animate-spin');
-        
-        const response = await fetch(`${GMC_SHEETS_API_URL}?action=getCatalog`);
-        if (response.ok) {
-          const remoteCatalog = await response.json();
-          if (Array.isArray(remoteCatalog) && remoteCatalog.length > 0) {
-            AppState.catalog = remoteCatalog;
-            saveState();
-            renderCatalogTable();
-          }
-        }
-      } catch (err) {
-        console.warn('Sync note:', err);
-      } finally {
-        const syncBadge = document.getElementById('btn-sync-info');
-        if (syncBadge) syncBadge.classList.remove('animate-spin');
-      }
-    }
-
-    async function sendPlanToGoogleSheets(patient, plan) {
-      if (!GMC_SHEETS_API_URL) return;
-      try {
-        await fetch(GMC_SHEETS_API_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            action: 'savePatientPlan',
-            patient: {
-              id: patient.id,
-              firstName: patient.firstName,
-              lastName: patient.lastName,
-              insurance: patient.insurance,
-              track: patient.track,
-              treatingDoc: patient.treatingDoc
-            },
-            plan: {
-              planId: plan.planId,
-              type: plan.type,
-              createdAt: plan.createdAt,
-              creatorDoc: plan.creatorDoc,
-              items: plan.items
-            }
-          })
-        });
-      } catch (err) {
-        console.warn('Could not post to Google Sheets:', err);
-      }
-    }
-
-    function loadState() {
-      try {
-        const storedCat = localStorage.getItem('GMC_CATALOG_DATA');
-        AppState.catalog = storedCat ? JSON.parse(storedCat) : DEFAULT_CATALOG;
-        const storedPatients = localStorage.getItem('GMC_PATIENTS_DATA');
-        AppState.patients = storedPatients ? JSON.parse(storedPatients) : DEFAULT_PATIENTS;
-        AppState.complexes = DEFAULT_COMPLEXES;
-        AppState.generalItems = JSON.parse(JSON.stringify(DEFAULT_GENERAL_ITEMS));
-      } catch (e) {
-        AppState.catalog = DEFAULT_CATALOG;
-        AppState.patients = DEFAULT_PATIENTS;
-        AppState.complexes = DEFAULT_COMPLEXES;
-        AppState.generalItems = JSON.parse(JSON.stringify(DEFAULT_GENERAL_ITEMS));
-      }
-    }
-
-    function saveState() {
-      try {
-        localStorage.setItem('GMC_CATALOG_DATA', JSON.stringify(AppState.catalog));
-        localStorage.setItem('GMC_PATIENTS_DATA', JSON.stringify(AppState.patients));
-      } catch (e) {}
-    }
-
-    function showToast(msg, type = 'info') {
-      const container = document.getElementById('toast-container');
-      if (!container) return;
-      const toast = document.createElement('div');
-      const bg = type === 'error' ? 'bg-rose-600' : type === 'success' ? 'bg-emerald-600' : 'bg-slate-900';
-      toast.className = `${bg} text-white px-4 py-2.5 rounded-xl shadow-lg text-xs font-bold pointer-events-auto flex items-center gap-2 transform transition-all duration-300 translate-y-2 opacity-0`;
-      toast.innerHTML = `<span>${msg}</span>`;
-      container.appendChild(toast);
-      setTimeout(() => toast.classList.remove('translate-y-2', 'opacity-0'), 10);
-      setTimeout(() => {
-        toast.classList.add('opacity-0', 'translate-y-2');
-        setTimeout(() => toast.remove(), 300);
-      }, 3500);
-    }
-
-    function showConfirmModal(message, onConfirm) {
-      const modal = document.getElementById('modal-confirm-dialog');
-      const msgEl = document.getElementById('confirm-modal-message');
-      if (msgEl) msgEl.textContent = message;
-      pendingConfirmAction = onConfirm;
-      if (modal) modal.classList.remove('hidden');
-    }
-
-    function showView(viewId) {
-      const views = ['view-dashboard', 'view-planner', 'view-patient-card', 'view-catalog'];
-      views.forEach(v => {
-        const el = document.getElementById(v);
-        if (el) el.classList.add('hidden');
-      });
-      const activeEl = document.getElementById(viewId);
-      if (activeEl) activeEl.classList.remove('hidden');
-      window.scrollTo(0, 0);
-    }
-
-    function getTrackBadge(track) {
-      switch (track) {
-        case 'RESIDENCY':
-          return '<span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-600 text-white">התמחות</span>';
-        case 'THURSDAY':
-          return '<span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-purple-600 text-white">ימי חמישי</span>';
-        case 'SHARAN':
-          return '<span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-600 text-white">שר"ן - ד"ר נתנאל</span>';
-        case 'UNDECIDED':
-        default:
-          return '<span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate-400 text-white">עוד לא הוחלט</span>';
-      }
-    }
-
-    function getInsuranceLabel(ins) {
-      const map = {
-        'LEUMIT_GOLD': 'לאומית זהב',
-        'LEUMIT_SILVER': 'לאומית כסף',
-        'PRIVATE': 'מטופל פרטי',
-        'MACCABI': 'מכבי',
-        'MEUHEDET': 'מאוחדת',
-        'CLALIT': 'כללית',
-        'MOD': 'משרד הביטחון'
-      };
-      return map[ins] || ins;
-    }
-
-    function getStatusBadge(status) {
-      switch (status) {
-        case 'APPROVED':
-          return '<span class="px-2 py-0.5 rounded-md text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">אושר / מכוסה</span>';
-        case 'REASON_REQUIRED':
-          return '<span class="px-2 py-0.5 rounded-md text-xs font-bold bg-amber-100 text-amber-800 border border-amber-300">נדרשת סיבה</span>';
-        case 'REJECTED':
-          return '<span class="px-2 py-0.5 rounded-md text-xs font-bold bg-rose-100 text-rose-800 border border-rose-300">נדחה</span>';
-        case 'IGNORED':
-          return '<span class="px-2 py-0.5 rounded-md text-xs font-bold bg-orange-100 text-orange-800 border border-orange-300">חוסר התייחסות</span>';
-        default:
-          return '<span class="px-2 py-0.5 rounded-md text-xs font-medium bg-slate-100 text-slate-600">ממתין</span>';
-      }
-    }
-
-    function populateDoctorSelects() {
-      const selects = [
-        document.getElementById('filter-treating-doctor'),
-        document.getElementById('filter-planning-doctor'),
-        document.getElementById('patient-treating-doctor'),
-        document.getElementById('patient-planning-doctor')
-      ];
-
-      selects.forEach(sel => {
-        if (!sel) return;
-        const currentVal = sel.value;
-        const hasEmptyOption = sel.id.startsWith('filter-');
-        sel.innerHTML = hasEmptyOption ? '<option value="">הכל</option>' : '';
-        GMC_DOCTORS.forEach(doc => {
-          const opt = document.createElement('option');
-          opt.value = doc;
-          opt.textContent = doc;
-          sel.appendChild(opt);
-        });
-        if (currentVal) sel.value = currentVal;
-      });
-    }
-
-    function renderDashboard() {
-      const listEl = document.getElementById('patients-list');
-      const countEl = document.getElementById('patients-count');
-      const searchVal = (document.getElementById('search-patients').value || '').trim().toLowerCase();
-      const treatDocVal = document.getElementById('filter-treating-doctor').value;
-      const planDocVal = document.getElementById('filter-planning-doctor').value;
-      const activeTrackBtn = document.querySelector('#track-filter-chips .track-chip.bg-sky-600');
-      const trackVal = activeTrackBtn ? activeTrackBtn.getAttribute('data-track') : 'ALL';
-
-      const filtered = AppState.patients.filter(p => {
-        const fullName = (p.firstName + ' ' + p.lastName).toLowerCase();
-        if (searchVal && !fullName.includes(searchVal)) return false;
-        if (treatDocVal && p.treatingDoc !== treatDocVal) return false;
-        if (planDocVal && p.planningDoc !== planDocVal) return false;
-        if (trackVal !== 'ALL' && p.track !== trackVal) return false;
-        return true;
-      });
-
-      if (countEl) countEl.textContent = filtered.length;
-      if (!listEl) return;
-      listEl.innerHTML = '';
-
-      if (filtered.length === 0) {
-        listEl.innerHTML = `
-          <div class="col-span-full py-12 text-center text-slate-400 bg-white rounded-2xl border border-slate-200">
-            <p class="text-sm font-semibold">לא נמצאו מטופלים התואמים את החיפוש והסינונים</p>
-          </div>
-        `;
-        return;
-      }
-
-      filtered.forEach(p => {
-        const plansCount = p.plans ? p.plans.length : 0;
-        const card = document.createElement('div');
-        card.className = 'bg-white p-5 rounded-2xl border border-slate-200 hover:border-sky-300 hover:shadow-md transition cursor-pointer flex flex-col justify-between';
-        card.onclick = () => openPatientCard(p.id);
-
-        card.innerHTML = `
-          <div>
-            <div class="flex items-start justify-between gap-2 mb-2">
-              <h3 class="text-lg font-bold text-slate-900">${p.firstName} ${p.lastName}</h3>
-              ${getTrackBadge(p.track)}
-            </div>
-            <div class="text-xs text-slate-500 space-y-1 mb-4">
-              <div>ביטוח: <strong>${getInsuranceLabel(p.insurance)}</strong></div>
-              <div>רופא מטפל: <strong>${p.treatingDoc}</strong></div>
-              <div>רופא מתכנן אחרון: <strong>${p.planningDoc || p.treatingDoc}</strong></div>
-            </div>
-          </div>
-          <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-600">
-            <span class="px-2 py-0.5 rounded bg-slate-100 font-medium">${plansCount} תוכניות שיקום</span>
-            <span class="text-sky-600 font-bold">צפה בכרטיס &gt;</span>
-          </div>
-        `;
-        listEl.appendChild(card);
-      });
-    }
-
-    const UPPER_TEETH = ['18', '17', '16', '15', '14', '13', '12', '11', '21', '22', '23', '24', '25', '26', '27', '28'];
-    const LOWER_TEETH = ['48', '47', '46', '45', '44', '43', '42', '41', '31', '32', '33', '34', '35', '36', '37', '38'];
-
-    function openNewPatientPlanner() {
-      AppState.planner = {
-        patientId: null,
-        firstName: '',
-        lastName: '',
-        insurance: 'LEUMIT_GOLD',
-        track: 'UNDECIDED',
-        treatingDoc: GMC_DOCTORS[0],
-        planningDoc: GMC_DOCTORS[0],
-        planType: 'INITIAL',
-        prognosisOpen: false,
-        prognosisData: {},
-        teethStatus: {},
-        selectedTeeth: new Set(),
-        toothTreatments: [],
-        generalQuantities: {}
-      };
-
-      document.getElementById('patient-first-name').value = '';
-      document.getElementById('patient-last-name').value = '';
-      document.getElementById('patient-insurance').value = 'LEUMIT_GOLD';
-      document.getElementById('patient-track').value = 'UNDECIDED';
-      document.getElementById('patient-treating-doctor').value = GMC_DOCTORS[0];
-      document.getElementById('patient-planning-doctor').value = GMC_DOCTORS[0];
-      const initialRadio = document.querySelector('input[name="plan-type"][value="INITIAL"]');
-      if (initialRadio) initialRadio.checked = true;
-
-      document.getElementById('planner-mode-badge').textContent = 'מטופל חדש • יצירת תוכנית';
-
-      renderPrognosisChart();
-      renderTreatmentChart();
-      renderGeneralItems();
-      updatePlannerSummary();
-
-      showView('view-planner');
-    }
-
-    function openNewPlanForExistingPatient(patientId) {
-      const p = AppState.patients.find(x => x.id === patientId);
-      if (!p) return;
-
-      const lastPlan = p.plans ? p.plans[p.plans.length - 1] : null;
-
-      AppState.planner = {
-        patientId: p.id,
-        firstName: p.firstName,
-        lastName: p.lastName,
-        insurance: p.insurance,
-        track: p.track,
-        treatingDoc: p.treatingDoc,
-        planningDoc: GMC_DOCTORS[0],
-        planType: 'FINAL',
-        prognosisOpen: lastPlan ? Object.keys(lastPlan.prognosis || {}).length > 0 : false,
-        prognosisData: lastPlan ? JSON.parse(JSON.stringify(lastPlan.prognosis || {})) : {},
-        teethStatus: lastPlan ? JSON.parse(JSON.stringify(lastPlan.teethStatus || {})) : {},
-        selectedTeeth: new Set(),
-        toothTreatments: lastPlan ? JSON.parse(JSON.stringify(lastPlan.items || [])) : [],
-        generalQuantities: {}
-      };
-
-      document.getElementById('patient-first-name').value = p.firstName;
-      document.getElementById('patient-last-name').value = p.lastName;
-      document.getElementById('patient-insurance').value = p.insurance;
-      document.getElementById('patient-track').value = p.track;
-      document.getElementById('patient-treating-doctor').value = p.treatingDoc;
-      document.getElementById('patient-planning-doctor').value = AppState.planner.planningDoc;
-      const finalRadio = document.querySelector('input[name="plan-type"][value="FINAL"]');
-      if (finalRadio) finalRadio.checked = true;
-
-      document.getElementById('planner-mode-badge').textContent = `תוכנית חדשה עבור ${p.firstName} ${p.lastName}`;
-
-      renderPrognosisChart();
-      renderTreatmentChart();
-      renderGeneralItems();
-      updatePlannerSummary();
-
-      showView('view-planner');
-    }
-
-    function renderPrognosisChart() {
-      const upperEl = document.getElementById('prognosis-upper-teeth');
-      const lowerEl = document.getElementById('prognosis-lower-teeth');
-      if (!upperEl || !lowerEl) return;
-      upperEl.innerHTML = '';
-      lowerEl.innerHTML = '';
-
-      const makeToothBtn = (num) => {
-        const data = AppState.planner.prognosisData[num] || { status: 'NATURAL', prog: null };
-        const btn = document.createElement('div');
-        btn.className = `p-1.5 rounded-xl border text-center cursor-pointer transition select-none flex flex-col items-center justify-between min-h-[56px] ${
-          data.status === 'MISSING' ? 'bg-slate-100 border-slate-200 opacity-50 line-through' :
-          data.status === 'IMPLANT' ? 'bg-purple-50 border-purple-300 border-dashed' :
-          'bg-white border-slate-200 hover:border-slate-300'
-        }`;
-
-        let progBadge = '<span class="text-[10px] text-slate-300">-</span>';
-        if (data.prog === 'G') progBadge = '<span class="w-4 h-4 rounded-full bg-emerald-500 text-white font-bold text-[10px] flex items-center justify-center">G</span>';
-        if (data.prog === 'Q') progBadge = '<span class="w-4 h-4 rounded-full bg-amber-400 text-slate-900 font-bold text-[10px] flex items-center justify-center">Q</span>';
-        if (data.prog === 'I') progBadge = '<span class="w-4 h-4 rounded-full bg-rose-500 text-white font-bold text-[10px] flex items-center justify-center">I</span>';
-
-        btn.innerHTML = `
-          <span class="text-xs font-bold text-slate-800">${num}</span>
-          ${data.status === 'IMPLANT' ? '<span class="text-[9px] text-purple-700 font-semibold">שתל</span>' : ''}
-          ${progBadge}
-        `;
-
-        btn.onclick = () => cyclePrognosis(num);
-        return btn;
-      };
-
-      UPPER_TEETH.forEach(t => upperEl.appendChild(makeToothBtn(t)));
-      LOWER_TEETH.forEach(t => lowerEl.appendChild(makeToothBtn(t)));
-    }
-
-    function cyclePrognosis(tooth) {
-      if (!AppState.planner.prognosisData[tooth]) {
-        AppState.planner.prognosisData[tooth] = { status: 'NATURAL', prog: 'G' };
-      } else {
-        const curr = AppState.planner.prognosisData[tooth];
-        if (curr.prog === null) curr.prog = 'G';
-        else if (curr.prog === 'G') curr.prog = 'Q';
-        else if (curr.prog === 'Q') curr.prog = 'I';
-        else if (curr.prog === 'I') {
-          curr.prog = null;
-          if (curr.status === 'NATURAL') curr.status = 'IMPLANT';
-          else if (curr.status === 'IMPLANT') curr.status = 'MISSING';
-          else curr.status = 'NATURAL';
-        }
-      }
-      renderPrognosisChart();
-    }
-
-    function renderTreatmentChart() {
-      const upperEl = document.getElementById('treatment-upper-teeth');
-      const lowerEl = document.getElementById('treatment-lower-teeth');
-      if (!upperEl || !lowerEl) return;
-      upperEl.innerHTML = '';
-      lowerEl.innerHTML = '';
-
-      const makeToothBox = (num) => {
-        const status = AppState.planner.teethStatus[num] || 'NATURAL';
-        const isSelected = AppState.planner.selectedTeeth.has(num);
-        const treatments = AppState.planner.toothTreatments.filter(t => t.tooth === num);
-
-        const container = document.createElement('div');
-        container.className = `tooth-box p-1.5 sm:p-2 rounded-xl border flex flex-col justify-between items-center text-center select-none ${
-          status === 'MISSING' ? 'tooth-missing bg-slate-100 border-slate-200' :
-          status === 'IMPLANT' ? 'tooth-implant' :
-          'bg-white border-slate-200'
-        } ${isSelected ? 'selected' : ''}`;
-
-        const topRow = document.createElement('div');
-        topRow.className = 'w-full flex items-center justify-between mb-1';
-        
-        const chk = document.createElement('input');
-        chk.type = 'checkbox';
-        chk.checked = isSelected;
-        chk.className = 'rounded text-sky-600 focus:ring-sky-500 w-3.5 h-3.5 cursor-pointer';
-        chk.onclick = (e) => {
-          e.stopPropagation();
-          toggleToothSelection(num);
-        };
-        topRow.appendChild(chk);
-
-        if (status === 'IMPLANT') {
-          const badge = document.createElement('span');
-          badge.className = 'text-[9px] font-bold text-purple-700 bg-purple-100 px-1 rounded';
-          badge.textContent = 'שתל';
-          topRow.appendChild(badge);
-        } else if (status === 'MISSING') {
-          const badge = document.createElement('span');
-          badge.className = 'text-[9px] font-bold text-slate-500 bg-slate-200 px-1 rounded';
-          badge.textContent = 'X';
-          topRow.appendChild(badge);
-        }
-
-        container.appendChild(topRow);
-
-        const numLabel = document.createElement('div');
-        numLabel.className = 'font-black text-sm sm:text-base text-slate-800 cursor-pointer hover:text-sky-600 py-1';
-        numLabel.textContent = num;
-        numLabel.title = 'לחיצה משנה מצב: שן קיימת -> שתל -> שן חסרה';
-        numLabel.onclick = (e) => {
-          e.stopPropagation();
-          cycleToothStatus(num);
-        };
-        container.appendChild(numLabel);
-
-        const addBtn = document.createElement('button');
-        addBtn.type = 'button';
-        addBtn.className = 'w-full mt-1 py-0.5 rounded-lg bg-sky-50 hover:bg-sky-100 text-sky-700 text-xs font-bold transition flex items-center justify-center gap-1';
-        addBtn.innerHTML = `<span>+</span> ${treatments.length > 0 ? `<span class="w-4 h-4 rounded-full bg-sky-600 text-white text-[10px] flex items-center justify-center">${treatments.length}</span>` : ''}`;
-        addBtn.onclick = (e) => {
-          e.stopPropagation();
-          openToothTreatmentModal(num);
-        };
-        container.appendChild(addBtn);
-
-        return container;
-      };
-
-      UPPER_TEETH.forEach(t => upperEl.appendChild(makeToothBox(t)));
-      LOWER_TEETH.forEach(t => lowerEl.appendChild(makeToothBox(t)));
-
-      renderAppliedTreatmentsList();
-      updateSelectedTeethCount();
-    }
-
-    function cycleToothStatus(num) {
-      const curr = AppState.planner.teethStatus[num] || 'NATURAL';
-      if (curr === 'NATURAL') AppState.planner.teethStatus[num] = 'IMPLANT';
-      else if (curr === 'IMPLANT') AppState.planner.teethStatus[num] = 'MISSING';
-      else AppState.planner.teethStatus[num] = 'NATURAL';
-      renderTreatmentChart();
-    }
-
-    function toggleToothSelection(num) {
-      if (AppState.planner.selectedTeeth.has(num)) {
-        AppState.planner.selectedTeeth.delete(num);
-      } else {
-        AppState.planner.selectedTeeth.add(num);
-      }
-      renderTreatmentChart();
-    }
-
-    function updateSelectedTeethCount() {
-      const countEl = document.getElementById('selected-teeth-count');
-      if (countEl) countEl.textContent = AppState.planner.selectedTeeth.size;
-    }
-
-    function renderAppliedTreatmentsList() {
-      const listEl = document.getElementById('applied-tooth-treatments');
-      const hintEl = document.getElementById('no-tooth-treatments-hint');
-      const items = AppState.planner.toothTreatments;
-
-      if (!listEl) return;
-      if (items.length === 0) {
-        if (hintEl) hintEl.classList.remove('hidden');
-        listEl.innerHTML = '<p class="text-xs text-slate-400 italic">טרם נוספו טיפולים לשיניים.</p>';
-        return;
-      }
-
-      listEl.innerHTML = '';
-      items.forEach((item, idx) => {
-        const row = document.createElement('div');
-        row.className = 'flex items-center justify-between p-2 bg-slate-50 rounded-xl text-xs hover:bg-slate-100 transition';
-        row.innerHTML = `
-          <div class="flex items-center gap-3">
-            <span class="px-2 py-0.5 rounded bg-sky-100 text-sky-800 font-bold">שן ${item.tooth}</span>
-            <span class="font-semibold text-slate-800">${item.name}</span>
-            <span class="text-slate-400">(${item.codeId} | קוד קופה: ${item.hmoCode})</span>
-          </div>
-          <div class="flex items-center gap-3">
-            <span class="font-bold text-slate-700">${item.price} ₪</span>
-            <button type="button" class="text-rose-500 hover:text-rose-700 font-bold px-1" onclick="removeToothTreatment(${idx})">✕</button>
-          </div>
-        `;
-        listEl.appendChild(row);
-      });
-    }
-
-    window.removeToothTreatment = function(idx) {
-      AppState.planner.toothTreatments.splice(idx, 1);
-      renderTreatmentChart();
-      updatePlannerSummary();
-    };
-
-    function renderGeneralItems() {
-      const container = document.getElementById('general-categories-container');
-      if (!container) return;
-      container.innerHTML = '';
-      const categories = ['צילומים ואבחון', 'חירום ושיננית', 'כירורגיה ושתלים', 'שיקום הפה (פרוטטיקה)'];
-
-      categories.forEach(cat => {
-        const col = document.createElement('div');
-        col.className = 'p-3.5 bg-slate-50 rounded-xl border border-slate-200 space-y-2';
-
-        const title = document.createElement('h4');
-        title.className = 'text-xs font-bold text-slate-800 pb-1 border-b border-slate-200';
-        title.textContent = cat;
-        col.appendChild(title);
-
-        const items = AppState.generalItems.filter(g => g.cat === cat);
-        items.forEach(g => {
-          const currentQty = AppState.planner.generalQuantities[g.id] || 0;
-          const row = document.createElement('div');
-          row.className = 'flex items-center justify-between gap-1 py-1 text-xs';
-          row.innerHTML = `
-            <span class="text-slate-700 flex-1 truncate" title="${g.name}">${g.name}</span>
-            <div class="flex items-center gap-1">
-              <button type="button" class="w-6 h-6 rounded bg-white border border-slate-300 font-bold hover:bg-slate-100 flex items-center justify-center text-slate-600" onclick="changeGeneralQty('${g.id}', -1)">-</button>
-              <span class="w-6 text-center font-bold text-slate-800">${currentQty}</span>
-              <button type="button" class="w-6 h-6 rounded bg-white border border-slate-300 font-bold hover:bg-slate-100 flex items-center justify-center text-slate-600" onclick="changeGeneralQty('${g.id}', 1)">+</button>
-            </div>
-          `;
-          col.appendChild(row);
-        });
-
-        container.appendChild(col);
-      });
-    }
-
-    window.changeGeneralQty = function(id, delta) {
-      const curr = AppState.planner.generalQuantities[id] || 0;
-      const next = Math.max(0, curr + delta);
-      AppState.planner.generalQuantities[id] = next;
-      renderGeneralItems();
-      updatePlannerSummary();
-    };
-
-    function calculatePlannerTotal() {
-      let total = 0;
-      let count = 0;
-      const insEl = document.getElementById('patient-insurance');
-      const ins = insEl ? insEl.value : 'LEUMIT_GOLD';
-
-      AppState.planner.toothTreatments.forEach(item => {
-        total += Number(item.price || 0);
-        count++;
-      });
-
-      Object.keys(AppState.planner.generalQuantities).forEach(genId => {
-        const qty = AppState.planner.generalQuantities[genId];
-        if (qty > 0) {
-          const gen = AppState.generalItems.find(x => x.id === genId);
-          if (gen) {
-            const catItem = AppState.catalog.find(c => c.id === gen.code);
-            const price = getPriceForInsurance(catItem, ins);
-            total += price * qty;
-            count += qty;
-          }
-        }
-      });
-
-      return { total, count };
-    }
-
-    function getPriceForInsurance(catItem, ins) {
-      if (!catItem) return 0;
-      if (ins === 'LEUMIT_GOLD') return catItem.pGold || 0;
-      if (ins === 'LEUMIT_SILVER') return catItem.pSilv || 0;
-      return catItem.pGen || 0;
-    }
-
-    function updatePlannerSummary() {
-      const { total, count } = calculatePlannerTotal();
-      const itemsCountEl = document.getElementById('plan-items-total');
-      const priceEstEl = document.getElementById('plan-price-estimate');
-      if (itemsCountEl) itemsCountEl.textContent = count;
-      if (priceEstEl) priceEstEl.textContent = `${total.toLocaleString()} ₪`;
-    }
-
-    function openToothTreatmentModal(toothOrTeeth) {
-      AppState.modalToothTarget = toothOrTeeth;
-      const titleEl = document.getElementById('modal-tooth-title');
-
-      if (Array.isArray(toothOrTeeth)) {
-        titleEl.textContent = `הוספת טיפול לשיניים: ${toothOrTeeth.join(', ')}`;
-      } else {
-        titleEl.textContent = `הוספת טיפול לשן ${toothOrTeeth}`;
-      }
-
-      renderModalComplexes();
-      renderModalSingleTreatments();
-      document.getElementById('modal-tooth-treatment').classList.remove('hidden');
-    }
-
-    function renderModalComplexes() {
-      const listEl = document.getElementById('modal-complexes-list');
-      if (!listEl) return;
-      listEl.innerHTML = '';
-
-      AppState.complexes.forEach(c => {
-        const item = document.createElement('div');
-        item.className = 'p-3 rounded-xl border border-sky-100 bg-sky-50/50 hover:bg-sky-100 hover:border-sky-300 transition cursor-pointer flex items-center justify-between';
-        item.onclick = () => applyComplexToTarget(c);
-
-        item.innerHTML = `
-          <div>
-            <h4 class="text-xs font-bold text-sky-900">${c.name}</h4>
-            <p class="text-[11px] text-slate-500">${c.desc}</p>
-          </div>
-          <button class="px-3 py-1 bg-sky-600 text-white rounded-lg text-xs font-bold">החל קומפלקס</button>
-        `;
-        listEl.appendChild(item);
-      });
-    }
-
-    function renderModalSingleTreatments() {
-      const listEl = document.getElementById('modal-single-list');
-      const searchInput = document.getElementById('search-modal-treatments');
-      const search = searchInput ? searchInput.value.trim().toLowerCase() : '';
-      const insEl = document.getElementById('patient-insurance');
-      const ins = insEl ? insEl.value : 'LEUMIT_GOLD';
-
-      if (!listEl) return;
-      listEl.innerHTML = '';
-
-      const filtered = AppState.catalog.filter(c => {
-        if (!search) return true;
-        return c.name.toLowerCase().includes(search) || c.id.toLowerCase().includes(search) || (c.leumit && c.leumit.includes(search));
-      });
-
-      filtered.forEach(c => {
-        const price = getPriceForInsurance(c, ins);
-        const row = document.createElement('div');
-        row.className = 'p-2 rounded-xl border border-slate-200 hover:bg-slate-50 transition cursor-pointer flex items-center justify-between text-xs';
-        row.onclick = () => applySingleTreatmentToTarget(c);
-
-        row.innerHTML = `
-          <div>
-            <span class="font-bold text-slate-800">${c.name}</span>
-            <span class="text-slate-400 text-[11px]">(${c.id} | קוד קופה: ${c.leumit})</span>
-          </div>
-          <div class="flex items-center gap-2">
-            <span class="font-bold text-sky-700">${price} ₪</span>
-            <button class="px-2 py-0.5 bg-slate-100 hover:bg-sky-600 hover:text-white rounded text-slate-700 font-bold">+</button>
-          </div>
-        `;
-        listEl.appendChild(row);
-      });
-    }
-
-    function applyComplexToTarget(complex) {
-      const targets = Array.isArray(AppState.modalToothTarget) ? AppState.modalToothTarget : [AppState.modalToothTarget];
-      const insEl = document.getElementById('patient-insurance');
-      const ins = insEl ? insEl.value : 'LEUMIT_GOLD';
-
-      targets.forEach(t => {
-        complex.codes.forEach(codeId => {
-          const catItem = AppState.catalog.find(c => c.id === codeId);
-          if (catItem) {
-            AppState.planner.toothTreatments.push({
-              tooth: t,
-              codeId: catItem.id,
-              name: catItem.name,
-              hmoCode: catItem.leumit,
-              price: getPriceForInsurance(catItem, ins),
-              status: 'APPROVED',
-              clinicalDone: false
-            });
-          }
-        });
-      });
-
-      closeToothModal();
-      renderTreatmentChart();
-      updatePlannerSummary();
-    }
-
-    function applySingleTreatmentToTarget(catItem) {
-      const targets = Array.isArray(AppState.modalToothTarget) ? AppState.modalToothTarget : [AppState.modalToothTarget];
-      const insEl = document.getElementById('patient-insurance');
-      const ins = insEl ? insEl.value : 'LEUMIT_GOLD';
-
-      targets.forEach(t => {
-        AppState.planner.toothTreatments.push({
-          tooth: t,
-          codeId: catItem.id,
-          name: catItem.name,
-          hmoCode: catItem.leumit,
-          price: getPriceForInsurance(catItem, ins),
-          status: 'APPROVED',
-          clinicalDone: false
-        });
-      });
-
-      closeToothModal();
-      renderTreatmentChart();
-      updatePlannerSummary();
-    }
-
-    function closeToothModal() {
-      const modal = document.getElementById('modal-tooth-treatment');
-      if (modal) modal.classList.add('hidden');
-    }
-
-    function savePlanFromPlanner() {
-      const firstName = document.getElementById('patient-first-name').value.trim();
-      const lastName = document.getElementById('patient-last-name').value.trim();
-      const insurance = document.getElementById('patient-insurance').value;
-      const track = document.getElementById('patient-track').value;
-      const treatingDoc = document.getElementById('patient-treating-doctor').value;
-      const planningDoc = document.getElementById('patient-planning-doctor').value;
-      const planTypeEl = document.querySelector('input[name="plan-type"]:checked');
-      const planType = planTypeEl ? planTypeEl.value : 'INITIAL';
-
-      if (!firstName || !lastName) {
-        showToast('יש למלא שם פרטי ושם משפחה של המטופל.', 'error');
-        return;
-      }
-
-      const allItems = [...AppState.planner.toothTreatments];
-
-      Object.keys(AppState.planner.generalQuantities).forEach(genId => {
-        const qty = AppState.planner.generalQuantities[genId];
-        if (qty > 0) {
-          const gen = AppState.generalItems.find(x => x.id === genId);
-          const catItem = AppState.catalog.find(c => c.id === gen.code);
-          const price = getPriceForInsurance(catItem, insurance);
-          for (let i = 0; i < qty; i++) {
-            allItems.push({
-              tooth: gen.cat,
-              codeId: gen.code,
-              name: gen.name,
-              hmoCode: catItem ? catItem.leumit : 'GEN',
-              price: price,
-              status: 'APPROVED',
-              clinicalDone: false
-            });
-          }
-        }
-      });
-
-      const now = new Date();
-      const dateStr = now.toLocaleDateString('he-IL') + ' ' + now.toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' });
-
-      let patient = null;
-      if (AppState.planner.patientId) {
-        patient = AppState.patients.find(p => p.id === AppState.planner.patientId);
-      }
-
-      if (patient) {
-        patient.firstName = firstName;
-        patient.lastName = lastName;
-        patient.insurance = insurance;
-        patient.track = track;
-        patient.treatingDoc = treatingDoc;
-        patient.planningDoc = planningDoc;
-
-        const newPlan = {
-          planId: `PLAN-${(patient.plans ? patient.plans.length : 0) + 1}`,
-          type: planType,
-          createdAt: dateStr,
-          creatorDoc: planningDoc,
-          treatingDoc: treatingDoc,
-          prognosis: JSON.parse(JSON.stringify(AppState.planner.prognosisData)),
-          teethStatus: JSON.parse(JSON.stringify(AppState.planner.teethStatus)),
-          items: allItems,
-          extraApproved: []
-        };
-        patient.plans.push(newPlan);
-      } else {
-        const newId = `PT-${1000 + AppState.patients.length + 1}`;
-        patient = {
-          id: newId,
-          firstName,
-          lastName,
-          insurance,
-          track,
-          treatingDoc,
-          planningDoc,
-          plans: [
-            {
-              planId: 'PLAN-1',
-              type: planType,
-              createdAt: dateStr,
-              creatorDoc: planningDoc,
-              treatingDoc: treatingDoc,
-              prognosis: JSON.parse(JSON.stringify(AppState.planner.prognosisData)),
-              teethStatus: JSON.parse(JSON.stringify(AppState.planner.teethStatus)),
-              items: allItems,
-              extraApproved: []
-            }
-          ]
-        };
-        AppState.patients.unshift(patient);
-      }
-
-      saveState();
-      openPatientCard(patient.id);
-      showToast('תוכנית הטיפול נשמרה בהצלחה במערכת.', 'success');
-      
-      const activePlan = patient.plans[patient.plans.length - 1];
-      sendPlanToGoogleSheets(patient, activePlan);
-    }
-
-    function openPatientCard(patientId) {
-      const p = AppState.patients.find(x => x.id === patientId);
-      if (!p) return;
-
-      AppState.currentPatientId = p.id;
-      AppState.activePlanIndex = (p.plans && p.plans.length > 0) ? p.plans.length - 1 : 0;
-
-      document.getElementById('card-patient-name').textContent = `${p.firstName} ${p.lastName}`;
-      document.getElementById('card-patient-insurance').textContent = getInsuranceLabel(p.insurance);
-      document.getElementById('card-treating-doctor').textContent = p.treatingDoc;
-      document.getElementById('card-planning-doctor').textContent = p.planningDoc || p.treatingDoc;
-      document.getElementById('card-plans-count').textContent = p.plans ? p.plans.length : 0;
-
-      const trackBadge = document.getElementById('card-patient-track');
-      if (trackBadge) trackBadge.outerHTML = `<span id="card-patient-track">${getTrackBadge(p.track)}</span>`;
-      document.getElementById('card-quick-track-change').value = p.track;
-
-      renderPlanHistoryTabs();
-      renderActivePlanDetails();
-
-      showView('view-patient-card');
-    }
-
-    function renderPlanHistoryTabs() {
-      const p = AppState.patients.find(x => x.id === AppState.currentPatientId);
-      const tabsEl = document.getElementById('plans-history-tabs');
-      if (!tabsEl) return;
-      tabsEl.innerHTML = '';
-
-      if (!p || !p.plans) return;
-
-      p.plans.forEach((plan, idx) => {
-        const isActive = idx === AppState.activePlanIndex;
-        const btn = document.createElement('button');
-        btn.className = `px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 flex-shrink-0 ${
-          isActive ? 'bg-sky-600 text-white shadow-md shadow-sky-200' : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50'
-        }`;
-        btn.onclick = () => {
-          AppState.activePlanIndex = idx;
-          renderPlanHistoryTabs();
-          renderActivePlanDetails();
-        };
-
-        btn.innerHTML = `
-          <span>${plan.planId} (${plan.type === 'INITIAL' ? 'ראשונית' : 'סופית'})</span>
-          <span class="text-[10px] opacity-75">${plan.creatorDoc} • ${plan.createdAt}</span>
-        `;
-        tabsEl.appendChild(btn);
-      });
-    }
-
-    function renderActivePlanDetails() {
-      const p = AppState.patients.find(x => x.id === AppState.currentPatientId);
-      if (!p || !p.plans || p.plans.length === 0) return;
-
-      const plan = p.plans[AppState.activePlanIndex];
-      const titleEl = document.getElementById('active-plan-title');
-      if (titleEl) {
-        titleEl.textContent = `${plan.planId} (${plan.type === 'INITIAL' ? 'תוכנית ראשונית' : 'תוכנית סופית'}) • נוצרה ע"י ${plan.creatorDoc}`;
-      }
-
-      const tbody = document.getElementById('card-codes-tbody');
-      if (!tbody) return;
-      tbody.innerHTML = '';
-
-      plan.items.forEach((item, idx) => {
-        const tr = document.createElement('tr');
-        tr.className = 'hover:bg-slate-50 transition';
-        tr.innerHTML = `
-          <td class="py-2.5 px-3 font-bold text-slate-800">${item.tooth}</td>
-          <td class="py-2.5 px-3 text-slate-500 font-mono">${item.codeId}</td>
-          <td class="py-2.5 px-3 font-semibold text-slate-700">${item.hmoCode || '-'}</td>
-          <td class="py-2.5 px-3 font-medium text-slate-900">${item.name}</td>
-          <td class="py-2.5 px-3 font-bold text-slate-800">${item.price} ₪</td>
-          <td class="py-2.5 px-3 cursor-pointer" onclick="cycleItemStatus(${idx})" title="לחץ לשינוי סטטוס">${getStatusBadge(item.status)}</td>
-          <td class="py-2.5 px-3 text-center">
-            <button type="button" class="px-2 py-1 rounded text-xs font-bold transition ${item.clinicalDone ? 'bg-emerald-600 text-white' : 'bg-slate-100 text-slate-500 hover:bg-slate-200'}" onclick="toggleItemClinicalDone(${idx})">
-              ${item.clinicalDone ? '✓ בוצע' : 'טרם'}
-            </button>
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
-
-      const extraListEl = document.getElementById('extra-approved-codes-list');
-      const extraCountEl = document.getElementById('extra-codes-count');
-      const extras = plan.extraApproved || [];
-      if (extraCountEl) extraCountEl.textContent = `${extras.length} קודים`;
-
-      if (extraListEl) {
-        if (extras.length === 0) {
-          extraListEl.innerHTML = '<p class="text-slate-400 italic">אין קודים נוספים שאושרו מחוץ לתוכנית.</p>';
-        } else {
-          extraListEl.innerHTML = '';
-          extras.forEach(ext => {
-            const div = document.createElement('div');
-            div.className = 'flex items-center justify-between text-xs py-1 border-b border-emerald-100 last:border-0';
-            div.innerHTML = `
-              <span><strong>${ext.name}</strong> (${ext.codeId} | קוד קופה: ${ext.hmoCode})</span>
-              <span class="font-bold text-emerald-800">${ext.price} ₪ (אישור ברזרבה)</span>
-            `;
-            extraListEl.appendChild(div);
-          });
-        }
-      }
-    }
-
-    window.cycleItemStatus = function(idx) {
-      const p = AppState.patients.find(x => x.id === AppState.currentPatientId);
-      if (!p || !p.plans) return;
-      const plan = p.plans[AppState.activePlanIndex];
-      const item = plan.items[idx];
-
-      const statuses = ['APPROVED', 'REASON_REQUIRED', 'REJECTED', 'IGNORED'];
-      const currentIdx = statuses.indexOf(item.status);
-      item.status = statuses[(currentIdx + 1) % statuses.length];
-
-      saveState();
-      renderActivePlanDetails();
-    };
-
-    window.toggleItemClinicalDone = function(idx) {
-      const p = AppState.patients.find(x => x.id === AppState.currentPatientId);
-      if (!p || !p.plans) return;
-      const plan = p.plans[AppState.activePlanIndex];
-      plan.items[idx].clinicalDone = !plan.items[idx].clinicalDone;
-
-      saveState();
-      renderActivePlanDetails();
-    };
-
-    function simulateDocumentAnalysis() {
-      const p = AppState.patients.find(x => x.id === AppState.currentPatientId);
-      if (!p || !p.plans) return;
-
-      const plan = p.plans[AppState.activePlanIndex];
-      const previewBox = document.getElementById('ocr-preview-box');
-      const summaryBox = document.getElementById('ocr-summary-counts');
-      const blurWarning = document.getElementById('ocr-blur-warning');
-
-      if (!previewBox) return;
-      previewBox.classList.remove('hidden');
-
-      const hasBlur = Math.random() > 0.6;
-      if (blurWarning) {
-        if (hasBlur) blurWarning.classList.remove('hidden');
-        else blurWarning.classList.add('hidden');
-      }
-
-      if (summaryBox) {
-        summaryBox.innerHTML = `
-          <div>• זוהו סה"כ ${plan.items.length} שורות תואמות מהדף.</div>
-          <div>• קודים סומנו כ<strong>אושר / מכוסה (ירוק)</strong>.</div>
-          <div>• 1 קוד סומן כ<strong>נדרשת סיבה רפואית (צהוב)</strong>.</div>
-          <div>• זוהה אישור ברזרבה שנשמר מאחורי הקלעים.</div>
-        `;
-      }
-    }
-
-    function applyOCRChanges() {
-      const p = AppState.patients.find(x => x.id === AppState.currentPatientId);
-      if (!p || !p.plans) return;
-
-      const plan = p.plans[AppState.activePlanIndex];
-      if (plan.items.length > 0) plan.items[0].status = 'APPROVED';
-      if (plan.items.length > 1) plan.items[1].status = 'REASON_REQUIRED';
-      if (plan.items.length > 2) plan.items[2].status = 'APPROVED';
-
-      if (!plan.extraApproved) plan.extraApproved = [];
-      if (plan.extraApproved.length === 0) {
-        plan.extraApproved.push({
-          codeId: 'GMC-002',
-          name: 'צילום נשך בודד',
-          hmoCode: '102',
-          price: 14
-        });
-      }
-
-      saveState();
-      document.getElementById('ocr-preview-box').classList.add('hidden');
-      renderActivePlanDetails();
-      showToast('הסטטוסים עודכנו בהצלחה. תמונת המסמך נמחקה מהזיכרון.', 'success');
-    }
-
-    function openPlanPdfPreview(patient, plan) {
-      document.getElementById('pdf-preview-title').textContent = `תוכנית טיפול - ${patient.firstName} ${patient.lastName} (${plan.planId})`;
-      const area = document.getElementById('printable-area');
-
-      const isInitial = plan.type === 'INITIAL';
-      const disclaimer = isInitial ? 
-        'הבהרה חשובה: הצעה זו הינה תוכנית ראשונית בלבד ואינה תוכנית סופית. צפויה להיבנות תוכנית המשך נוספת בהתאם להתקדמות הטיפול. כל המחירים המופיעים במסמך זה הינם הערכת מחיר כללית ומשוערת בלבד ואינם סופיים.' :
-        'הבהרה חשובה: הצעה זו הינה הערכת מחיר משוערת בלבד ואינה סופית. גם בתוכנית סופית ייתכנו שינויים, התאמות או תוספות במהלך הטיפול הקליני ובהתאם לאישורי קופת החולים/הביטוח.';
-
-      let totalEst = 0;
-      plan.items.forEach(i => totalEst += Number(i.price || 0));
-
-      let prognosisHtml = '';
-      if (plan.prognosis && Object.keys(plan.prognosis).length > 0) {
-        let progCells = '';
-        Object.keys(plan.prognosis).forEach(t => {
-          const item = plan.prognosis[t];
-          progCells += `<span class="inline-block p-1 border rounded text-[11px] font-bold bg-slate-50">${t}: ${item.prog || '-'} (${item.status})</span> `;
-        });
-        prognosisHtml = `
-          <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 mb-4">
-            <h4 class="font-bold text-xs text-slate-800 mb-1">טבלת פרוגנוזת שיניים מתועדת:</h4>
-            <div class="flex flex-wrap gap-1">${progCells}</div>
-          </div>
-        `;
-      }
-
-      let itemsRows = '';
-      plan.items.forEach(item => {
-        itemsRows += `
-          <tr class="border-b">
-            <td class="py-2 px-3 font-bold">${item.tooth}</td>
-            <td class="py-2 px-3 font-mono">${item.codeId}</td>
-            <td class="py-2 px-3">${item.hmoCode || '-'}</td>
-            <td class="py-2 px-3 font-medium">${item.name}</td>
-            <td class="py-2 px-3 font-bold text-left">${item.price} ₪</td>
-          </tr>
-        `;
-      });
-
-      area.innerHTML = `
-        <div class="border-b-2 border-sky-800 pb-4 mb-4 flex justify-between items-start">
-          <div>
-            <h1 class="text-xl font-black text-sky-900">המרכז הרפואי לגליל - בית חולים נהריה</h1>
-            <h2 class="text-sm font-bold text-slate-700">מחלקת שיקום הפה • הקולג' למדעי רפואת השיניים</h2>
-            <p class="text-xs text-slate-500">ניהול תוכניות שיקום דנטלי • טלפון מרפאה: 04-9107111</p>
-          </div>
-          <div class="text-left text-xs text-slate-600">
-            <div>תאריך: <strong>${plan.createdAt}</strong></div>
-            <div>מספר תוכנית: <strong>${plan.planId}</strong></div>
-            <div>סיווג: <strong class="${isInitial ? 'text-amber-700' : 'text-sky-800'}">${isInitial ? 'תוכנית ראשונית' : 'תוכנית סופית'}</strong></div>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-2 gap-4 p-3 bg-sky-50/50 rounded-xl border border-sky-100 text-xs mb-4">
-          <div>
-            <div>שם המטופל/ת: <strong>${patient.firstName} ${patient.lastName}</strong></div>
-            <div>קופת חולים / ביטוח: <strong>${getInsuranceLabel(patient.insurance)}</strong></div>
-            <div>שיוך מטופל: <strong>${patient.track}</strong></div>
-          </div>
-          <div>
-            <div>רופא מתכנן: <strong>${plan.creatorDoc}</strong></div>
-            <div>רופא מטפל: <strong>${patient.treatingDoc}</strong></div>
-          </div>
-        </div>
-
-        ${prognosisHtml}
-
-        <table class="w-full text-right text-xs border mb-4">
-          <thead class="bg-slate-100 font-bold border-b">
+      <div class="flex-1 overflow-y-auto p-4">
+        <table class="w-full text-right text-xs border border-slate-200 rounded-lg overflow-hidden">
+          <thead class="bg-slate-800 text-white font-bold">
             <tr>
-              <th class="py-2 px-3">שן / אזור</th>
-              <th class="py-2 px-3">קוד GMC</th>
-              <th class="py-2 px-3">קוד קופה</th>
-              <th class="py-2 px-3">תיאור הטיפול</th>
-              <th class="py-2 px-3 text-left">מחיר משוער</th>
+              <th class="p-2 border">קוד פנימי</th>
+              <th class="p-2 border">קוד לאומית</th>
+              <th class="p-2 border">קטגוריה</th>
+              <th class="p-2 border">תיאור הטיפול</th>
+              <th class="p-2 border">מחירון כללי</th>
+              <th class="p-2 border">לאומית זהב</th>
+              <th class="p-2 border">פעולות</th>
             </tr>
           </thead>
-          <tbody>
-            ${itemsRows}
+          <tbody id="catalog-table-body" class="divide-y divide-slate-200">
+            <!-- שורות הקטלוג ייטענו דינמית -->
           </tbody>
-          <tfoot class="bg-slate-50 font-bold border-t">
-            <tr>
-              <td colspan="4" class="py-2 px-3 text-right">סה"כ הערכת מחיר משוערת:</td>
-              <td class="py-2 px-3 text-left font-black text-sm text-sky-900">${totalEst.toLocaleString()} ₪</td>
-            </tr>
-          </tfoot>
         </table>
+      </div>
 
-        <div class="p-3 bg-amber-50 rounded-xl border border-amber-200 text-xs text-amber-900 leading-relaxed">
-          ${disclaimer}
-        </div>
+      <div class="px-5 py-3 border-t border-slate-200 bg-slate-50 flex justify-end gap-2">
+        <button onclick="toggleCatalogModal(false)" class="bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs px-4 py-2 rounded-lg font-bold">סגור</button>
+      </div>
+    </div>
+  </div>
 
-        <div class="pt-8 flex justify-between items-center text-xs text-slate-500">
-          <div>חתימת הרופא המתכנן: ___________________</div>
-          <div>חותמת המחלקה: ___________________</div>
-        </div>
-      `;
+  <script>
+    // URL של ה-Apps Script שפרסת
+    const GMC_API_URL = "https://script.google.com/macros/s/AKfycbxiLM64QuwuG9D9lUCosprm-Yyt2ppExP7A9MrGXEmYThzZSlqxJd2EIl4fappbkSc32w/exec";
 
-      document.getElementById('modal-pdf-preview').classList.remove('hidden');
+    // רשימת רופאים ממחלקות שונות
+    const MULTI_DOCTORS = [
+      { name: 'ד"ר דורון טאובין', dept: 'שיקום הפה' },
+      { name: 'ד"ר אלדד שרון', dept: 'שיקום הפה' },
+      { name: 'ד"ר אלכס פרסון', dept: 'שיקום הפה' },
+      { name: 'ד"ר רמי כהן', dept: 'כירורגיית פה ולסת' },
+      { name: 'ד"ר מיכל לוי', dept: 'פריודונטיה' },
+      { name: 'ד"ר חסן עלי', dept: 'אנדודונטיה' },
+      { name: 'ד"ר נועה פלד', dept: 'אורתודונטיה' }
+    ];
+
+    let selectedMultiDoctors = new Set();
+
+    // נתוני שיניים לדוגמה עבור הצלב
+    const sampleTreatments = {
+      11: [
+        { code: 'GMC-PRO04', name: 'מבנה יצוק', status: 'approved' },
+        { code: 'GMC-PRO17', name: 'כתר PFM', status: 'approved' }
+      ],
+      12: [
+        { code: 'GMC-RCT01', name: 'טיפול שורש', status: 'reason' },
+        { code: 'GMC-PRO01', name: 'מבנה מיידי', status: 'draft' }
+      ],
+      16: [
+        { code: 'GMC-IMP01', name: 'שתל דנטלי', status: 'approved' },
+        { code: 'GMC-IMP03', name: 'השתלת עצם', status: 'noresponse' }
+      ],
+      21: [
+        { code: 'GMC-PRO20', name: 'ציפוי למינט', status: 'reason' }
+      ],
+      26: [
+        { code: 'GMC-SUR02', name: 'עקירה כירורגית', status: 'approved' }
+      ],
+      36: [
+        { code: 'GMC-RCT03', name: 'ט. שורש טוחנת', status: 'denied' },
+        { code: 'GMC-PRO19', name: 'כתר זירקוניה', status: 'draft' }
+      ],
+      46: [
+        { code: 'GMC-PRO22', name: 'כתר ע\"ג שתל', status: 'approved' }
+      ]
+    };
+
+    // טבלת קטלוג מקומית
+    let catalogItems = [
+      { internal: 'GMC-EX01', code: '102', cat: 'צילומים ובדיקות', name: 'מיפוי פה ראשוני', general: 120, gold: 34 },
+      { internal: 'GMC-RCT01', code: '401', cat: 'אנדודונטיה', name: 'טיפול שורש תעלה 1', general: 589, gold: 68 },
+      { internal: 'GMC-RCT03', code: '403', cat: 'אנדודונטיה', name: 'טיפול שורש 3 תעלות', general: 914, gold: 68 },
+      { internal: 'GMC-SUR01', code: '501', cat: 'כירורגיה', name: 'עקירה רגילה', general: 275, gold: 68 },
+      { internal: 'GMC-IMP01', code: '550', cat: 'שתלים', name: 'שתל דנטלי טיטניום', general: 3864, gold: 1560 },
+      { internal: 'GMC-PRO04', code: '604', cat: 'שיקום הפה', name: 'מבנה יצוק מתכת', general: 910, gold: 364 },
+      { internal: 'GMC-PRO17', code: '621', cat: 'שיקום הפה', name: 'כתר חרסינה PFM', general: 1899, gold: 715 },
+      { internal: 'GMC-PRO19', code: '623', cat: 'שיקום הפה', name: 'כתר זירקוניה מלאה', general: 2550, gold: 1100 }
+    ];
+
+    document.addEventListener('DOMContentLoaded', () => {
+      initMultiDoctors();
+      renderDentalCross();
+      renderCatalogTable();
+    });
+
+    function initMultiDoctors() {
+      const container = document.getElementById('multidisciplinary-doctors-container');
+      container.innerHTML = '';
+      MULTI_DOCTORS.forEach(doc => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = `text-xs px-2.5 py-1 rounded-full border transition-all ${
+          selectedMultiDoctors.has(doc.name)
+            ? 'bg-blue-600 text-white border-blue-600 font-bold'
+            : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-100'
+        }`;
+        btn.innerHTML = `${doc.name} <span class="opacity-75 text-[10px]">(${doc.dept})</span>`;
+        btn.onclick = () => {
+          if (selectedMultiDoctors.has(doc.name)) {
+            selectedMultiDoctors.delete(doc.name);
+          } else {
+            selectedMultiDoctors.add(doc.name);
+          }
+          initMultiDoctors();
+        };
+        container.appendChild(btn);
+      });
     }
 
-    function openDiscrepanciesPdfPreview() {
-      const p = AppState.patients.find(x => x.id === AppState.currentPatientId);
-      if (!p || !p.plans) return;
-      const plan = p.plans[AppState.activePlanIndex];
-
-      document.getElementById('pdf-preview-title').textContent = `דו"ח חריגים ובקשה חוזרת - ${p.firstName} ${p.lastName}`;
-      const area = document.getElementById('printable-area');
-
-      const rejected = plan.items.filter(i => i.status === 'REJECTED');
-      const reasonReq = plan.items.filter(i => i.status === 'REASON_REQUIRED');
-      const ignored = plan.items.filter(i => i.status === 'IGNORED');
-
-      const makeRows = (arr) => {
-        if (arr.length === 0) return '<tr><td colspan="4" class="py-2 px-3 text-slate-400 italic">אין פריטים בסעיף זה</td></tr>';
-        return arr.map(i => `
-          <tr class="border-b">
-            <td class="py-1.5 px-3 font-bold">${i.tooth}</td>
-            <td class="py-1.5 px-3 font-mono">${i.codeId}</td>
-            <td class="py-1.5 px-3 font-semibold">${i.hmoCode || '-'}</td>
-            <td class="py-1.5 px-3">${i.name}</td>
-          </tr>
-        `).join('');
+    function renderDentalCross() {
+      const statusClasses = {
+        approved: 'badge-approved',
+        reason: 'badge-reason',
+        denied: 'badge-denied',
+        noresponse: 'badge-noresponse',
+        draft: 'badge-draft'
       };
 
-      area.innerHTML = `
-        <div class="border-b-2 border-sky-800 pb-4 mb-4 flex justify-between items-start">
-          <div>
-            <h1 class="text-xl font-black text-sky-900">המרכז הרפואי לגליל - בית חולים נהריה</h1>
-            <h2 class="text-sm font-bold text-slate-700">מחלקת שיקום הפה • דו"ח חריגים ובקשה חוזרת לקופת חולים</h2>
+      document.querySelectorAll('.tooth-col').forEach(col => {
+        const toothNum = col.dataset.tooth;
+        const treatments = sampleTreatments[toothNum] || [];
+
+        let badgesHtml = treatments.map(t => 
+          `<div class="${statusClasses[t.status] || 'bg-slate-500 text-white'} text-[10px] px-1 py-0.5 rounded font-bold truncate mb-1 shadow-sm" title="${t.name} (${t.code})">
+            ${t.name}
+          </div>`
+        ).join('');
+
+        if (!badgesHtml) {
+          badgesHtml = `<div class="text-[10px] text-slate-300 py-2">-</div>`;
+        }
+
+        col.className = 'tooth-col flex flex-col items-center bg-white p-1 rounded-lg border border-slate-200 min-h-[110px] tooth-box';
+        col.innerHTML = `
+          <div class="text-xs font-black text-slate-800 bg-slate-100 w-full py-0.5 rounded border border-slate-200 mb-1.5">
+            ${toothNum}
           </div>
-          <div class="text-left text-xs text-slate-600">
-            <div>תאריך: <strong>${new Date().toLocaleDateString('he-IL')}</strong></div>
-            <div>מטופל/ת: <strong>${p.firstName} ${p.lastName}</strong></div>
-            <div>קופה: <strong>${getInsuranceLabel(p.insurance)}</strong></div>
+          <div class="w-full flex-1 flex flex-col justify-start">
+            ${badgesHtml}
           </div>
-        </div>
-
-        <p class="text-xs text-slate-600 mb-4 leading-relaxed">
-          לכבוד מחלקת אישורי רפואת שיניים - קופת חולים ${getInsuranceLabel(p.insurance)}.<br>
-          להלן פירוט הטיפולים מתוכנית השיקום שנדרשת לגביהם התייחסות חוזרת / השלמת אישורים:
-        </p>
-
-        <div class="mb-4">
-          <h3 class="text-xs font-bold text-rose-800 bg-rose-50 p-2 rounded-t-lg border-b border-rose-200">חלק א': טיפולים שנדחו על ידי הקופה (בקשה לעיון מחדש)</h3>
-          <table class="w-full text-right text-xs border border-t-0">
-            <thead class="bg-slate-50 font-semibold border-b">
-              <tr><th class="py-1.5 px-3">שן</th><th class="py-1.5 px-3">קוד GMC</th><th class="py-1.5 px-3">קוד קופה</th><th class="py-1.5 px-3">תיאור הטיפול</th></tr>
-            </thead>
-            <tbody>${makeRows(rejected)}</tbody>
-          </table>
-        </div>
-
-        <div class="mb-4">
-          <h3 class="text-xs font-bold text-amber-800 bg-amber-50 p-2 rounded-t-lg border-b border-amber-200">חלק ב': טיפולים הדורשים סיבה / הנמקה רפואית</h3>
-          <table class="w-full text-right text-xs border border-t-0">
-            <thead class="bg-slate-50 font-semibold border-b">
-              <tr><th class="py-1.5 px-3">שן</th><th class="py-1.5 px-3">קוד GMC</th><th class="py-1.5 px-3">קוד קופה</th><th class="py-1.5 px-3">תיאור הטיפול</th></tr>
-            </thead>
-            <tbody>${makeRows(reasonReq)}</tbody>
-          </table>
-        </div>
-
-        <div class="mb-4">
-          <h3 class="text-xs font-bold text-orange-800 bg-orange-50 p-2 rounded-t-lg border-b border-orange-200">חלק ג': טיפולים שהוגשו בתוכנית המקורית ולא נכללו בתשובת הקופה</h3>
-          <table class="w-full text-right text-xs border border-t-0">
-            <thead class="bg-slate-50 font-semibold border-b">
-              <tr><th class="py-1.5 px-3">שן</th><th class="py-1.5 px-3">קוד GMC</th><th class="py-1.5 px-3">קוד קופה</th><th class="py-1.5 px-3">תיאור הטיפול</th></tr>
-            </thead>
-            <tbody>${makeRows(ignored)}</tbody>
-          </table>
-        </div>
-
-        <div class="pt-8 flex justify-between items-center text-xs text-slate-500">
-          <div>חתימת הרופא הבודק: ___________________</div>
-          <div>חותמת מרפאת שיקום הפה: ___________________</div>
-        </div>
-      `;
-
-      document.getElementById('modal-pdf-preview').classList.remove('hidden');
-    }
-
-    function openJustificationLetter(customNote) {
-      const p = AppState.patients.find(x => x.id === AppState.currentPatientId);
-      if (!p || !p.plans) return;
-      const plan = p.plans[AppState.activePlanIndex];
-      const reasonItems = plan.items.filter(i => i.status === 'REASON_REQUIRED');
-
-      document.getElementById('pdf-preview-title').textContent = `מכתב הנמקה רפואי - ${p.firstName} ${p.lastName}`;
-      const area = document.getElementById('printable-area');
-
-      let rows = '';
-      reasonItems.forEach(i => {
-        rows += `
-          <tr class="border-b">
-            <td class="py-2 px-3 font-bold">${i.tooth}</td>
-            <td class="py-2 px-3 font-mono">${i.codeId}</td>
-            <td class="py-2 px-3 font-semibold">${i.hmoCode || '-'}</td>
-            <td class="py-2 px-3 font-medium">${i.name}</td>
-          </tr>
         `;
       });
+    }
 
-      area.innerHTML = `
-        <div class="border-b-2 border-sky-800 pb-4 mb-6 flex justify-between items-start">
-          <div>
-            <h1 class="text-xl font-black text-sky-900">המרכז הרפואי לגליל - בית חולים נהריה</h1>
-            <h2 class="text-sm font-bold text-slate-700">מחלקת שיקום הפה • הקולג' למדעי רפואת השיניים</h2>
-            <p class="text-xs text-slate-500">מנהל המחלקה / צוות מומחים לשיקום הפה</p>
-          </div>
-          <div class="text-left text-xs text-slate-600">
-            <div>תאריך: <strong>${new Date().toLocaleDateString('he-IL')}</strong></div>
-          </div>
-        </div>
-
-        <div class="mb-6 text-xs text-slate-800 space-y-2">
-          <div>לכבוד: <strong>קופת חולים ${getInsuranceLabel(p.insurance)} - מחלקת אישורים מקדימים</strong></div>
-          <div>הנדון: <strong>הנמקה רפואית קלינית עבור טיפולי שיקום הפה - המטופל/ת ${p.firstName} ${p.lastName}</strong></div>
-        </div>
-
-        <div class="p-4 bg-sky-50 rounded-xl border border-sky-100 text-xs text-sky-950 leading-relaxed mb-6 font-medium">
-          לאחר בדיקה מעמיקה קלינית ורנטגנית של המטופל/ת במחלקת שיקום הפה, הקולג' למדעי רפואת השיניים בבית חולים נהריה, הוחלט להמליץ על הטיפולים המפורטים להלן כחלק אינטגרלי והכרחי מתוכנית השיקום התפקודי והאסתטי.
-        </div>
-
-        <table class="w-full text-right text-xs border mb-6">
-          <thead class="bg-slate-100 font-bold border-b">
-            <tr>
-              <th class="py-2 px-3">שן / אזור</th>
-              <th class="py-2 px-3">קוד GMC</th>
-              <th class="py-2 px-3">קוד קופה</th>
-              <th class="py-2 px-3">תיאור הטיפול הנדרש</th>
-            </tr>
-          </thead>
-          <tbody>${rows}</tbody>
-        </table>
-
-        ${customNote ? `
-          <div class="p-3 bg-slate-50 border rounded-xl text-xs mb-6">
-            <span class="font-bold text-slate-700">הערה קלינית ספציפית:</span>
-            <p class="mt-1 text-slate-800">${customNote}</p>
-          </div>
-        ` : ''}
-
-        <p class="text-xs text-slate-700 leading-relaxed mb-8">
-          נודה לאישורכם המוקדם לצורך התחלת שלבי הביצוע הקליני.
-        </p>
-
-        <div class="pt-8 flex justify-between items-center text-xs text-slate-600">
-          <div>
-            בברכה,<br>
-            <strong>${plan.creatorDoc || 'צוות מחלקת שיקום הפה'}</strong><br>
-            המרכז הרפואי לגליל נהריה
-          </div>
-          <div>חותמת רפואית: ___________________</div>
-        </div>
-      `;
-
-      document.getElementById('modal-pdf-preview').classList.remove('hidden');
+    function toggleCatalogModal(show) {
+      document.getElementById('catalog-modal').classList.toggle('hidden', !show);
     }
 
     function renderCatalogTable() {
-      const tbody = document.getElementById('catalog-table-tbody');
-      const searchInput = document.getElementById('search-catalog');
-      const search = searchInput ? searchInput.value.trim().toLowerCase() : '';
-      const catFilterEl = document.getElementById('catalog-category-filter');
-      const catFilter = catFilterEl ? catFilterEl.value : '';
-
-      if (!tbody) return;
+      const tbody = document.getElementById('catalog-table-body');
       tbody.innerHTML = '';
-
-      const filtered = AppState.catalog.filter(c => {
-        if (catFilter && c.cat !== catFilter) return false;
-        if (!search) return true;
-        return c.name.toLowerCase().includes(search) || c.id.toLowerCase().includes(search) || (c.leumit && c.leumit.includes(search));
-      });
-
-      filtered.forEach(c => {
+      catalogItems.forEach((item, index) => {
         const tr = document.createElement('tr');
-        tr.className = 'hover:bg-slate-50 transition';
+        tr.className = index % 2 === 0 ? 'bg-white' : 'bg-slate-50';
         tr.innerHTML = `
-          <td class="py-2 px-3 font-mono font-bold text-sky-700">${c.id}</td>
-          <td class="py-2 px-3 font-semibold text-slate-700">${c.leumit || '-'}</td>
-          <td class="py-2 px-3 text-slate-500">${c.cat}</td>
-          <td class="py-2 px-3 font-bold text-slate-900">${c.name}</td>
-          <td class="py-2 px-3 font-medium text-slate-700">${c.pGen || 0} ₪</td>
-          <td class="py-2 px-3 font-medium text-slate-700">${c.pSilv || 0} ₪</td>
-          <td class="py-2 px-3 font-bold text-emerald-700">${c.pGold || 0} ₪</td>
-          <td class="py-2 px-3 font-medium text-slate-700">${c.p72 !== undefined ? c.p72 + ' ₪' : '-'}</td>
-          <td class="py-2 px-3 text-slate-400 max-w-xs truncate" title="${c.notes || ''}">${c.notes || '-'}</td>
-          <td class="py-2 px-3 text-center">
-            <button class="p-1 text-slate-500 hover:text-sky-600 transition" onclick="editCatalogCode('${c.id}')" title="ערוך">✏️</button>
-            <button class="p-1 text-slate-400 hover:text-rose-600 transition" onclick="deleteCatalogCode('${c.id}')" title="מחק">🗑️</button>
+          <td class="p-2 border font-mono font-bold text-blue-700">${item.internal}</td>
+          <td class="p-2 border font-mono">${item.code}</td>
+          <td class="p-2 border text-slate-500">${item.cat}</td>
+          <td class="p-2 border font-semibold text-slate-800">${item.name}</td>
+          <td class="p-2 border">₪${item.general}</td>
+          <td class="p-2 border font-bold text-emerald-600">₪${item.gold}</td>
+          <td class="p-2 border text-center">
+            <button onclick="deleteCatalogItem(${index})" class="text-rose-500 hover:text-rose-700 font-bold px-1">מחק</button>
           </td>
         `;
         tbody.appendChild(tr);
       });
     }
 
-    window.editCatalogCode = function(id) {
-      const item = AppState.catalog.find(c => c.id === id);
-      if (!item) return;
-
-      document.getElementById('modal-edit-code-title').textContent = `עריכת קוד ${item.id}`;
-      document.getElementById('edit-gmc-code').value = item.id;
-      document.getElementById('edit-gmc-code').disabled = true;
-      document.getElementById('edit-leumit-code').value = item.leumit || '';
-      document.getElementById('edit-treatment-name').value = item.name;
-      document.getElementById('edit-treatment-category').value = item.cat;
-      document.getElementById('edit-price-general').value = item.pGen || '';
-      document.getElementById('edit-price-silver').value = item.pSilv || '';
-      document.getElementById('edit-price-gold').value = item.pGold || '';
-      document.getElementById('edit-price-72').value = item.p72 !== undefined ? item.p72 : '';
-      document.getElementById('edit-notes').value = item.notes || '';
-
-      document.getElementById('modal-edit-catalog-code').classList.remove('hidden');
-    };
-
-    window.deleteCatalogCode = function(id) {
-      showConfirmModal(`האם למחוק את קוד ${id} מהקטלוג?`, () => {
-        AppState.catalog = AppState.catalog.filter(c => c.id !== id);
-        saveState();
+    function deleteCatalogItem(index) {
+      if (confirm('למחוק פריט זה מהקטלוג?')) {
+        catalogItems.splice(index, 1);
         renderCatalogTable();
-        showToast(`קוד ${id} נמחק בהצלחה.`, 'success');
-      });
-    };
-
-    function openNewCatalogCodeModal() {
-      document.getElementById('modal-edit-code-title').textContent = 'הוספת קוד / טיפול חדש לקטלוג';
-      document.getElementById('edit-gmc-code').value = `GMC-${100 + AppState.catalog.length + 1}`;
-      document.getElementById('edit-gmc-code').disabled = false;
-      document.getElementById('edit-leumit-code').value = '';
-      document.getElementById('edit-treatment-name').value = '';
-      document.getElementById('edit-treatment-category').value = 'שיקום הפה (פרוטטיקה)';
-      document.getElementById('edit-price-general').value = '';
-      document.getElementById('edit-price-silver').value = '';
-      document.getElementById('edit-price-gold').value = '';
-      document.getElementById('edit-price-72').value = '';
-      document.getElementById('edit-notes').value = '';
-
-      document.getElementById('modal-edit-catalog-code').classList.remove('hidden');
+      }
     }
 
-    function setupEventListeners() {
-      const bind = (id, event, handler) => {
-        const el = document.getElementById(id);
-        if (el) el.addEventListener(event, handler);
-      };
+    function addNewCatalogRow() {
+      const name = prompt('שם הטיפול:');
+      if (!name) return;
+      const code = prompt('קוד לאומית:') || '---';
+      const internal = 'GMC-' + Math.floor(100 + Math.random() * 900);
+      catalogItems.unshift({ internal, code, cat: 'מותאם אישית', name, general: 0, gold: 0 });
+      renderCatalogTable();
+    }
 
-      bind('nav-brand', 'click', () => showView('view-dashboard'));
-      bind('btn-open-catalog', 'click', () => {
-        renderCatalogTable();
-        showView('view-catalog');
-      });
-      bind('btn-back-from-catalog', 'click', () => showView('view-dashboard'));
-
-      bind('btn-reset-catalog', 'click', () => {
-        showConfirmModal('האם לאפס את הקטלוג למחירון ברירת המחדל של לאומית?', () => {
-          AppState.catalog = JSON.parse(JSON.stringify(DEFAULT_CATALOG));
-          saveState();
-          renderCatalogTable();
-          showToast('הקטלוג אופס בהצלחה.', 'success');
-        });
-      });
-
-      bind('btn-export-catalog-json', 'click', () => {
-        const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(AppState.catalog, null, 2));
-        const downloadAnchor = document.createElement('a');
-        downloadAnchor.setAttribute('href', dataStr);
-        downloadAnchor.setAttribute('download', 'GMC_Dental_Catalog.json');
-        document.body.appendChild(downloadAnchor);
-        downloadAnchor.click();
-        downloadAnchor.remove();
-      });
-
-      bind('btn-sync-info', 'click', () => {
-        showToast('מסנכרן כעת נתונים מול Google Sheets...', 'info');
-        syncWithGoogleSheets().then(() => {
-          showToast('סנכרון מול Google Sheets הושלם בהצלחה.', 'success');
-        });
-      });
-
-      bind('btn-new-patient', 'click', openNewPatientPlanner);
-      bind('btn-back-to-dashboard', 'click', () => showView('view-dashboard'));
-
-      bind('search-patients', 'input', renderDashboard);
-      bind('filter-treating-doctor', 'change', renderDashboard);
-      bind('filter-planning-doctor', 'change', renderDashboard);
-
-      document.querySelectorAll('#track-filter-chips .track-chip').forEach(btn => {
-        btn.onclick = () => {
-          document.querySelectorAll('#track-filter-chips .track-chip').forEach(b => {
-            b.className = 'track-chip px-3 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition';
-          });
-          btn.className = 'track-chip px-3 py-1 rounded-full text-xs font-medium bg-sky-600 text-white transition';
-          renderDashboard();
-        };
-      });
-
-      bind('btn-toggle-prognosis', 'click', () => {
-        const box = document.getElementById('prognosis-chart-container');
-        const icon = document.getElementById('prognosis-btn-icon');
-        const txt = document.getElementById('prognosis-btn-text');
-        if (!box) return;
-        if (box.classList.contains('hidden')) {
-          box.classList.remove('hidden');
-          if (icon) icon.textContent = '✕';
-          if (txt) txt.textContent = 'סגור פרוגנוזה';
-        } else {
-          box.classList.add('hidden');
-          if (icon) icon.textContent = '+';
-          if (txt) txt.textContent = 'פתיחת טבלת פרוגנוזה';
-        }
-      });
-
-      bind('btn-add-multi-treatment', 'click', () => {
-        const selected = Array.from(AppState.planner.selectedTeeth);
-        if (selected.length === 0) {
-          showToast('אנא סמן לפחות שן אחת בעזרת תיבת הסימון (Checkbox).', 'error');
-          return;
-        }
-        openToothTreatmentModal(selected);
-      });
-
-      bind('btn-clear-selection', 'click', () => {
-        AppState.planner.selectedTeeth.clear();
-        renderTreatmentChart();
-      });
-
-      bind('tab-complexes', 'click', () => {
-        const complexesEl = document.getElementById('modal-complexes-list');
-        const singleEl = document.getElementById('modal-single-list');
-        const tabComplexes = document.getElementById('tab-complexes');
-        const tabSingle = document.getElementById('tab-single-treatments');
-        if (complexesEl) complexesEl.classList.remove('hidden');
-        if (singleEl) singleEl.classList.add('hidden');
-        if (tabComplexes) tabComplexes.className = 'py-2 px-4 border-b-2 border-sky-600 text-sky-700';
-        if (tabSingle) tabSingle.className = 'py-2 px-4 border-b-2 border-transparent text-slate-500 hover:text-slate-700';
-      });
-
-      bind('tab-single-treatments', 'click', () => {
-        const complexesEl = document.getElementById('modal-complexes-list');
-        const singleEl = document.getElementById('modal-single-list');
-        const tabComplexes = document.getElementById('tab-complexes');
-        const tabSingle = document.getElementById('tab-single-treatments');
-        if (complexesEl) complexesEl.classList.add('hidden');
-        if (singleEl) singleEl.classList.remove('hidden');
-        if (tabComplexes) tabComplexes.className = 'py-2 px-4 border-b-2 border-transparent text-slate-500 hover:text-slate-700';
-        if (tabSingle) tabSingle.className = 'py-2 px-4 border-b-2 border-sky-600 text-sky-700';
-      });
-
-      bind('search-modal-treatments', 'input', renderModalSingleTreatments);
-      bind('btn-close-tooth-modal', 'click', closeToothModal);
-
-      bind('btn-save-plan', 'click', savePlanFromPlanner);
-      bind('btn-preview-pdf', 'click', () => {
-        const dummyPatient = {
-          firstName: document.getElementById('patient-first-name')?.value || 'פלוני',
-          lastName: document.getElementById('patient-last-name')?.value || 'אלמוני',
-          insurance: document.getElementById('patient-insurance')?.value || 'LEUMIT_GOLD',
-          track: document.getElementById('patient-track')?.value || 'UNDECIDED',
-          treatingDoc: document.getElementById('patient-treating-doctor')?.value || GMC_DOCTORS[0]
-        };
-
-        const dummyPlan = {
-          planId: 'PLAN-טיוטה',
-          type: document.querySelector('input[name="plan-type"]:checked')?.value || 'INITIAL',
-          createdAt: new Date().toLocaleDateString('he-IL') + ' ' + new Date().toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' }),
-          creatorDoc: document.getElementById('patient-planning-doctor')?.value || GMC_DOCTORS[0],
-          prognosis: AppState.planner.prognosisData,
-          items: AppState.planner.toothTreatments
-        };
-
-        openPlanPdfPreview(dummyPatient, dummyPlan);
-      });
-
-      bind('btn-card-new-plan', 'click', () => {
-        openNewPlanForExistingPatient(AppState.currentPatientId);
-      });
-
-      bind('card-quick-track-change', 'change', (e) => {
-        const p = AppState.patients.find(x => x.id === AppState.currentPatientId);
-        if (p) {
-          p.track = e.target.value;
-          saveState();
-          openPatientCard(p.id);
-        }
-      });
-
-      bind('btn-card-pdf-current', 'click', () => {
-        const p = AppState.patients.find(x => x.id === AppState.currentPatientId);
-        if (p && p.plans && p.plans[AppState.activePlanIndex]) {
-          openPlanPdfPreview(p, p.plans[AppState.activePlanIndex]);
-        }
-      });
-
-      bind('btn-generate-discrepancies-pdf', 'click', openDiscrepanciesPdfPreview);
-
-      bind('btn-generate-justification-letter', 'click', () => {
-        const modal = document.getElementById('modal-justification-prompt');
-        if (modal) modal.classList.remove('hidden');
-      });
-
-      bind('btn-close-justification-prompt', 'click', () => {
-        const modal = document.getElementById('modal-justification-prompt');
-        if (modal) modal.classList.add('hidden');
-      });
-
-      bind('btn-cancel-justification', 'click', () => {
-        const modal = document.getElementById('modal-justification-prompt');
-        if (modal) modal.classList.add('hidden');
-      });
-
-      bind('btn-proceed-justification-letter', 'click', () => {
-        const note = document.getElementById('justification-custom-note')?.value.trim() || '';
-        const modal = document.getElementById('modal-justification-prompt');
-        if (modal) modal.classList.add('hidden');
-        openJustificationLetter(note);
-      });
-
-      bind('btn-trigger-camera', 'click', () => {
-        const input = document.getElementById('camera-file-input');
-        if (input) input.click();
-      });
-
-      bind('camera-file-input', 'change', () => {
-        simulateDocumentAnalysis();
-      });
-
-      bind('btn-manual-override', 'click', () => {
-        showToast('לחץ על תגית הסטטוס בטבלה להחלפה מחזורית.', 'info');
-      });
-
-      bind('btn-confirm-ocr', 'click', applyOCRChanges);
-      bind('btn-cancel-ocr', 'click', () => {
-        const box = document.getElementById('ocr-preview-box');
-        if (box) box.classList.add('hidden');
-      });
-
-      bind('btn-close-pdf-preview', 'click', () => {
-        const modal = document.getElementById('modal-pdf-preview');
-        if (modal) modal.classList.add('hidden');
-      });
-
-      bind('btn-print-pdf', 'click', () => {
-        window.print();
-      });
-
-      bind('btn-share-pdf', 'click', async () => {
-        const title = document.getElementById('pdf-preview-title')?.textContent || 'תוכנית שיקום';
-        if (navigator.share) {
-          try {
-            await navigator.share({
-              title,
-              text: 'מסמך רפואי מחלקת שיקום הפה GMC בית חולים נהריה'
-            });
-          } catch (e) {}
-        } else {
-          showToast('שיתוף: השתמש בחלונית ההדפסה לשמירה כ-PDF.', 'info');
-        }
-      });
-
-      bind('btn-add-new-code', 'click', openNewCatalogCodeModal);
-      bind('btn-close-edit-code', 'click', () => {
-        const modal = document.getElementById('modal-edit-catalog-code');
-        if (modal) modal.classList.add('hidden');
-      });
-      bind('btn-cancel-edit-code', 'click', () => {
-        const modal = document.getElementById('modal-edit-catalog-code');
-        if (modal) modal.classList.add('hidden');
-      });
-
-      bind('form-edit-code', 'submit', (e) => {
-        e.preventDefault();
-        const id = document.getElementById('edit-gmc-code').value.trim();
-        const leumit = document.getElementById('edit-leumit-code').value.trim();
-        const name = document.getElementById('edit-treatment-name').value.trim();
-        const cat = document.getElementById('edit-treatment-category').value;
-        const pGen = Number(document.getElementById('edit-price-general').value) || 0;
-        const pSilv = Number(document.getElementById('edit-price-silver').value) || 0;
-        const pGold = Number(document.getElementById('edit-price-gold').value) || 0;
-        const p72 = document.getElementById('edit-price-72').value ? Number(document.getElementById('edit-price-72').value) : undefined;
-        const notes = document.getElementById('edit-notes').value.trim();
-
-        const existingIdx = AppState.catalog.findIndex(c => c.id === id);
-        if (existingIdx >= 0) {
-          AppState.catalog[existingIdx] = { id, leumit, name, cat, pGen, pSilv, pGold, p72, notes };
-        } else {
-          AppState.catalog.push({ id, leumit, name, cat, pGen, pSilv, pGold, p72, notes });
-        }
-
-        saveState();
-        const modal = document.getElementById('modal-edit-catalog-code');
-        if (modal) modal.classList.add('hidden');
-        renderCatalogTable();
-        showToast(`קוד ${id} נשמר בהצלחה.`, 'success');
-      });
-
-      bind('search-catalog', 'input', renderCatalogTable);
-      bind('catalog-category-filter', 'change', renderCatalogTable);
-
-      bind('btn-confirm-cancel', 'click', () => {
-        const modal = document.getElementById('modal-confirm-dialog');
-        if (modal) modal.classList.add('hidden');
-        pendingConfirmAction = null;
-      });
-
-      bind('btn-confirm-proceed', 'click', () => {
-        const modal = document.getElementById('modal-confirm-dialog');
-        if (modal) modal.classList.add('hidden');
-        if (typeof pendingConfirmAction === 'function') {
-          pendingConfirmAction();
-          pendingConfirmAction = null;
-        }
+    function filterCatalogTable() {
+      const term = document.getElementById('catalog-search').value.toLowerCase();
+      document.querySelectorAll('#catalog-table-body tr').forEach(tr => {
+        const text = tr.innerText.toLowerCase();
+        tr.style.display = text.includes(term) ? '' : 'none';
       });
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
-      loadState();
-      populateDoctorSelects();
-      setupEventListeners();
-      renderDashboard();
-      syncWithGoogleSheets();
-    });
+    function syncWithGoogleSheets() {
+      alert('פונה ל-Google Sheet לסנכרון נתונים חי...');
+    }
+
+    function exportSummaryPDF(type) {
+      const title = type === 'patient' ? 'הצעת מחיר למטופל' : 'טופס דרישת קודים לקופת החולים';
+      alert(`מפיק מסמך: ${title}`);
+    }
   </script>
 </body>
 </html>
