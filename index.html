@@ -4,75 +4,40 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ניהול תוכניות שיקום GMC</title>
-  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Rubik:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700;800&family=Rubik:wght@500;700&display=swap" rel="stylesheet">
   <style>
     body { font-family: 'Assistant', sans-serif; }
     .font-num { font-family: 'Rubik', sans-serif; }
-    
-    /* גריד שיקומי - 16 עמודות שיניים ברוחב קבוע ואחיד */
-    .teeth-grid {
-      display: grid;
-      grid-template-columns: repeat(16, minmax(56px, 1fr));
-      width: 100%;
-    }
-
-    .grid-cell {
-      border: 1px solid #cbd5e1;
-      height: 28px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      font-weight: 700;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      padding: 0 4px;
-      transition: opacity 0.15s ease;
-    }
-
-    .grid-cell:hover {
-      opacity: 0.9;
-    }
-
-    /* צבעי סטטוס ממלאים תא מלא */
-    .bg-status-approved { background-color: #84cc16; color: #000; }     /* ירוק בהיר - אושר */
-    .bg-status-reason   { background-color: #facc15; color: #000; }     /* צהוב - נדרשת סיבה */
-    .bg-status-denied   { background-color: #ef4444; color: #fff; }     /* אדום - נדחה */
-    .bg-status-noresp   { background-color: #f97316; color: #fff; }     /* כתום - חוסר התייחסות */
-    .bg-status-draft    { background-color: #60a5fa; color: #000; }     /* כחול - טיוטה */
-    .bg-status-partial  { background-color: #cbd5e1; color: #1e293b; }  /* אפור ביניים */
-    .bg-status-prostho  { background-color: #93c5fd; color: #0f172a; }  /* תכלת - תותבת/גשר רחב */
-
-    /* קו צלב אנכי מרכזי שמפריד בין ימין לשמאל */
-    .midline-left { border-left: 2px solid #0f172a !important; }
-    .midline-right { border-right: 2px solid #0f172a !important; }
+    .tooth-card { transition: all 0.2s ease; user-select: none; }
+    .tooth-card:hover { transform: translateY(-2px); }
+    .status-badge-approved { background-color: #10b981; color: white; }
+    .status-badge-reason { background-color: #f59e0b; color: white; }
+    .status-badge-denied { background-color: #ef4444; color: white; }
+    .status-badge-pending { background-color: #3b82f6; color: white; }
+    .status-badge-noresp { background-color: #f97316; color: white; }
   </style>
 </head>
-<body class="bg-slate-100 text-slate-800 min-h-screen">
+<body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col">
 
-  <!-- Header ראשי -->
-  <header class="bg-slate-900 text-white shadow-md sticky top-0 z-40">
+  <!-- סרגל עליון -->
+  <header class="bg-slate-900 text-white shadow sticky top-0 z-40">
     <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
       <div class="flex items-center gap-3">
         <div class="bg-blue-600 text-white font-black text-xl px-2.5 py-1 rounded shadow">GMC</div>
         <div>
           <h1 class="text-base sm:text-lg font-bold leading-tight">ניהול תוכניות שיקום – מרכז רפואי לגליל</h1>
-          <p class="text-xs text-slate-400">מחלקת שיקום הפה | גריד שיקומי וסנכרון תוכניות טיפול</p>
+          <p class="text-xs text-slate-400">מחלקת שיקום הפה</p>
         </div>
       </div>
       <div class="flex items-center gap-2">
-        <button onclick="toggleCatalogModal(true)" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs sm:text-sm px-3 py-1.5 rounded-lg border border-slate-700 flex items-center gap-1.5">
-          <span>📖</span>
-          <span>קטלוג ומחירון</span>
+        <button onclick="toggleModal('catalog-modal', true)" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs sm:text-sm px-3 py-1.5 rounded-lg border border-slate-700 flex items-center gap-1.5">
+          <span>📖 קטלוג ומחירון</span>
         </button>
-        <button onclick="syncWithGoogleSheets()" class="bg-blue-600 hover:bg-blue-500 text-white text-xs sm:text-sm px-3 py-1.5 rounded-lg font-medium shadow flex items-center gap-1.5">
-          <span id="sync-icon">🔄</span>
+        <button onclick="syncSheets()" class="bg-blue-600 hover:bg-blue-500 text-white text-xs sm:text-sm px-3 py-1.5 rounded-lg font-medium shadow flex items-center gap-1.5">
+          <span id="sync-spin">🔄</span>
           <span>סנכרון Sheets</span>
         </button>
       </div>
@@ -80,18 +45,18 @@
   </header>
 
   <!-- תוכן ראשי -->
-  <main class="max-w-7xl mx-auto px-3 sm:px-6 py-6 space-y-6">
+  <main class="max-w-7xl mx-auto px-3 sm:px-6 py-6 flex-1 space-y-6 w-full">
 
-    <!-- כרטיס פרטי מטופל ורופאים -->
-    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 sm:p-5 space-y-4">
+    <!-- שלב 1: פרטי מטופל ורופאים -->
+    <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 sm:p-6 space-y-4">
       <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-3">
         <div>
-          <h2 class="text-base font-bold text-slate-900">פרטי מטופל וסגל רפואי</h2>
-          <p class="text-xs text-slate-500">הגדרת רופא מטפל, רופאים מעורבים ממחלקות נוספות, וסיווג תוכנית</p>
+          <h2 class="text-base sm:text-lg font-bold text-slate-900">1. פרטי המטופל והתוכנית</h2>
+          <p class="text-xs text-slate-500">הגדרת מטופל, רופאים מלווים וסוג תוכנית</p>
         </div>
-        <div class="flex items-center gap-2">
-          <label class="text-xs font-semibold text-slate-600">סיווג תוכנית:</label>
-          <select id="plan-type" class="bg-slate-50 border border-slate-300 rounded-lg text-xs sm:text-sm px-2 py-1 font-bold text-blue-700">
+        <div>
+          <span class="text-xs font-semibold text-slate-600 ml-1">סיווג:</span>
+          <select id="plan-classification" class="bg-slate-50 border border-slate-300 rounded-lg text-xs sm:text-sm px-2 py-1 font-bold text-blue-700">
             <option value="initial">תוכנית ראשונית (אינה סופית)</option>
             <option value="final">תוכנית סופית (ייתכנו שינויים)</option>
           </select>
@@ -99,16 +64,14 @@
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs sm:text-sm">
-        <!-- שם המטופל -->
         <div>
           <label class="block font-semibold text-slate-700 mb-1">שם פרטי ומשפחה</label>
-          <input type="text" id="patient-name" placeholder="שם המטופל" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-1.5 focus:outline-blue-500">
+          <input type="text" id="patient-name" placeholder="שם מלא" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2">
         </div>
 
-        <!-- קופת חולים -->
         <div>
           <label class="block font-semibold text-slate-700 mb-1">קופת חולים / ביטוח</label>
-          <select id="patient-hmo" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-1.5 focus:outline-blue-500">
+          <select id="patient-hmo" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2">
             <option value="leumit_gold">לאומית זהב</option>
             <option value="leumit_silver">לאומית כסף</option>
             <option value="leumit_general">לאומית כללי / סל</option>
@@ -119,32 +82,27 @@
           </select>
         </div>
 
-        <!-- רופא מטפל ראשי (כולל אפשרות לא שויך) -->
         <div>
-          <label class="block font-semibold text-slate-700 mb-1">רופא מטפל ראשי</label>
-          <select id="primary-doctor" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-1.5 font-bold focus:outline-blue-500">
-            <option value="unassigned" class="text-slate-400 font-normal">-- לא שויך --</option>
-            <optgroup label="שיקום הפה (GMC)">
-              <option value="ד&quot;ר אלדד שרון">ד"ר אלדד שרון (ראש היחידה)</option>
-              <option value="ד&quot;ר אלכס פרסון">ד"ר אלכס פרסון (מנהל ההתמחות)</option>
-              <option value="ד&quot;ר דורון טאובין">ד"ר דורון טאובין</option>
-              <option value="ד&quot;ר אליאס עבסאוי">ד"ר אליאס עבסאוי</option>
-              <option value="ד&quot;ר עינת ורון שחר">ד"ר עינת ורון שחר</option>
-              <option value="ד&quot;ר אמיר סוואעד">ד"ר אמיר סוואעד</option>
-              <option value="ד&quot;ר מרדכי ליפובצקי-אדלר">ד"ר מרדכי ליפובצקי-אדלר</option>
-              <option value="ד&quot;ר ברק מרימסקי">ד"ר ברק מרימסקי</option>
-              <option value="ד&quot;ר נתנאל שורקי">ד"ר נתנאל שורקי</option>
-              <option value="ד&quot;ר עלאא דאוד">ד"ר עלאא דאוד</option>
-              <option value="ד&quot;ר עפרה עבדי">ד"ר עפרה עבדי</option>
-              <option value="ד&quot;ר יארה מנסור">ד"ר יארה מנסור</option>
-            </optgroup>
+          <label class="block font-semibold text-slate-700 mb-1">רופא מטפל</label>
+          <select id="treating-doctor" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 font-medium">
+            <option value="ד&quot;ר דורון טאובין">ד"ר דורון טאובין</option>
+            <option value="ד&quot;ר אלדד שרון">ד"ר אלדד שרון</option>
+            <option value="ד&quot;ר אלכס פרסון">ד"ר אלכס פרסון</option>
+            <option value="ד&quot;ר אליאס עבסאוי">ד"ר אליאס עבסאוי</option>
+            <option value="ד&quot;ר עינת ורון שחר">ד"ר עינת ורון שחר</option>
+            <option value="ד&quot;ר אמיר סוואעד">ד"ר אמיר סוואעד</option>
+            <option value="ד&quot;ר מרדכי ליפובצקי-אדלר">ד"ר מרדכי ליפובצקי-אדלר</option>
+            <option value="ד&quot;ר ברק מרימסקי">ד"ר ברק מרימסקי</option>
+            <option value="ד&quot;ר נתנאל שורקי">ד"ר נתנאל שורקי</option>
+            <option value="ד&quot;ר עלאא דאוד">ד"ר עלאא דאוד</option>
+            <option value="ד&quot;ר עפרה עבדי">ד"ר עפרה עבדי</option>
+            <option value="ד&quot;ר יארה מנסור">ד"ר יארה מנסור</option>
           </select>
         </div>
 
-        <!-- שיוך מטופל -->
         <div>
           <label class="block font-semibold text-slate-700 mb-1">שיוך מטופל</label>
-          <select id="patient-tag" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-1.5 font-medium">
+          <select id="patient-group" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 font-medium">
             <option value="grey">⚪ עוד לא הוחלט</option>
             <option value="blue">🔵 התמחות</option>
             <option value="green">🟢 ימי חמישי</option>
@@ -152,167 +110,76 @@
           </select>
         </div>
       </div>
+    </section>
 
-      <!-- בחירה מרובה של רופאים ממחלקות נוספות -->
-      <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 space-y-2">
-        <label class="block font-bold text-slate-700 text-xs">
-          רופאים מעורבים / צוות רב-תחומי (סמן בלחיצה):
-        </label>
-        <div class="flex flex-wrap gap-1.5" id="multidisciplinary-doctors-container"></div>
-      </div>
-    </div>
-
-    <!-- גריד צלב השיניים השיקומי המדויק -->
-    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 sm:p-5 space-y-4">
+    <!-- שלב 2: מפת שיניים אינטראקטיבית (Odontogram) -->
+    <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 sm:p-6 space-y-4">
       <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-3">
         <div>
-          <h2 class="text-base font-bold text-slate-900">גריד שיקומי – צלב שיניים (Odontogram)</h2>
-          <p class="text-xs text-slate-500">ערימת טיפולים מלאה מעל ומתחת לשיניים ובלוקים רחבים</p>
+          <h2 class="text-base sm:text-lg font-bold text-slate-900">2. מפת שיניים אינטראקטיבית (FDI)</h2>
+          <p class="text-xs text-slate-500">לחיצה על מספר השן משנה מצב: שן קיימת ➔ שתל ➔ שן חסרה (X)</p>
         </div>
-        <!-- מקרא צבעים צמוד -->
-        <div class="flex flex-wrap items-center gap-2 text-xs bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-200">
-          <span class="font-bold text-slate-700 ml-1">מקרא סטטוסים:</span>
-          <span class="px-2 py-0.5 rounded font-bold bg-[#84cc16] text-black">אושר (ירוק)</span>
-          <span class="px-2 py-0.5 rounded font-bold bg-[#facc15] text-black">סיבה (צהוב)</span>
-          <span class="px-2 py-0.5 rounded font-bold bg-[#ef4444] text-white">נדחה (אדום)</span>
-          <span class="px-2 py-0.5 rounded font-bold bg-[#f97316] text-white">ללא מענה (כתום)</span>
-          <span class="px-2 py-0.5 rounded font-bold bg-[#60a5fa] text-black">טיוטה (כחול)</span>
-          <span class="px-2 py-0.5 rounded font-bold bg-[#93c5fd] text-slate-900">תותבת / גשר</span>
+        <div class="flex items-center gap-2 text-xs">
+          <span class="inline-flex items-center gap-1 bg-slate-100 px-2 py-1 rounded border">⚪ שן קיימת</span>
+          <span class="inline-flex items-center gap-1 bg-blue-100 text-blue-800 px-2 py-1 rounded border border-blue-200">🔩 שתל</span>
+          <span class="inline-flex items-center gap-1 bg-rose-100 text-rose-800 px-2 py-1 rounded border border-rose-200">❌ חסרה</span>
         </div>
       </div>
 
-      <!-- הגריד הטבלאי -->
-      <div class="overflow-x-auto pb-4">
-        <div class="min-w-[920px] border border-slate-300 rounded bg-white">
-
-          <!-- שורות טיפולים עליונות מעל לסת עליונה -->
-          <!-- שורה 5 מעל: כד"מ על שן 21 (עמודה 9) -->
-          <div class="teeth-grid">
-            <div style="grid-column: 9;" class="grid-cell bg-status-approved">כד"מ</div>
+      <!-- לסת עליונה -->
+      <div class="space-y-1">
+        <div class="text-xs font-bold text-slate-400 text-center">לסת עליונה (Maxilla)</div>
+        <div class="overflow-x-auto pb-2">
+          <div class="flex justify-center gap-1 sm:gap-2 min-w-[700px]">
+            <!-- רביע 1: 18 עד 11 -->
+            <div class="flex gap-1" id="quadrant-1"></div>
+            <!-- מפריד אמצע -->
+            <div class="w-1 bg-slate-300 rounded-full mx-1"></div>
+            <!-- רביע 2: 21 עד 28 -->
+            <div class="flex gap-1" id="quadrant-2"></div>
           </div>
-          <!-- שורה 4 מעל: כ"ז על שן 21 -->
-          <div class="teeth-grid">
-            <div style="grid-column: 9;" class="grid-cell bg-status-approved">כ"ז</div>
-          </div>
-          <!-- שורה 3 מעל: כתר זירקוניה על שן 21 -->
-          <div class="teeth-grid">
-            <div style="grid-column: 9;" class="grid-cell bg-status-reason">כתר זירקוניה</div>
-          </div>
-          <!-- שורה 2 מעל: מבנה על שן 21 -->
-          <div class="teeth-grid">
-            <div style="grid-column: 9;" class="grid-cell bg-status-denied">מבנה</div>
-          </div>
-          <!-- שורה 1 מעל: ט"ש על שן 21 -->
-          <div class="teeth-grid">
-            <div style="grid-column: 9;" class="grid-cell bg-status-denied">ט"ש</div>
-          </div>
-
-          <!-- ציר השיניים העליון (18 עד 11 | 21 עד 28) -->
-          <div class="teeth-grid font-num text-xs bg-slate-50 font-black border-y-2 border-slate-900">
-            <div class="grid-cell bg-white">18</div>
-            <div class="grid-cell bg-white">17</div>
-            <div class="grid-cell bg-white">16</div>
-            <div class="grid-cell bg-white">15</div>
-            <div class="grid-cell bg-white">14</div>
-            <div class="grid-cell bg-white">13</div>
-            <div class="grid-cell bg-white">12</div>
-            <div class="grid-cell bg-white midline-left">11</div>
-            
-            <div class="grid-cell bg-white midline-right">21</div>
-            <div class="grid-cell bg-white">22</div>
-            <div class="grid-cell bg-white">23</div>
-            <div class="grid-cell bg-white">24</div>
-            <div class="grid-cell bg-white">25</div>
-            <div class="grid-cell bg-white">26</div>
-            <div class="grid-cell bg-white">27</div>
-            <div class="grid-cell bg-white">28</div>
-          </div>
-
-          <!-- ציר השיניים התחתון (48 עד 41 | 31 עד 38) -->
-          <div class="teeth-grid font-num text-xs bg-slate-50 font-black border-b-2 border-slate-900">
-            <div class="grid-cell bg-white">48</div>
-            <div class="grid-cell bg-white">47</div>
-            <div class="grid-cell bg-white">46</div>
-            <div class="grid-cell bg-white">45</div>
-            <div class="grid-cell bg-white">44</div>
-            <div class="grid-cell bg-white">43</div>
-            <div class="grid-cell bg-white">42</div>
-            <div class="grid-cell bg-white midline-left">41</div>
-            
-            <div class="grid-cell bg-white midline-right">31</div>
-            <div class="grid-cell bg-white">32</div>
-            <div class="grid-cell bg-white">33</div>
-            <div class="grid-cell bg-white">34</div>
-            <div class="grid-cell bg-white">35</div>
-            <div class="grid-cell bg-white">36</div>
-            <div class="grid-cell bg-white">37</div>
-            <div class="grid-cell bg-white">38</div>
-          </div>
-
-          <!-- שורת סימונים קצרים צמודים לציר (למשל 'ע' תחת 42 ו-32) -->
-          <div class="teeth-grid text-xs font-bold text-slate-700">
-            <div style="grid-column: 7;" class="grid-cell border-none">ע</div>
-            <div style="grid-column: 10;" class="grid-cell border-none">ע</div>
-          </div>
-
-          <!-- טיפולים רב-שיניים הנמתחים לרוחב (למשל גשר מ-43 עד 33, עמודות 6 עד 11) -->
-          <div class="teeth-grid">
-            <div style="grid-column: 6 / span 6;" class="grid-cell bg-status-partial">כ"ז</div>
-          </div>
-          <div class="teeth-grid">
-            <div style="grid-column: 6 / span 6;" class="grid-cell bg-status-approved">כד"מ</div>
-          </div>
-          <div class="teeth-grid">
-            <div style="grid-column: 6 / span 6;" class="grid-cell bg-status-approved">כתר זירקוניה</div>
-          </div>
-
-          <!-- בלוק רחב לכל הלסת: תותבת חלקית להוצאה (עמודות 2 עד 15) -->
-          <div class="teeth-grid mt-1">
-            <div style="grid-column: 2 / span 14;" class="grid-cell bg-status-prostho font-bold text-xs">
-              תותבת חלקית להוצאה
-            </div>
-          </div>
-
         </div>
       </div>
 
-      <!-- כפתורי הוספת טיפול מהיר -->
-      <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-100 text-xs">
-        <div class="flex items-center gap-2">
-          <button onclick="addTreatmentPrompt()" class="bg-blue-50 text-blue-700 border border-blue-200 px-3 py-1.5 rounded-lg font-bold hover:bg-blue-100">
-            + הוסף טיפול לשן / גשר
-          </button>
+      <!-- לסת תחתונה -->
+      <div class="space-y-1 pt-2">
+        <div class="overflow-x-auto pb-2">
+          <div class="flex justify-center gap-1 sm:gap-2 min-w-[700px]">
+            <!-- רביע 4: 48 עד 41 -->
+            <div class="flex gap-1" id="quadrant-4"></div>
+            <!-- מפריד אמצע -->
+            <div class="w-1 bg-slate-300 rounded-full mx-1"></div>
+            <!-- רביע 3: 31 עד 38 -->
+            <div class="flex gap-1" id="quadrant-3"></div>
+          </div>
         </div>
-        <div class="flex items-center gap-2">
-          <button onclick="exportSummary('hmo')" class="bg-slate-800 hover:bg-slate-700 text-white px-3 py-1.5 rounded-lg font-bold shadow">
-            הפקת טופס קודים לקופה
-          </button>
-          <button onclick="exportSummary('patient')" class="bg-blue-600 hover:bg-blue-500 text-white px-3 py-1.5 rounded-lg font-bold shadow">
-            הפקת הצעת מחיר למטופל
-          </button>
-        </div>
+        <div class="text-xs font-bold text-slate-400 text-center">לסת תחתונה (Mandible)</div>
       </div>
-    </div>
+    </section>
 
-  </main>
-
-  <!-- מודאל קטלוג ומחירון אינטראקטיבי -->
-  <div id="catalog-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3">
-    <div class="bg-white w-full max-w-4xl max-h-[90vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden">
-      <div class="px-5 py-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
+    <!-- שלב 3: הוספת טיפול / קומפלקס לשן שנבחרה -->
+    <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 sm:p-6 space-y-4">
+      <div class="border-b border-slate-100 pb-3 flex flex-wrap justify-between items-center gap-2">
         <div>
-          <h3 class="text-base sm:text-lg font-bold text-slate-900">קטלוג טיפולים ומחירונים אינטראקטיבי</h3>
-          <p class="text-xs text-slate-500">עריכה חופשית של קודים פנימיים, קודי קופה ותעריפים</p>
+          <h2 class="text-base sm:text-lg font-bold text-slate-900">3. הוספת טיפולים וקומפלקסים</h2>
+          <p class="text-xs text-slate-500">בחר שן במפה למעלה, בחר טיפול או קומפלקס, והוסף לתוכנית</p>
         </div>
-        <button onclick="toggleCatalogModal(false)" class="text-slate-400 hover:text-slate-600 text-xl font-bold px-2">&times;</button>
+        <div class="text-xs font-bold text-blue-700 bg-blue-50 px-3 py-1.5 rounded-lg border border-blue-200" id="selected-teeth-display">
+          לא נבחרה שן (לחץ על תיבת שן במפה)
+        </div>
       </div>
 
-      <div class="p-4 border-b border-slate-100 flex flex-wrap gap-2 items-center justify-between">
-        <input type="text" id="catalog-search" oninput="filterCatalogTable()" placeholder="חיפוש קוד או טיפול..." class="bg-slate-50 border border-slate-300 rounded-lg px-3 py-1.5 text-xs sm:text-sm w-full sm:w-64">
-        <button onclick="addNewCatalogRow()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-3 py-1.5 rounded-lg font-bold">
-          + הוסף קוד חדש
-        </button>
-      </div>
-
-      <div class="flex-1 overflow-y-auto p-4">
-        <table class="w-full text-right text-xs border border-slate-200
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs sm:text-sm">
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">סוג פעולה / קומפלקס</label>
+          <select id="action-select" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2">
+            <optgroup label="קומפלקסים מוכנים מראש">
+              <option value="comp_crown_tooth">קומפלקס כתר ע"ג שן (מבנה + כ"ז + כתר)</option>
+              <option value="comp_crown_implant">קומפלקס כתר ע"ג שתל (מבנה + כתר)</option>
+              <option value="comp_rct_rehab">קומפלקס טיפול שורש + שיקום</option>
+            </optgroup>
+            <optgroup label="טיפולים בודדים">
+              <option value="GMC-PRO17">כתר חרסינה PFM</option>
+              <option value="GMC-PRO19">כתר זירקוניה</option>
+              <option value="GMC-PRO04">מבנה יצוק מתכת</option>
+              <option value="GMC-PRO0
