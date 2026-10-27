@@ -181,7 +181,7 @@
           <input type="text" id="home-search" oninput="renderHomePatients()" placeholder="🔍 חיפוש מטופל (שם פרטי / משפחה)..." class="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-semibold focus:outline-none focus:ring-2 focus:ring-sky-500">
           
           <select id="home-filter-doc" onchange="renderHomePatients()" class="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-700">
-            <option value="ALL">כל הרופאים המטפלים</option>
+            <option value="ALL">מתכנן ההצעה (הכל)</option>
           </select>
 
           <div class="flex items-center gap-1 overflow-x-auto py-0.5">
@@ -290,31 +290,31 @@
           <div class="flex flex-wrap items-center justify-between gap-2 text-xs">
             <div class="flex items-center gap-2">
               <span class="font-black text-slate-900">שלב 2: קביעת תוכנית טיפול</span>
-              <span class="text-slate-500">סמן שיניים (תיבת ✓) ולחץ על קומפלקס או טיפול • לחיצה על קפסולה מוחקת אותה</span>
+              <span class="text-slate-500">סמן שיניים (תיבת ✓) ולחץ על קוד קיצור דרך • לחיצה על קפסולה מוחקת אותה</span>
             </div>
           </div>
 
-          <!-- Dark Complexes Box ("קומפלקסים") synced with Google Sheet -->
+          <!-- Dark Shortcuts Box ("קודים קיצורי דרך") synced with Google Sheet -->
           <div class="bg-slate-900 text-white p-2.5 rounded-xl space-y-2 text-xs">
             <div class="flex items-center justify-between border-b border-slate-800 pb-1.5">
               <div class="flex items-center gap-2">
-                <span class="font-black text-sky-400 text-xs tracking-wide">קומפלקסים</span>
-                <span id="complexes-sync-badge" class="text-[10px] text-slate-400 font-semibold">מסונכרן מול Google Sheets</span>
+                <span class="font-black text-sky-400 text-xs tracking-wide">קודים קיצורי דרך</span>
+                <span id="complexes-sync-badge" class="text-[10px] text-slate-400 font-semibold">מסונכרן מול Google Sheets (ט"ש/חט"ש מחשב תעלות אוטומטית לפי שן + מיקרוסקופ ומבנה)</span>
               </div>
               <div class="flex items-center gap-1.5">
-                <button type="button" onclick="openAddCustomComplexModal()" class="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-sky-300 border border-slate-700 font-bold text-[11px]" title="הוסף קומפלקס חדש">+ קומפלקס חדש</button>
-                <button type="button" onclick="fetchSheetComplexes(true)" class="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 text-[10px]" title="רענן קומפלקסים מגוגל שיטס">🔄 רענן</button>
+                <button type="button" onclick="openAddCustomComplexModal()" class="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-sky-300 border border-slate-700 font-bold text-[11px]" title="הוסף קיצור דרך חדש">+ קיצור דרך חדש</button>
+                <button type="button" onclick="fetchSheetComplexes(true)" class="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 text-[10px]" title="רענן קודים קיצורי דרך מגוגל שיטס">🔄 רענן</button>
               </div>
             </div>
 
             <div class="flex flex-wrap items-center justify-between gap-2">
-              <!-- Dynamic Complex Buttons from Sheet Column A & B -->
+              <!-- Dynamic Shortcut Buttons from Sheet Column A & B -->
               <div id="sheet-complexes-buttons" class="flex flex-wrap items-center gap-1.5"></div>
 
               <!-- Single Procedure Picker with + -->
               <div class="flex items-center gap-1 mr-auto">
                 <select id="builder-single-select" class="bg-slate-800 border border-slate-700 rounded-lg px-2 py-1 text-white font-bold"></select>
-                <button type="button" onclick="addSingleToSelected()" class="px-2.5 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-500 font-black" title="הוסף טיפול בודד">+</button>
+                <button type="button" onclick="addSingleToSelected()" class="px-2.5 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-500 font-black" title="הוסף קוד בודד">+</button>
               </div>
             </div>
           </div>
@@ -381,12 +381,12 @@
       </div>
 
       <!-- =================================================================== -->
-      <!-- STAGE 2 BOTTOM PANEL: 4 RUBRICS (תותבות, חניכיים, סדים, שונות) -->
+      <!-- STAGE 2 BOTTOM PANEL: "קודים - תוספות" (CATEGORIZED SHORTCUTS) -->
       <!-- =================================================================== -->
       <div id="panel-stage-2" class="hidden space-y-3">
         
         <!-- Auto Iron-Rules Strip (Clean unit counts only, no numbers in parentheses) -->
-        <div class="flex flex-wrap items-center justify-between gap-2 text-xs bg-white px-4 py-2 rounded-xl border border-slate-200 shadow-sm">
+        <div class="flex flex-wrap items-center justify-between gap-2 text-xs bg-white px-4 py-2.5 rounded-xl border border-slate-200 shadow-sm">
           <div class="flex items-center gap-5 font-bold text-slate-700">
             <span>⚙️ קודי חובה אוטומטיים:</span>
             <span id="builder-auto-models" class="text-sky-800 font-black">מודל: 0 יח'</span>
@@ -395,62 +395,17 @@
           <div id="builder-general-pills" class="flex flex-wrap items-center gap-1.5"></div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
-          <!-- 1. תותבות -->
-          <div class="bg-white rounded-2xl border border-slate-200 p-3.5 shadow-sm space-y-2">
-            <div class="font-black text-sky-900 border-b pb-1.5 flex items-center justify-between">
-              <span>🦷 1. תותבות</span>
-              <span class="text-[10px] px-1.5 py-0.5 rounded fam-prostho">שיקום</span>
+        <!-- Section Header: קודים - תוספות -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-2">
+            <div class="flex items-center gap-2">
+              <h3 class="text-sm font-black text-slate-900">➕ קודים - תוספות</h3>
+              <span class="text-xs text-slate-500">לחיצה על שם קיצור הדרך בכל תחום כללי מייצרת ופורסת אוטומטית את כל הקודים המשויכים תחתיו</span>
             </div>
-            <div class="grid grid-cols-1 gap-1.5 font-bold">
-              <button type="button" onclick="addGeneralOrArchItem('GMC-DEN01', 'UPPER', 'תותבת שלמה עליונה')" class="p-2 rounded-lg bg-slate-50 hover:bg-sky-50 border border-slate-200 text-right flex justify-between"><span>תותבת שלמה – עליונה</span><span>+</span></button>
-              <button type="button" onclick="addGeneralOrArchItem('GMC-DEN01', 'LOWER', 'תותבת שלמה תחתונה')" class="p-2 rounded-lg bg-slate-50 hover:bg-sky-50 border border-slate-200 text-right flex justify-between"><span>תותבת שלמה – תחתונה</span><span>+</span></button>
-              <button type="button" onclick="addGeneralOrArchItem('GMC-DEN02', 'UPPER', 'תותבת חלקית להוצאה עליונה')" class="p-2 rounded-lg bg-slate-50 hover:bg-sky-50 border border-slate-200 text-right flex justify-between"><span>תותבת חלקית להוצאה – עליונה</span><span>+</span></button>
-              <button type="button" onclick="addGeneralOrArchItem('GMC-DEN02', 'LOWER', 'תותבת חלקית להוצאה תחתונה')" class="p-2 rounded-lg bg-slate-50 hover:bg-sky-50 border border-slate-200 text-right flex justify-between"><span>תותבת חלקית להוצאה – תחתונה</span><span>+</span></button>
-              <button type="button" onclick="addGeneralOrArchItem('GMC-DEN03', 'GENERAL', 'ריפוד תותבת')" class="p-2 rounded-lg bg-slate-50 hover:bg-sky-50 border border-slate-200 text-right flex justify-between"><span>ריפוד / תיקון תותבת</span><span>+</span></button>
-            </div>
+            <button type="button" onclick="openAddAdditionShortcutModal()" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs">+ הוסף קיצור לתוספות</button>
           </div>
 
-          <!-- 2. חניכיים -->
-          <div class="bg-white rounded-2xl border border-slate-200 p-3.5 shadow-sm space-y-2">
-            <div class="font-black text-rose-900 border-b pb-1.5 flex items-center justify-between">
-              <span>🩸 2. חניכיים (פריו)</span>
-              <span class="text-[10px] px-1.5 py-0.5 rounded fam-perio">פריו</span>
-            </div>
-            <div class="grid grid-cols-1 gap-1.5 font-bold">
-              <button type="button" onclick="addGeneralOrArchItem('GMC-HYG01', 'GENERAL', 'סילוק אבנית (שיננית)')" class="p-2 rounded-lg bg-slate-50 hover:bg-rose-50 border border-slate-200 text-right flex justify-between"><span>סילוק אבנית / היגיינה</span><span>+</span></button>
-              <button type="button" onclick="addGeneralOrArchItem('GMC-PER01', 'UPPER', 'הקצעת שורשים - עליונה')" class="p-2 rounded-lg bg-slate-50 hover:bg-rose-50 border border-slate-200 text-right flex justify-between"><span>הקצעת שורשים – עליונה</span><span>+</span></button>
-              <button type="button" onclick="addGeneralOrArchItem('GMC-PER01', 'LOWER', 'הקצעת שורשים - תחתונה')" class="p-2 rounded-lg bg-slate-50 hover:bg-rose-50 border border-slate-200 text-right flex justify-between"><span>הקצעת שורשים – תחתונה</span><span>+</span></button>
-              <button type="button" onclick="addGeneralOrArchItem('GMC-PER02', 'SELECTED', 'הארכת כותרת')" class="p-2 rounded-lg bg-slate-50 hover:bg-rose-50 border border-slate-200 text-right flex justify-between"><span>הארכת כותרת (למסומנות)</span><span>+</span></button>
-            </div>
-          </div>
-
-          <!-- 3. סדים -->
-          <div class="bg-white rounded-2xl border border-slate-200 p-3.5 shadow-sm space-y-2">
-            <div class="font-black text-indigo-900 border-b pb-1.5 flex items-center justify-between">
-              <span>🛡️ 3. סדים</span>
-              <span class="text-[10px] px-1.5 py-0.5 rounded fam-prostho">סדים</span>
-            </div>
-            <div class="grid grid-cols-1 gap-1.5 font-bold">
-              <button type="button" onclick="addGeneralOrArchItem('GMC-MSC01', 'UPPER', 'סד לילה קשיח / רך')" class="p-2 rounded-lg bg-slate-50 hover:bg-indigo-50 border border-slate-200 text-right flex justify-between"><span>סד לילה קשיח / רך</span><span>+</span></button>
-              <button type="button" onclick="addGeneralOrArchItem('GMC-IMP00', 'UPPER', 'סד כירורגי ממוחשב לשתלים')" class="p-2 rounded-lg bg-slate-50 hover:bg-indigo-50 border border-slate-200 text-right flex justify-between"><span>סד כירורגי לשתלים</span><span>+</span></button>
-              <button type="button" onclick="addGeneralOrArchItem('GMC-HYG06', 'GENERAL', 'סד הלבנת שיניים')" class="p-2 rounded-lg bg-slate-50 hover:bg-indigo-50 border border-slate-200 text-right flex justify-between"><span>סד הלבנה ללסת</span><span>+</span></button>
-            </div>
-          </div>
-
-          <!-- 4. שונות וצילומים -->
-          <div class="bg-white rounded-2xl border border-slate-200 p-3.5 shadow-sm space-y-2">
-            <div class="font-black text-slate-800 border-b pb-1.5 flex items-center justify-between">
-              <span>➕ 4. שונות וצילומים</span>
-              <span class="text-[10px] px-1.5 py-0.5 rounded fam-diag">אבחון</span>
-            </div>
-            <div class="grid grid-cols-1 gap-1.5 font-bold">
-              <button type="button" onclick="addGeneralOrArchItem('GMC-EX01', 'GENERAL', 'מיפוי פה ראשוני')" class="p-2 rounded-lg bg-slate-50 hover:bg-slate-100 border border-slate-200 text-right flex justify-between"><span>מיפוי פה ראשוני (102)</span><span>+</span></button>
-              <button type="button" onclick="addGeneralOrArchItem('GMC-RAD05', 'GENERAL', 'צילום פנורמי')" class="p-2 rounded-lg bg-slate-50 hover:bg-slate-100 border border-slate-200 text-right flex justify-between"><span>צילום פנורמי (116)</span><span>+</span></button>
-              <button type="button" onclick="addGeneralOrArchItem('GMC-RAD07', 'GENERAL', 'צילום סטטוס מלא')" class="p-2 rounded-lg bg-slate-50 hover:bg-slate-100 border border-slate-200 text-right flex justify-between"><span>צילום סטטוס מלא (114)</span><span>+</span></button>
-              <button type="button" onclick="addGeneralOrArchItem('GMC-RAD09', 'GENERAL', 'צילום CT לסת')" class="p-2 rounded-lg bg-slate-50 hover:bg-slate-100 border border-slate-200 text-right flex justify-between"><span>צילום CT לסת (119)</span><span>+</span></button>
-            </div>
-          </div>
+          <div id="additions-domains-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs"></div>
         </div>
       </div>
 
@@ -610,14 +565,206 @@
       'ד"ר עלאא דאוד', 'ד"ר עפרה עבדי', 'ד"ר יארה מנסור', 'ד"ר דורון טאובין'
     ];
 
-    // Default Complexes matching Google Sheet tab "קומפלקסים" (Column A = Name, Column B = Activated items)
+    // Default "קודים קיצורי דרך" matching Google Sheet tab (Column A = Shortcut Name, Column B = Activated items)
+    // Special rule: ט"ש and חט"ש automatically compute canals (1, 2, 3, or 4 e.g. tooth 16 -> 4 canals) + מיקרוסקופ + מבנה!
     const DEFAULT_SHEET_COMPLEXES = [
       { name: 'שתל', items: ['שתל', 'שתל - חשיפה'], color: 'bg-rose-600 hover:bg-rose-500' },
-      { name: 'כתר זירקוניה', items: ['מבנה', 'כ"ז', 'זירקוניה'], color: 'bg-sky-600 hover:bg-sky-500' },
-      { name: 'כתר חרסינה', items: ['מבנה', 'כ"ז', 'כתר PFM'], color: 'bg-blue-600 hover:bg-blue-500' },
-      { name: 'ט"ש + כתר זירקוניה', items: ['ט"ש', 'מבנה', 'כ"ז', 'זירקוניה'], color: 'bg-amber-600 hover:bg-amber-500' },
-      { name: 'שיקום ע"ג שתל', items: ['זירקוניה שתל'], color: 'bg-teal-600 hover:bg-teal-500' },
-      { name: 'גשר זירקוניה', items: ['כ"ז', 'כד"מ', 'זירקוניה'], isBridge: true, color: 'bg-indigo-600 hover:bg-indigo-500' }
+      { name: 'פונטיק', items: ['כ"ז', 'כד"מ', 'כתר זירקוניה'], color: 'bg-indigo-600 hover:bg-indigo-500' },
+      { name: 'כתר ע"ג שן', items: ['מבנה', 'כ"ז', 'כתר זירקוניה'], color: 'bg-sky-600 hover:bg-sky-500' },
+      { name: 'כתר ע"ג שתל', items: ['מבנה ע"ג שתל', 'כ"ז', 'כתר זירקוניה'], color: 'bg-teal-600 hover:bg-teal-500' },
+      { name: 'ט"ש', items: ['ט"ש לפי תעלות', 'מיקרוסקופ', 'מבנה'], isSmartEndo: 'RCT', color: 'bg-amber-600 hover:bg-amber-500' },
+      { name: 'חט"ש', items: ['חט"ש לפי תעלות', 'מיקרוסקופ', 'מבנה'], isSmartEndo: 'RET', color: 'bg-orange-600 hover:bg-orange-500' },
+      { name: 'עקירה', items: ["ע'"], color: 'bg-rose-700 hover:bg-rose-600' }
+    ];
+
+    // "קודים - תוספות" organized by general domain -> shortcut name -> multiple underlying codes generated
+    const DEFAULT_ADDITIONS_SHORTCUTS = [
+      {
+        domainKey: 'DENTURES',
+        domainTitle: '🦷 1. תחום תותבות',
+        badgeText: 'שיקום נשלף',
+        badgeCls: 'fam-prostho',
+        shortcuts: [
+          {
+            id: 'ADD-DEN-UP-FULL',
+            name: 'תותבת שלמה עליונה',
+            archTarget: 'UPPER',
+            archGmc: 'GMC-DEN01',
+            subCodes: [
+              { gmc: 'GMC-DEN01', label: 'תותבת שלמה ע\'' },
+              { gmc: 'GMC-PRO16', label: 'כף אינדיבידואלית ע\'' },
+              { gmc: 'GMC-PRO16', label: 'רישום סגר ע\'' }
+            ]
+          },
+          {
+            id: 'ADD-DEN-LOW-FULL',
+            name: 'תותבת שלמה תחתונה',
+            archTarget: 'LOWER',
+            archGmc: 'GMC-DEN01',
+            subCodes: [
+              { gmc: 'GMC-DEN01', label: 'תותבת שלמה ת\'' },
+              { gmc: 'GMC-PRO16', label: 'כף אינדיבידואלית ת\'' },
+              { gmc: 'GMC-PRO16', label: 'רישום סגר ת\'' }
+            ]
+          },
+          {
+            id: 'ADD-DEN-UP-RPD',
+            name: 'תותבת חלקית להוצאה (שלד) עליונה',
+            archTarget: 'UPPER',
+            archGmc: 'GMC-DEN02',
+            subCodes: [
+              { gmc: 'GMC-DEN02', label: 'תח"ל שלד מתכת ע\'' },
+              { gmc: 'GMC-DEN03', label: 'ווים יצוקים ע\'' },
+              { gmc: 'GMC-PRO16', label: 'כף אינדיבידואלית ע\'' }
+            ]
+          },
+          {
+            id: 'ADD-DEN-LOW-RPD',
+            name: 'תותבת חלקית להוצאה (שלד) תחתונה',
+            archTarget: 'LOWER',
+            archGmc: 'GMC-DEN02',
+            subCodes: [
+              { gmc: 'GMC-DEN02', label: 'תח"ל שלד מתכת ת\'' },
+              { gmc: 'GMC-DEN03', label: 'ווים יצוקים ת\'' },
+              { gmc: 'GMC-PRO16', label: 'כף אינדיבידואלית ת\'' }
+            ]
+          },
+          {
+            id: 'ADD-DEN-FLIPPER',
+            name: 'תותבת אקרילית זמנית (פליפר)',
+            archTarget: 'GENERAL',
+            subCodes: [
+              { gmc: 'GMC-DEN03', label: 'תותבת חלקית אקריל' },
+              { gmc: 'GMC-DEN03', label: 'התאמת תותבת וריפוד' }
+            ]
+          }
+        ]
+      },
+      {
+        domainKey: 'PERIO',
+        domainTitle: '🩸 2. תחום חניכיים (פריו)',
+        badgeText: 'פריודונטיה',
+        badgeCls: 'fam-perio',
+        shortcuts: [
+          {
+            id: 'ADD-PER-INIT',
+            name: 'הכנה ראשונית פריודונטלית',
+            archTarget: 'GENERAL',
+            subCodes: [
+              { gmc: 'GMC-HYG01', label: 'סילוק אבנית (שיננית) x2' },
+              { gmc: 'GMC-HYG01', label: 'הדרכה להיגיינה אוראלית' },
+              { gmc: 'GMC-EX01',  label: 'בדיקה פריודונטלית ומדידת כיסים' }
+            ]
+          },
+          {
+            id: 'ADD-PER-SRP-UP',
+            name: 'הקצעת שורשים – לסת עליונה',
+            archTarget: 'UPPER',
+            archGmc: 'GMC-PER01',
+            subCodes: [
+              { gmc: 'GMC-PER01', label: 'הקצעת שורשים רביע ימין ע\'' },
+              { gmc: 'GMC-PER01', label: 'הקצעת שורשים רביע שמאל ע\'' },
+              { gmc: 'GMC-HYG01', label: 'שטיפה אנטיספטית וביקורת פריו' }
+            ]
+          },
+          {
+            id: 'ADD-PER-SRP-LOW',
+            name: 'הקצעת שורשים – לסת תחתונה',
+            archTarget: 'LOWER',
+            archGmc: 'GMC-PER01',
+            subCodes: [
+              { gmc: 'GMC-PER01', label: 'הקצעת שורשים רביע ימין ת\'' },
+              { gmc: 'GMC-PER01', label: 'הקצעת שורשים רביע שמאל ת\'' },
+              { gmc: 'GMC-HYG01', label: 'שטיפה אנטיספטית וביקורת פריו' }
+            ]
+          },
+          {
+            id: 'ADD-PER-CL',
+            name: 'ניתוח הארכת כותרת',
+            archTarget: 'SELECTED',
+            archGmc: 'GMC-PER02',
+            subCodes: [
+              { gmc: 'GMC-PER02', label: 'הארכת כותרת קלינית' },
+              { gmc: 'GMC-HYG01', label: 'סילוק תפרים וביקורת החלמה' }
+            ]
+          }
+        ]
+      },
+      {
+        domainKey: 'SPLINTS',
+        domainTitle: '🛡️ 3. תחום סדים',
+        badgeText: 'סדים',
+        badgeCls: 'fam-prostho',
+        shortcuts: [
+          {
+            id: 'ADD-SPL-NIGHT',
+            name: 'סד לילה קשיח (אקריל)',
+            archTarget: 'UPPER',
+            archGmc: 'GMC-MSC01',
+            subCodes: [
+              { gmc: 'GMC-MSC01', label: 'סד סגרי קשיח' },
+              { gmc: 'GMC-PRO16', label: 'איזון סגרי לסד' },
+              { gmc: 'GMC-EX01',  label: 'מסירת סד וביקורת' }
+            ]
+          },
+          {
+            id: 'ADD-SPL-SURG',
+            name: 'סד כירורגי מונחה לשתלים',
+            archTarget: 'UPPER',
+            archGmc: 'GMC-IMP00',
+            subCodes: [
+              { gmc: 'GMC-IMP00', label: 'סד כירורגי ממוחשב' },
+              { gmc: 'GMC-PRO16', label: 'סריקה ותכנון תלת-ממדי' }
+            ]
+          },
+          {
+            id: 'ADD-SPL-BLEACH',
+            name: 'סד הלבנה / פלואוריד (זוג לסתות)',
+            archTarget: 'GENERAL',
+            subCodes: [
+              { gmc: 'GMC-HYG06', label: 'סד סיליקון רך ע\'' },
+              { gmc: 'GMC-HYG06', label: 'סד סיליקון רך ת\'' }
+            ]
+          }
+        ]
+      },
+      {
+        domainKey: 'GENERAL_DIAG',
+        domainTitle: '➕ 4. תחום כללי ואבחון',
+        badgeText: 'תחום כללי',
+        badgeCls: 'fam-diag',
+        shortcuts: [
+          {
+            id: 'ADD-GEN-COMP-EXAM',
+            name: 'בדיקה ותוכנית טיפול מקיפה',
+            archTarget: 'GENERAL',
+            subCodes: [
+              { gmc: 'GMC-EX01',  label: 'בדיקת מומחה לשיקום הפה' },
+              { gmc: 'GMC-EX01',  label: 'מיפוי פה ראשוני (102)' },
+              { gmc: 'GMC-RAD05', label: 'צילום פנורמי / סטטוס' }
+            ]
+          },
+          {
+            id: 'ADD-GEN-CT-PLAN',
+            name: 'הדמיית CT ותכנון כירורגי',
+            archTarget: 'GENERAL',
+            subCodes: [
+              { gmc: 'GMC-RAD09', label: 'צילום CT דנטלי (119)' },
+              { gmc: 'GMC-RAD05', label: 'פנורמי בקרה (116)' },
+              { gmc: 'GMC-EX01',  label: 'תכנון שתלים ממוחשב' }
+            ]
+          },
+          {
+            id: 'ADD-GEN-STATUS',
+            name: 'סט צילומים מלא ואבחון',
+            archTarget: 'GENERAL',
+            subCodes: [
+              { gmc: 'GMC-RAD07', label: 'צילום סטטוס מלא (114)' },
+              { gmc: 'GMC-EX01',  label: 'בדיקה קלינית ותיעוד' }
+            ]
+          }
+        ]
+      }
     ];
 
     const CONSULTANTS = [
@@ -634,8 +781,8 @@
       { key: 'PONTIC',      label: 'כד"מ' },
       { key: 'TEMP',        label: 'כ"ז' },
       { key: 'CROWN',       label: 'כתר סופי' },
-      { key: 'CORE',        label: 'מבנה / שחזור' },
-      { key: 'ENDO',        label: 'ט"ש / ע\'' }
+      { key: 'CORE',        label: 'מבנה / מיקרו\'' },
+      { key: 'ENDO',        label: 'ט"ש / חט"ש / ע\'' }
     ];
 
     const CATALOG = [
@@ -648,25 +795,36 @@
 
       { gmc: 'GMC-SUR01', leumit: '501', family: 'PERIO', rowKey: 'ENDO', name: 'עקירה', short: "ע'", pGen: 275, pSilv: 161, pGold: 68, p72: 38 },
       { gmc: 'GMC-IMP01', leumit: '550', family: 'PERIO', rowKey: 'IMPLANT_ROW', name: 'התקנת שתל דנטלי', short: 'שתל', pGen: 3864, pSilv: 2053, pGold: 1560, p72: 116 },
-      { gmc: 'GMC-IMP09', leumit: '555', family: 'PERIO', rowKey: 'IMPLANT_ROW', name: 'חשיפת שתל', short: 'חשיפה', pGen: 450, pSilv: 310, pGold: 220, p72: 0 },
+      { gmc: 'GMC-IMP09', leumit: '555', family: 'PERIO', rowKey: 'IMPLANT_ROW', name: 'שתל - חשיפה', short: 'שתל - חשיפה', pGen: 450, pSilv: 310, pGold: 220, p72: 0 },
       { gmc: 'GMC-PER01', leumit: '210', family: 'PERIO', rowKey: 'ARCH', name: 'הקצעת שורשים', short: 'הקצעת שורשים', pGen: 715, pSilv: 580, pGold: 299, p72: 116 },
       { gmc: 'GMC-PER02', leumit: '520', family: 'PERIO', rowKey: 'ENDO', name: 'הארכת כותרת', short: 'ה.כותרת', pGen: 1039, pSilv: 707, pGold: 483, p72: 0 },
       { gmc: 'GMC-HYG01', leumit: '201', family: 'PERIO', rowKey: 'ARCH', name: 'סילוק אבנית (שיננית)', short: 'שיננית', pGen: 198, pSilv: 99, pGold: 49, p72: 0 },
 
-      { gmc: 'GMC-RCT01', leumit: '401', family: 'ENDO', rowKey: 'ENDO', name: 'טיפול שורש', short: 'ט"ש', pGen: 727, pSilv: 582, pGold: 68, p72: 155 },
-      { gmc: 'GMC-RCT13', leumit: '413', family: 'ENDO', rowKey: 'ENDO', name: 'חידוש טיפול שורש', short: 'ח.ט"ש', pGen: 1167, pSilv: 752, pGold: 68, p72: 155 },
+      // Canal-Specific Root Canal Codes (ט"ש 1, 2, 3, 4 תעלות)
+      { gmc: 'GMC-RCT01', leumit: '401', family: 'ENDO', rowKey: 'ENDO', name: 'טיפול שורש - 1 תעלה', short: 'ט"ש (1 תע\')', pGen: 589, pSilv: 440, pGold: 68, p72: 155 },
+      { gmc: 'GMC-RCT02', leumit: '402', family: 'ENDO', rowKey: 'ENDO', name: 'טיפול שורש - 2 תעלות', short: 'ט"ש (2 תע\')', pGen: 727, pSilv: 582, pGold: 68, p72: 155 },
+      { gmc: 'GMC-RCT03', leumit: '403', family: 'ENDO', rowKey: 'ENDO', name: 'טיפול שורש - 3 תעלות', short: 'ט"ש (3 תע\')', pGen: 914, pSilv: 690, pGold: 68, p72: 155 },
+      { gmc: 'GMC-RCT04', leumit: '404', family: 'ENDO', rowKey: 'ENDO', name: 'טיפול שורש - 4 תעלות', short: 'ט"ש (4 תע\')', pGen: 1085, pSilv: 810, pGold: 68, p72: 155 },
+
+      // Canal-Specific Retreatment Codes (חט"ש 1, 2, 3, 4 תעלות)
+      { gmc: 'GMC-RCT11', leumit: '411', family: 'ENDO', rowKey: 'ENDO', name: 'חידוש ט"ש - 1 תעלה', short: 'חט"ש (1 תע\')', pGen: 890, pSilv: 620, pGold: 68, p72: 155 },
+      { gmc: 'GMC-RCT12', leumit: '412', family: 'ENDO', rowKey: 'ENDO', name: 'חידוש ט"ש - 2 תעלות', short: 'חט"ש (2 תע\')', pGen: 1050, pSilv: 710, pGold: 68, p72: 155 },
+      { gmc: 'GMC-RCT13', leumit: '413', family: 'ENDO', rowKey: 'ENDO', name: 'חידוש ט"ש - 3 תעלות', short: 'חט"ש (3 תע\')', pGen: 1167, pSilv: 752, pGold: 68, p72: 155 },
+      { gmc: 'GMC-RCT14', leumit: '414', family: 'ENDO', rowKey: 'ENDO', name: 'חידוש ט"ש - 4 תעלות', short: 'חט"ש (4 תע\')', pGen: 1340, pSilv: 890, pGold: 68, p72: 155 },
+
       { gmc: 'GMC-RCT06', leumit: '406', family: 'ENDO', rowKey: 'CORE', name: 'תוספת מיקרוסקופ', short: 'מיקרוסקופ', pGen: 370, pSilv: 290, pGold: 242, p72: 0 },
 
       { gmc: 'GMC-PRO01', leumit: '601', family: 'PROSTHO', rowKey: 'CORE', name: 'מבנה מיידי / יצוק', short: 'מבנה', pGen: 650, pSilv: 420, pGold: 260, p72: 38 },
+      { gmc: 'GMC-PRO21', leumit: '628', family: 'PROSTHO', rowKey: 'CORE', name: 'מבנה ע"ג שתל', short: 'מבנה שתל', pGen: 1250, pSilv: 820, pGold: 560, p72: 0 },
       { gmc: 'GMC-PRO12', leumit: '614', family: 'PROSTHO', rowKey: 'TEMP', name: 'כתר זמני אקריל', short: 'כ"ז', pGen: 343, pSilv: 165, pGold: 127, p72: 0 },
-      { gmc: 'GMC-PRO19', leumit: '623', family: 'PROSTHO', rowKey: 'CROWN', name: 'כתר זירקוניה', short: 'זירקוניה', pGen: 2550, pSilv: 1650, pGold: 1100, p72: 0 },
+      { gmc: 'GMC-PRO19', leumit: '623', family: 'PROSTHO', rowKey: 'CROWN', name: 'כתר זירקוניה', short: 'כתר זירקוניה', pGen: 2550, pSilv: 1650, pGold: 1100, p72: 0 },
       { gmc: 'GMC-PRO17', leumit: '621', family: 'PROSTHO', rowKey: 'CROWN', name: 'כתר חרסינה PFM', short: 'כתר PFM', pGen: 1899, pSilv: 1400, pGold: 715, p72: 233 },
       { gmc: 'GMC-PRO23', leumit: '629', family: 'PROSTHO', rowKey: 'CROWN', name: 'כתר ומבנה זירקוניה ע"ג שתל', short: 'זירקוניה שתל', pGen: 3800, pSilv: 2350, pGold: 1800, p72: 0 },
-      { gmc: 'GMC-PRO25', leumit: '621P',family: 'PROSTHO', rowKey: 'PONTIC', name: 'כתר דמה (כד"מ)', short: 'כד"מ', pGen: 1899, pSilv: 1400, pGold: 715, p72: 0 },
+      { gmc: 'GMC-PRO25', leumit: '621P',family: 'PROSTHO', rowKey: 'PONTIC', name: 'כתר דמה (כד"מ / פונטיק)', short: 'כד"מ', pGen: 1899, pSilv: 1400, pGold: 715, p72: 0 },
 
       { gmc: 'GMC-DEN01', leumit: '701', family: 'PROSTHO', rowKey: 'ARCH', name: 'תותבת שלמה ללסת', short: 'תותבת שלמה', pGen: 3400, pSilv: 1650, pGold: 1350, p72: 349 },
       { gmc: 'GMC-DEN02', leumit: '705', family: 'PROSTHO', rowKey: 'ARCH', name: 'תותבת חלקית להוצאה (RPD)', short: 'תותבת חלקית להוצאה', pGen: 4200, pSilv: 2150, pGold: 1750, p72: 349 },
-      { gmc: 'GMC-DEN03', leumit: '710', family: 'PROSTHO', rowKey: 'ARCH', name: 'ריפוד / תיקון תותבת', short: 'ריפוד תותבת', pGen: 680, pSilv: 290, pGold: 220, p72: 0 },
+      { gmc: 'GMC-DEN03', leumit: '710', family: 'PROSTHO', rowKey: 'ARCH', name: 'ריפוד / תיקון / רכיבי תותבת', short: 'רכיב תותבת', pGen: 680, pSilv: 290, pGold: 220, p72: 0 },
       { gmc: 'GMC-MSC01', leumit: '801', family: 'PROSTHO', rowKey: 'ARCH', name: 'סד לילה קשיח / רך', short: 'סד לילה', pGen: 950, pSilv: 480, pGold: 390, p72: 0 },
       { gmc: 'GMC-IMP00', leumit: '518', family: 'PROSTHO', rowKey: 'ARCH', name: 'סד כירורגי ממוחשב לשתלים', short: 'סד שתלים', pGen: 4200, pSilv: 3360, pGold: 2630, p72: 0 },
       { gmc: 'GMC-HYG06', leumit: '206', family: 'REST',    rowKey: 'ARCH', name: 'סד הלבנה ללסת', short: 'סד הלבנה', pGen: 1058, pSilv: 862, pGold: 718, p72: 0 },
@@ -758,6 +916,7 @@
       patients: [],
       catalog: [],
       sheetComplexes: [],
+      additionsDomains: [],
       activePtId: null,
       wsStage: 1, // 1: Tooth Status & Prognosis, 2: Treatment Plan, 3: HMO Status
       homeGroupFilter: 'ALL',
@@ -767,11 +926,417 @@
 
     function init() {
       try {
-        const savedPts = localStorage.getItem('GMC_PERSISTENT_PTS_V6');
+        const savedPts = localStorage.getItem('GMC_PERSISTENT_PTS_V7');
         App.patients = savedPts ? JSON.parse(savedPts) : JSON.parse(JSON.stringify(DEFAULT_PATIENTS));
         if (!Array.isArray(App.patients) || App.patients.length === 0) {
           App.patients = JSON.parse(JSON.stringify(DEFAULT_PATIENTS));
         }
+      } catch (e) {
+        App.patients = JSON.parse(JSON.stringify(DEFAULT_PATIENTS));
+      }
+
+      try {
+        const savedCat = localStorage.getItem('GMC_PERSISTENT_CAT_V7');
+        App.catalog = savedCat ? JSON.parse(savedCat) : JSON.parse(JSON.stringify(CATALOG));
+      } catch (e) {
+        App.catalog = JSON.parse(JSON.stringify(CATALOG));
+      }
+
+      try {
+        const savedComp = localStorage.getItem('GMC_SHEET_SHORTCUTS_V7');
+        App.sheetComplexes = savedComp ? JSON.parse(savedComp) : JSON.parse(JSON.stringify(DEFAULT_SHEET_COMPLEXES));
+      } catch (e) {
+        App.sheetComplexes = JSON.parse(JSON.stringify(DEFAULT_SHEET_COMPLEXES));
+      }
+
+      try {
+        const savedAdd = localStorage.getItem('GMC_ADDITIONS_DOMAINS_V7');
+        App.additionsDomains = savedAdd ? JSON.parse(savedAdd) : JSON.parse(JSON.stringify(DEFAULT_ADDITIONS_SHORTCUTS));
+      } catch (e) {
+        App.additionsDomains = JSON.parse(JSON.stringify(DEFAULT_ADDITIONS_SHORTCUTS));
+      }
+
+      initDropdowns();
+      renderSheetComplexButtons();
+      fetchSheetComplexes(false);
+      goHome();
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem('GMC_PERSISTENT_PTS_V7', JSON.stringify(App.patients));
+        localStorage.setItem('GMC_PERSISTENT_CAT_V7', JSON.stringify(App.catalog));
+        localStorage.setItem('GMC_SHEET_SHORTCUTS_V7', JSON.stringify(App.sheetComplexes));
+        localStorage.setItem('GMC_ADDITIONS_DOMAINS_V7', JSON.stringify(App.additionsDomains));
+      } catch (e) {}
+    }
+
+    function getPt() {
+      return App.patients.find(p => p.id === App.activePtId);
+    }
+
+    function getCat(gmc) {
+      return App.catalog.find(c => c.gmc === gmc) || App.catalog[0];
+    }
+
+    function toast(msg) {
+      const box = document.getElementById('toast-container');
+      const el = document.createElement('div');
+      el.className = 'bg-slate-900 text-white text-xs font-bold px-3.5 py-2 rounded-xl shadow-lg flex items-center gap-2';
+      el.innerHTML = `<span>✨</span><span>${msg}</span>`;
+      box.appendChild(el);
+      setTimeout(() => el.remove(), 2600);
+    }
+
+    // =========================================================================
+    // 3. HOME DASHBOARD, "+ הוספת מטופל חדש" & 3-DOTS MENU (`⋮`)
+    // =========================================================================
+    function initDropdowns() {
+      const docFilter = document.getElementById('home-filter-doc');
+      const wsDoc = document.getElementById('ws-doc');
+      docFilter.innerHTML = '<option value="ALL">מתכנן ההצעה (הכל)</option>';
+      wsDoc.innerHTML = '<option value="">מתכנן ההצעה</option>';
+
+      DOCTORS.forEach(d => {
+        const label = d === 'לא שויך' ? 'לא שויך' : d;
+        docFilter.add(new Option(label, d));
+        wsDoc.add(new Option(label, d));
+      });
+
+      const singleSel = document.getElementById('builder-single-select');
+      singleSel.innerHTML = '';
+      App.catalog.forEach(c => {
+        if (c.rowKey !== 'IMAGING' && c.rowKey !== 'ARCH') {
+          singleSel.add(new Option(`${c.short}`, c.gmc));
+        }
+      });
+    }
+
+    // Smart FDI tooth number -> Canal count & GMC Code resolver for ט"ש and חט"ש
+    function resolveSmartEndoByTooth(toothStr, isRetreatment) {
+      const t = String(toothStr).trim();
+      const pos = parseInt(t.slice(-1), 10); // 1..8
+      const quad = parseInt(t.charAt(0), 10); // 1..4
+      const isUpper = (quad === 1 || quad === 2);
+
+      let canals = 1;
+      if (pos >= 1 && pos <= 3) {
+        canals = 1; // Anterior teeth (11-13, 21-23, 31-33, 41-43)
+      } else if (pos === 4) {
+        canals = isUpper ? 2 : 1; // 14, 24 -> 2 canals; 34, 44 -> 1 canal
+      } else if (pos === 5) {
+        canals = 2; // Premolars 15, 25, 35, 45 -> 2 canals
+      } else if (pos >= 6) {
+        // Molars (e.g., 16, 17, 18, 26, 27, 28, 36, 37, 38, 46, 47, 48) -> 4 canals!
+        canals = 4;
+      }
+
+      const rctMap = { 1: 'GMC-RCT01', 2: 'GMC-RCT02', 3: 'GMC-RCT03', 4: 'GMC-RCT04' };
+      const retMap = { 1: 'GMC-RCT11', 2: 'GMC-RCT12', 3: 'GMC-RCT13', 4: 'GMC-RCT14' };
+      const gmc = isRetreatment ? retMap[canals] : rctMap[canals];
+      const prefix = isRetreatment ? 'חט"ש' : 'ט"ש';
+      return {
+        canals,
+        gmc,
+        label: `${prefix} (${canals} תע')`
+      };
+    }
+
+    // Live sync with Google Sheet "קודים קיצורי דרך" tab (Column A = Shortcut Name, Column B = Activated Items)
+    async function fetchSheetComplexes(showNotification) {
+      try {
+        const res = await fetch(COMPLEXES_CSV_URL);
+        if (!res.ok) throw new Error('CSV fetch failed');
+        const csvText = await res.text();
+        const rows = parseCsvRows(csvText);
+        if (rows.length > 1) {
+          const parsed = [];
+          const palette = [
+            'bg-rose-600 hover:bg-rose-500',
+            'bg-indigo-600 hover:bg-indigo-500',
+            'bg-sky-600 hover:bg-sky-500',
+            'bg-amber-600 hover:bg-amber-500',
+            'bg-teal-600 hover:bg-teal-500',
+            'bg-purple-600 hover:bg-purple-500'
+          ];
+          for (let i = 1; i < rows.length; i++) {
+            const colA = (rows[i][0] || '').trim();
+            const colB = (rows[i][1] || '').trim();
+            if (!colA) continue;
+            let items = colB ? colB.split(/[,+\n]/).map(s => s.trim()).filter(Boolean) : [colA];
+            let isSmartEndo = null;
+            if (colA === 'ט"ש' || colA.includes('טיפול שורש')) {
+              isSmartEndo = 'RCT';
+            } else if (colA === 'חט"ש' || colA === 'ח.ט"ש' || colA.includes('חידוש')) {
+              isSmartEndo = 'RET';
+            }
+            if (colA.includes('פונטיק') && items.length < 2) {
+              items = ['כ"ז', 'כד"מ', 'כתר זירקוניה'];
+            }
+            parsed.push({
+              name: colA,
+              items,
+              isSmartEndo,
+              isBridge: colA.includes('גשר'),
+              color: palette[(i - 1) % palette.length]
+            });
+          }
+          if (parsed.length > 0) {
+            // Ensure smart shortcuts for פונטיק, ט"ש, חט"ש are always present
+            if (!parsed.some(p => p.name.includes('פונטיק'))) {
+              parsed.push({ name: 'פונטיק', items: ['כ"ז', 'כד"מ', 'כתר זירקוניה'], color: 'bg-indigo-600 hover:bg-indigo-500' });
+            }
+            if (!parsed.some(p => p.isSmartEndo === 'RCT')) {
+              parsed.push({ name: 'ט"ש', items: ['ט"ש לפי תעלות', 'מיקרוסקופ', 'מבנה'], isSmartEndo: 'RCT', color: 'bg-amber-600 hover:bg-amber-500' });
+            }
+            if (!parsed.some(p => p.isSmartEndo === 'RET')) {
+              parsed.push({ name: 'חט"ש', items: ['חט"ש לפי תעלות', 'מיקרוסקופ', 'מבנה'], isSmartEndo: 'RET', color: 'bg-orange-600 hover:bg-orange-500' });
+            }
+            App.sheetComplexes = parsed;
+            saveState();
+            renderSheetComplexButtons();
+            const badge = document.getElementById('complexes-sync-badge');
+            if (badge) badge.textContent = `סונכרן מגוגל שיטס (${parsed.length} קודים קיצורי דרך)`;
+            if (showNotification) toast('רשימת "קודים קיצורי דרך" עודכנה מה-Google Sheet');
+            return;
+          }
+        }
+      } catch (e) {
+        if (showNotification) toast('משתמש בקודים קיצורי דרך השמורים (ניתן להוסיף ב-+ קיצור דרך חדש)');
+      }
+    }
+
+    function parseCsvRows(text) {
+      const lines = text.split(/\r?\n/).filter(l => l.trim().length > 0);
+      return lines.map(line => {
+        const result = [];
+        let cur = '';
+        let inQuotes = false;
+        for (let i = 0; i < line.length; i++) {
+          const ch = line[i];
+          if (ch === '"') {
+            inQuotes = !inQuotes;
+          } else if (ch === ',' && !inQuotes) {
+            result.push(cur);
+            cur = '';
+          } else {
+            cur += ch;
+          }
+        }
+        result.push(cur);
+        return result;
+      });
+    }
+
+    function renderSheetComplexButtons() {
+      const box = document.getElementById('sheet-complexes-buttons');
+      if (!box) return;
+      box.innerHTML = App.sheetComplexes.map((comp, idx) => `
+        <button type="button" onclick="applySheetComplex(${idx})" class="px-2.5 py-1 rounded-lg ${comp.color || 'bg-sky-600 hover:bg-sky-500'} font-bold text-white flex items-center gap-1 shadow-sm" title="מפעיל: ${(comp.items || []).join(' + ')}">
+          <span>+</span>
+          <span>${comp.name}</span>
+        </button>
+      `).join('');
+    }
+
+    function openAddCustomComplexModal() {
+      const name = prompt('שם קיצור הדרך (עמודה A בגיליון "קודים קיצורי דרך"):', 'פונטיק');
+      if (!name) return;
+      const itemsStr = prompt('קודים מופעלים מופרדים בפסיק (עמודה B בגיליון):', 'כ"ז, כד"מ, כתר זירקוניה');
+      if (!itemsStr) return;
+      const items = itemsStr.split(',').map(s => s.trim()).filter(Boolean);
+      App.sheetComplexes.push({
+        name: name.trim(),
+        items,
+        isBridge: name.includes('גשר'),
+        color: 'bg-sky-600 hover:bg-sky-500'
+      });
+      saveState();
+      renderSheetComplexButtons();
+      toast(`קיצור הדרך "${name}" נוסף בהצלחה`);
+    }
+
+    function mapItemNameToGmcCode(itemName) {
+      const norm = itemName.trim();
+      if (norm === 'שתל' || norm.includes('התקנת שתל')) return 'GMC-IMP01';
+      if (norm.includes('חשיפה') || norm.includes('שתל - חשיפה') || norm.includes('שתל- חשיפה')) return 'GMC-IMP09';
+      if (norm.includes('מבנה ע"ג שתל') || norm.includes('מבנה שתל')) return 'GMC-PRO21';
+      if (norm.includes('זירקוניה שתל') || norm.includes('שיקום ע"ג שתל')) return 'GMC-PRO23';
+      if (norm.includes('זירקוניה')) return 'GMC-PRO19';
+      if (norm.includes('חרסינה') || norm.includes('PFM')) return 'GMC-PRO17';
+      if (norm.includes('מבנה')) return 'GMC-PRO01';
+      if (norm.includes('כ"ז') || norm.includes('כתר זמני')) return 'GMC-PRO12';
+      if (norm.includes('כד"מ') || norm.includes('דמה') || norm.includes('פונטיק')) return 'GMC-PRO25';
+      if (norm.includes('ח.ט"ש') || norm.includes('חט"ש') || norm.includes('חידוש')) return 'GMC-RCT13';
+      if (norm.includes('ט"ש') || norm.includes('שורש')) return 'GMC-RCT01';
+      if (norm.includes('מיקרוסקופ')) return 'GMC-RCT06';
+      if (norm === "ע'" || norm === 'ע' || norm.includes('עקירה')) return 'GMC-SUR01';
+      if (norm.includes('תותבת שלמה')) return 'GMC-DEN01';
+      if (norm.includes('תותבת חלקית')) return 'GMC-DEN02';
+      const found = App.catalog.find(c => c.short === norm || c.name.includes(norm));
+      return found ? found.gmc : 'GMC-PRO19';
+    }
+
+    function applySheetComplex(idx) {
+      const comp = App.sheetComplexes[idx];
+      if (!comp) return;
+      const sel = Array.from(App.selectedTeeth);
+      if (!sel.length) {
+        toast('סמן לפחות שן אחת בטבלה (תיבת ✓)');
+        return;
+      }
+      const pt = getPt();
+
+      // EXCEPTION 1: Smart Root Canal / Retreatment (ט"ש / חט"ש) -> Auto-selects canals by tooth number + Microscope + Core!
+      if (comp.isSmartEndo || comp.name === 'ט"ש' || comp.name === 'חט"ש' || comp.name === 'ח.ט"ש') {
+        const isRet = comp.isSmartEndo === 'RET' || comp.name.includes('ח');
+        const summaryDetails = [];
+
+        sel.forEach(t => {
+          const arch = UPPER_TEETH.includes(t) ? 'UPPER' : 'LOWER';
+          const endoInfo = resolveSmartEndoByTooth(t, isRet);
+          summaryDetails.push(`שן ${t}: ${endoInfo.canals} תעלות`);
+
+          // Remove any previous root canal on this tooth
+          pt.capsules = pt.capsules.filter(c => !(c.teeth.length === 1 && c.teeth[0] === t && c.gmc.startsWith('GMC-RCT0') && c.gmc !== 'GMC-RCT06'));
+          pt.capsules = pt.capsules.filter(c => !(c.teeth.length === 1 && c.teeth[0] === t && c.gmc.startsWith('GMC-RCT1')));
+
+          // 1. Canal-specific Root Canal or Retreatment code
+          pt.capsules.push({
+            id: `C-ENDO-${Date.now()}-${t}`,
+            arch,
+            teeth: [t],
+            gmc: endoInfo.gmc,
+            status: 'APPROVED',
+            done: false,
+            label: endoInfo.label
+          });
+
+          // 2. Microscope (מיקרוסקופ)
+          pt.capsules = pt.capsules.filter(c => !(c.teeth.length === 1 && c.teeth[0] === t && c.gmc === 'GMC-RCT06'));
+          pt.capsules.push({
+            id: `C-MIC-${Date.now()}-${t}`,
+            arch,
+            teeth: [t],
+            gmc: 'GMC-RCT06',
+            status: 'APPROVED',
+            done: false,
+            label: 'מיקרוסקופ'
+          });
+
+          // 3. Post & Core (מבנה)
+          pt.capsules = pt.capsules.filter(c => !(c.teeth.length === 1 && c.teeth[0] === t && c.gmc === 'GMC-PRO01'));
+          pt.capsules.push({
+            id: `C-CORE-${Date.now()}-${t}`,
+            arch,
+            teeth: [t],
+            gmc: 'GMC-PRO01',
+            status: 'APPROVED',
+            done: false,
+            label: 'מבנה'
+          });
+        });
+
+        saveState();
+        renderPersistentDentalCross();
+        renderStage2Panels();
+        toast(`${comp.name} הוזן אוטומטית (${summaryDetails.join(', ')}) + מיקרוסקופ + מבנה`);
+        return;
+      }
+
+      // EXCEPTION 2: "פונטיק" (Pontic) -> Always generates 3 codes together on each selected tooth (even if X missing)
+      if (comp.name.includes('פונטיק')) {
+        const ponticTriplet = [
+          { gmc: 'GMC-PRO12', label: 'כ"ז' },
+          { gmc: 'GMC-PRO25', label: 'כד"מ' },
+          { gmc: 'GMC-PRO19', label: 'כתר זירקוניה' }
+        ];
+        sel.forEach(t => {
+          const arch = UPPER_TEETH.includes(t) ? 'UPPER' : 'LOWER';
+          ponticTriplet.forEach((pItem, i) => {
+            pt.capsules = pt.capsules.filter(c => !(c.teeth.length === 1 && c.teeth[0] === t && c.gmc === pItem.gmc));
+            pt.capsules.push({
+              id: `C-PONT-${Date.now()}-${t}-${i}`,
+              arch,
+              teeth: [t],
+              gmc: pItem.gmc,
+              status: 'APPROVED',
+              done: false,
+              label: pItem.label
+            });
+          });
+        });
+        saveState();
+        renderPersistentDentalCross();
+        renderStage2Panels();
+        toast('נוסף קיצור דרך "פונטיק" (3 קודים יחד: כ"ז + כד"מ + כתר זירקוניה)');
+        return;
+      }
+
+      if (comp.isBridge && sel.length > 1) {
+        const isUp = UPPER_TEETH.includes(sel[0]);
+        const archList = isUp ? UPPER_TEETH : LOWER_TEETH;
+        const sorted = sel.filter(t => archList.includes(t)).sort((a,b) => archList.indexOf(a) - archList.indexOf(b));
+        const arch = isUp ? 'UPPER' : 'LOWER';
+        const spanTxt = `${sorted[0]}-${sorted[sorted.length-1]}`;
+        (comp.items || []).forEach((itemLabel, i) => {
+          const gmc = mapItemNameToGmcCode(itemLabel);
+          pt.capsules.push({
+            id: `C-${Date.now()}-${i}`,
+            arch,
+            teeth: sorted,
+            gmc,
+            status: 'APPROVED',
+            done: false,
+            label: `${itemLabel} (${spanTxt})`
+          });
+        });
+      } else {
+        sel.forEach(t => {
+          const arch = UPPER_TEETH.includes(t) ? 'UPPER' : 'LOWER';
+          (comp.items || []).forEach((itemLabel, i) => {
+            const normItem = itemLabel.trim();
+            // Check if an item inside a custom shortcut is ט"ש or חט"ש
+            if (normItem === 'ט"ש' || normItem === 'חט"ש' || normItem === 'ח.ט"ש') {
+              const isRet = normItem.includes('ח');
+              const endoInfo = resolveSmartEndoByTooth(t, isRet);
+              pt.capsules.push({
+                id: `C-${Date.now()}-${t}-${i}-endo`,
+                arch,
+                teeth: [t],
+                gmc: endoInfo.gmc,
+                status: 'APPROVED',
+                done: false,
+                label: endoInfo.label
+              });
+              return;
+            }
+            const gmc = mapItemNameToGmcCode(itemLabel);
+            if (gmc === 'GMC-IMP01' || gmc === 'GMC-IMP09') {
+              pt.teethState[t] = 'IMPLANT';
+            }
+            if (gmc === 'GMC-SUR01') {
+              pt.teethState[t] = 'MISSING';
+            }
+            pt.capsules = pt.capsules.filter(c => !(c.teeth.length === 1 && c.teeth[0] === t && c.gmc === gmc));
+            pt.capsules.push({
+              id: `C-${Date.now()}-${t}-${i}-${Math.random().toString(36).slice(2,5)}`,
+              arch,
+              teeth: [t],
+              gmc,
+              status: 'APPROVED',
+              done: false,
+              label: itemLabel
+            });
+          });
+        });
+      }
+
+      saveState();
+      renderPersistentDentalCross();
+      renderStage2Panels();
+      toast(`נוסף קיצור דרך: ${comp.name}`);
+    }
       } catch (e) {
         App.patients = JSON.parse(JSON.stringify(DEFAULT_PATIENTS));
       }
@@ -1139,7 +1704,7 @@
       grid.innerHTML = list.map(p => {
         const displayName = (p.firstName || p.lastName) ? `${p.firstName} ${p.lastName}` : 'טיוטת מטופל חדש (ללא שם)';
         const isMenuOpen = App.openMenuPtId === p.id;
-        const docDisplay = p.treatingDoc || 'מבצע התוכנית';
+        const docDisplay = p.treatingDoc || 'מתכנן ההצעה';
         return `
           <div class="relative p-3.5 rounded-2xl border border-slate-200 hover:border-sky-400 bg-slate-50/60 hover:bg-white transition flex flex-col justify-between gap-3 shadow-sm">
             <div>
@@ -1171,7 +1736,7 @@
               </div>
 
               <div class="text-xs text-slate-500 mt-1.5 flex items-center justify-between pr-8">
-                <span>רופא: <strong class="text-slate-800">${docDisplay}</strong></span>
+                <span>מתכנן ההצעה: <strong class="text-slate-800">${docDisplay}</strong></span>
                 <span class="font-bold text-sky-700">תוכנית #${p.planNumber || 1} (${p.classification === 'FINAL' ? 'סופית' : 'ראשונית'})</span>
               </div>
             </div>
@@ -1751,15 +2316,144 @@
 
       const gBox = document.getElementById('builder-general-pills');
       if (!pt.generalItems || pt.generalItems.length === 0) {
-        gBox.innerHTML = `<span class="text-slate-400">ללא פריטים כלליים נוספים</span>`;
+        gBox.innerHTML = `<span class="text-slate-400">טרם נבחרו קודים מתוך "קודים - תוספות"</span>`;
       } else {
         gBox.innerHTML = pt.generalItems.map((g, i) => `
-          <span class="px-2 py-0.5 rounded-lg bg-slate-100 border border-slate-300 font-bold flex items-center gap-1">
+          <span class="px-2 py-0.5 rounded-lg bg-sky-50 text-sky-900 border border-sky-200 font-bold flex items-center gap-1">
             <span>${g.label}</span>
-            <button type="button" onclick="removeGeneralItem(${i})" class="text-rose-600 font-black">✕</button>
+            <button type="button" onclick="removeGeneralItem(${i})" class="text-rose-600 font-black hover:text-rose-800">✕</button>
           </span>
         `).join('');
       }
+
+      renderAdditionsDomainsGrid(pt);
+    }
+
+    // Render "קודים - תוספות" domains and expandable multi-code shortcuts
+    function renderAdditionsDomainsGrid(pt) {
+      const grid = document.getElementById('additions-domains-grid');
+      if (!grid) return;
+
+      grid.innerHTML = App.additionsDomains.map((dom, dIdx) => {
+        const shortcutsHtml = (dom.shortcuts || []).map((sc, sIdx) => {
+          const activeGroupCount = (pt.generalItems || []).filter(g => g.shortcutId === sc.id).length;
+          const subCount = (sc.subCodes || []).length;
+          const isApplied = activeGroupCount > 0;
+
+          return `
+            <div class="rounded-xl border ${isApplied ? 'border-sky-400 bg-sky-50/60' : 'border-slate-200 bg-slate-50/70'} p-2 transition space-y-1.5">
+              <div class="flex items-center justify-between gap-1.5">
+                <button type="button" onclick="applyAdditionShortcut(${dIdx}, ${sIdx})" class="text-right font-black text-slate-900 hover:text-sky-700 flex-1 flex items-center justify-between gap-1">
+                  <span>${sc.name}</span>
+                  <span class="px-2 py-0.5 rounded-md bg-slate-900 text-white text-[10px] font-black shrink-0">+ הוסף (${subCount} קודים)</span>
+                </button>
+              </div>
+              <div class="flex flex-wrap gap-1 pt-0.5">
+                ${(sc.subCodes || []).map(sub => `
+                  <span class="px-1.5 py-0.5 rounded bg-white border border-slate-200 text-[10px] font-bold text-slate-600">
+                    • ${sub.label}
+                  </span>
+                `).join('')}
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        return `
+          <div class="bg-white rounded-2xl border border-slate-200 p-3 shadow-sm space-y-2 flex flex-col">
+            <div class="font-black text-slate-900 border-b pb-1.5 flex items-center justify-between">
+              <span>${dom.domainTitle}</span>
+              <span class="text-[10px] px-1.5 py-0.5 rounded ${dom.badgeCls}">${dom.badgeText}</span>
+            </div>
+            <div class="space-y-2 flex-1">
+              ${shortcutsHtml}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function applyAdditionShortcut(dIdx, sIdx) {
+      const dom = App.additionsDomains[dIdx];
+      if (!dom) return;
+      const sc = dom.shortcuts[sIdx];
+      if (!sc) return;
+      const pt = getPt();
+      if (!pt.generalItems) pt.generalItems = [];
+
+      // If shortcut targets an arch on the Dental Cross (e.g. RPD / Full Denture / Night Guard)
+      if (sc.archTarget === 'UPPER' || sc.archTarget === 'LOWER') {
+        const teeth = sc.archTarget === 'UPPER' ? UPPER_TEETH.slice(1, 15) : LOWER_TEETH.slice(1, 15);
+        pt.capsules.push({
+          id: `C-ARCH-${Date.now()}`,
+          arch: sc.archTarget,
+          teeth,
+          gmc: sc.archGmc || 'GMC-DEN02',
+          status: 'APPROVED',
+          done: false,
+          label: sc.name
+        });
+      } else if (sc.archTarget === 'SELECTED') {
+        const sel = Array.from(App.selectedTeeth);
+        if (!sel.length) {
+          toast('סמן לפחות שן אחת בצלב השיניים עבור פעולה זו');
+          return;
+        }
+        sel.forEach(t => {
+          const arch = UPPER_TEETH.includes(t) ? 'UPPER' : 'LOWER';
+          pt.capsules.push({
+            id: `C-SEL-${Date.now()}-${t}`,
+            arch,
+            teeth: [t],
+            gmc: sc.archGmc || 'GMC-PER02',
+            status: 'APPROVED',
+            done: false,
+            label: sc.name
+          });
+        });
+      }
+
+      // Generate all underlying sub-codes under this shortcut
+      (sc.subCodes || []).forEach((sub, idx) => {
+        pt.generalItems.push({
+          id: `G-${Date.now()}-${idx}-${Math.random().toString(36).slice(2,5)}`,
+          shortcutId: sc.id,
+          shortcutName: sc.name,
+          gmc: sub.gmc,
+          label: `${sc.name}: ${sub.label}`,
+          status: 'APPROVED'
+        });
+      });
+
+      saveState();
+      renderPersistentDentalCross();
+      renderStage2Panels();
+      toast(`נוסף "${sc.name}" (${(sc.subCodes || []).length} קודים משויכים)`);
+    }
+
+    function openAddAdditionShortcutModal() {
+      const domainNum = prompt('בחר תחום (1=תותבות, 2=חניכיים, 3=סדים, 4=תחום כללי ואבחון):', '4');
+      const dIdx = Math.max(0, Math.min(3, (parseInt(domainNum, 10) || 4) - 1));
+      const name = prompt('שם קיצור הדרך בתוספות:', 'בדיקה וצילומים');
+      if (!name) return;
+      const subStr = prompt('הזן את הקודים שייווצרו תחתיו (מופרדים בפסיק):', 'מיפוי פה ראשוני, צילום פנורמי, צילום סטטוס');
+      if (!subStr) return;
+
+      const subCodes = subStr.split(',').map(s => {
+        const lbl = s.trim();
+        return { gmc: mapItemNameToGmcCode(lbl), label: lbl };
+      }).filter(x => x.label);
+
+      App.additionsDomains[dIdx].shortcuts.push({
+        id: 'ADD-CUSTOM-' + Date.now(),
+        name: name.trim(),
+        archTarget: 'GENERAL',
+        subCodes
+      });
+
+      saveState();
+      renderStage2Panels();
+      toast(`קיצור הדרך "${name}" נוסף אל "קודים - תוספות"`);
     }
 
     function renderStage3Panels() {
@@ -1796,6 +2490,24 @@
         tbody.appendChild(tr);
       });
 
+      // Also include expanded codes from "קודים - תוספות"
+      (pt.generalItems || []).forEach((g, gIdx) => {
+        const cat = getCat(g.gmc);
+        const st = g.status || 'APPROVED';
+        const price = st === 'UNREQ' ? 0 : getPrice(cat, pt.insurance);
+        total += price;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td class="p-1.5 font-bold text-slate-500">תוספות</td>
+          <td class="p-1.5 font-mono text-sky-700 font-bold">${cat.leumit}</td>
+          <td class="p-1.5 font-semibold">${g.label}</td>
+          <td class="p-1.5 font-num font-bold">₪${price}</td>
+          <td class="p-1.5 cursor-pointer" onclick="cycleGeneralItemStatus(${gIdx})">${badgeHtml[st] || badgeHtml.APPROVED}</td>
+          <td class="p-1.5 text-center"><input type="checkbox" ${g.done ? 'checked' : ''} onchange="toggleGeneralDone(${gIdx}, this.checked)" class="accent-emerald-600 cursor-pointer"></td>
+        `;
+        tbody.appendChild(tr);
+      });
+
       document.getElementById('approved-total-badge').textContent = `סה"כ משוער: ₪${total.toLocaleString()}`;
 
       const uBox = document.getElementById('approved-unreq-list');
@@ -1807,20 +2519,21 @@
       `).join('');
     }
 
-    function getPrice(cat, ins) {
-      if (ins === 'LEUMIT_GOLD') return cat.pGold;
-      if (ins === 'LEUMIT_SILVER') return cat.pSilv;
-      if (ins === 'LEUMIT_72') return cat.p72;
-      return cat.pGen;
+    function cycleGeneralItemStatus(gIdx) {
+      const pt = getPt();
+      const item = pt.generalItems && pt.generalItems[gIdx];
+      if (!item) return;
+      const order = ['APPROVED', 'REASON', 'DENIED', 'NORESP', 'UNREQ'];
+      item.status = order[(order.indexOf(item.status || 'APPROVED') + 1) % order.length];
+      saveState();
+      renderStage3Panels();
     }
 
-    function toggleDone(capId, val) {
+    function toggleGeneralDone(gIdx, val) {
       const pt = getPt();
-      const cap = pt.capsules.find(c => c.id === capId);
-      if (cap) {
-        cap.done = val;
+      if (pt.generalItems && pt.generalItems[gIdx]) {
+        pt.generalItems[gIdx].done = val;
         saveState();
-        renderPersistentDentalCross();
         renderStage3Panels();
       }
     }
@@ -1911,7 +2624,7 @@
         <div class="border-b-2 border-slate-900 pb-3 flex justify-between items-start text-xs">
           <div>
             <div class="text-base font-black">המרכז הרפואי לגליל (GMC) – המחלקה לשיקום הפה</div>
-            <div>מטופל/ת: <strong>${pt.firstName} ${pt.lastName}</strong> | רופא מטפל: <strong>${pt.treatingDoc}</strong></div>
+            <div>מטופל/ת: <strong>${pt.firstName} ${pt.lastName}</strong> | מתכנן ההצעה: <strong>${pt.treatingDoc || 'לא שויך'}</strong></div>
             ${pt.consultants.length ? `<div>צוות רב-תחומי: ${pt.consultants.join(', ')}</div>` : ''}
           </div>
           <div class="text-left font-num">
@@ -1927,14 +2640,19 @@
           const cat = getCat(c.gmc);
           return `<tr><td class="p-1.5 border font-num font-bold">${c.teeth.join(',')}</td><td class="p-1.5 border font-mono font-bold">${cat.leumit}</td><td class="p-1.5 border">${c.label || cat.name}</td></tr>`;
         }).join('');
+        const genRows = (pt.generalItems || []).map(g => {
+          const cat = getCat(g.gmc);
+          return `<tr><td class="p-1.5 border font-bold">כללי / תוספות</td><td class="p-1.5 border font-mono font-bold">${cat.leumit}</td><td class="p-1.5 border">${g.label}</td></tr>`;
+        }).join('');
         area.innerHTML = `
           ${header}
           <h3 class="font-black text-sm">דרישת קודים לאישור קופת חולים</h3>
           <table class="w-full text-right text-xs border">
-            <thead class="bg-slate-100 font-bold"><tr><th class="p-1.5 border">שן</th><th class="p-1.5 border">קוד לאומית</th><th class="p-1.5 border">תיאור הטיפול</th></tr></thead>
+            <thead class="bg-slate-100 font-bold"><tr><th class="p-1.5 border">שן / אזור</th><th class="p-1.5 border">קוד לאומית</th><th class="p-1.5 border">תיאור הטיפול</th></tr></thead>
             <tbody>
               ${rows}
-              ${auto.imgTeeth.length ? `<tr><td class="p-1.5 border font-num">${auto.imgTeeth.join(',')}</td><td class="p-1.5 border font-mono font-bold">115</td><td class="p-1.5 border">צילומי הדמיה לשיניים מטופלות (${auto.imgTeeth.length})</td></tr>` : ''}
+              ${genRows}
+              ${auto.imgTeeth.length ? `<tr><td class="p-1.5 border font-num">${auto.imgTeeth.join(',')}</td><td class="p-1.5 border font-mono font-bold">115</td><td class="p-1.5 border">צילומי הדמיה לשיניים מטופלות (${auto.imgTeeth.length} יח')</td></tr>` : ''}
               ${auto.upperModel ? `<tr><td class="p-1.5 border">לסת עליונה</td><td class="p-1.5 border font-mono font-bold">619</td><td class="p-1.5 border">מודל לימוד ללסת עליונה</td></tr>` : ''}
               ${auto.lowerModel ? `<tr><td class="p-1.5 border">לסת תחתונה</td><td class="p-1.5 border font-mono font-bold">619</td><td class="p-1.5 border">מודל לימוד ללסת תחתונה</td></tr>` : ''}
             </tbody>
@@ -1949,6 +2667,12 @@
           sum += pr;
           return `<tr><td class="p-1.5 border font-num font-bold">${c.teeth.join(',')}</td><td class="p-1.5 border font-mono">${cat.leumit}</td><td class="p-1.5 border">${c.label || cat.name}</td><td class="p-1.5 border font-num font-bold">₪${pr}</td></tr>`;
         }).join('');
+        const genRows = (pt.generalItems || []).filter(g => g.status !== 'UNREQ').map(g => {
+          const cat = getCat(g.gmc);
+          const pr = getPrice(cat, pt.insurance);
+          sum += pr;
+          return `<tr><td class="p-1.5 border font-bold">תוספות</td><td class="p-1.5 border font-mono">${cat.leumit}</td><td class="p-1.5 border">${g.label}</td><td class="p-1.5 border font-num font-bold">₪${pr}</td></tr>`;
+        }).join('');
         const disclaimer = pt.classification === 'INITIAL'
           ? 'הבהרה: זוהי תוכנית ראשונית בלבד ואינה תוכנית סופית – צפויה תוכנית המשך. המחירים הינם הערכה משוערת בלבד.'
           : 'הבהרה: הצעה זו מהווה הערכת מחיר משוערת בלבד – גם בתוכנית סופית ייתכנו שינויים בהתאם לממצאים הקליניים בפה.';
@@ -1956,8 +2680,8 @@
           ${header}
           <h3 class="font-black text-sm">הערכת השתתפות עצמית למטופל/ת</h3>
           <table class="w-full text-right text-xs border">
-            <thead class="bg-slate-100 font-bold"><tr><th class="p-1.5 border">שן</th><th class="p-1.5 border">קוד</th><th class="p-1.5 border">טיפול</th><th class="p-1.5 border">מחיר משוער</th></tr></thead>
-            <tbody>${rows}</tbody>
+            <thead class="bg-slate-100 font-bold"><tr><th class="p-1.5 border">שן / אזור</th><th class="p-1.5 border">קוד</th><th class="p-1.5 border">טיפול</th><th class="p-1.5 border">מחיר משוער</th></tr></thead>
+            <tbody>${rows}${genRows}</tbody>
             <tfoot class="bg-slate-100 font-black"><tr><td colspan="3" class="p-2 text-left">סה"כ משוער:</td><td class="p-2 font-num">₪${sum.toLocaleString()}</td></tr></tfoot>
           </table>
           <div class="p-3 rounded-xl bg-amber-50 border border-amber-300 text-xs font-bold">${disclaimer}</div>
