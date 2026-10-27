@@ -28,10 +28,10 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    /* Compact 16-Column Dental Cross Grid */
+    /* Persistent 16-Column Dental Cross Table */
     .dental-cross-table {
       width: 100%;
-      min-width: 900px;
+      min-width: 940px;
       border-collapse: separate;
       border-spacing: 0;
       table-layout: fixed;
@@ -41,33 +41,44 @@
       padding: 2px;
       text-align: center;
       vertical-align: middle;
-      height: 25px;
+      height: 27px;
       position: relative;
+      transition: background-color 0.15s ease;
     }
     .dental-cross-table .row-label {
-      width: 78px;
+      width: 96px;
       background: #f8fafc;
       font-size: 11px;
-      font-weight: 700;
-      color: #64748b;
+      font-weight: 800;
+      color: #475569;
       border-left: 2px solid #cbd5e1;
       text-align: right;
-      padding: 0 6px;
+      padding: 0 8px;
       white-space: nowrap;
     }
 
     /* Thick Center Cross Lines */
     .midline-left { border-left: 3px solid #0f172a !important; }
-    .axis-upper td { border-top: 2px solid #0f172a !important; border-bottom: 1.5px solid #0f172a !important; height: 38px; }
-    .axis-lower td { border-top: 1.5px solid #0f172a !important; border-bottom: 2px solid #0f172a !important; height: 38px; }
+    .axis-upper td {
+      border-top: 2.5px solid #0f172a !important;
+      border-bottom: 1.5px solid #0f172a !important;
+      height: 48px;
+      padding: 0;
+    }
+    .axis-lower td {
+      border-top: 1.5px solid #0f172a !important;
+      border-bottom: 2.5px solid #0f172a !important;
+      height: 48px;
+      padding: 0;
+    }
 
-    /* Modern Rounded Pastel Capsules (Option 2) */
+    /* Modern Rounded Pastel Capsules */
     .capsule {
       display: flex;
       align-items: center;
       justify-content: center;
       width: 100%;
-      height: 20px;
+      height: 21px;
       padding: 0 3px;
       border-radius: 6px;
       font-size: 11px;
@@ -82,10 +93,16 @@
     }
     .capsule:hover {
       transform: scale(1.02);
-      filter: brightness(0.96);
+      filter: brightness(0.95);
     }
 
-    /* STAGE 2B: Clinical Family Pastel Colors */
+    /* STAGE 1: Prognosis Pastel Capsules (GOOD / QUESTIONABLE / IRRATIONAL TO TREAT) */
+    .prog-good { background-color: #d1fae5; color: #065f46; border: 1px solid #34d399; }
+    .prog-quest { background-color: #fef3c7; color: #92400e; border: 1px solid #fbbf24; }
+    .prog-irrat { background-color: #ffe4e6; color: #9f1239; border: 1px solid #fb7185; }
+    .prog-empty { background-color: #f8fafc; color: #94a3b8; border: 1px dashed #cbd5e1; }
+
+    /* STAGE 2: Clinical Family Pastel Colors */
     .fam-perio { background-color: #ffe4e6; color: #9f1239; border: 1px solid #fda4af; }
     .fam-prostho { background-color: #e0f2fe; color: #075985; border: 1px solid #7dd3fc; }
     .fam-endo { background-color: #fef3c7; color: #92400e; border: 1px solid #fde047; }
@@ -100,17 +117,7 @@
     .st-unreq    { background-color: #ccfbf1; color: #115e59; border: 1px dashed #2dd4bf; }
     .st-draft    { background-color: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; }
 
-    /* STEP 1: Prognosis & Tooth State Pastel Capsules */
-    .prog-g      { background-color: #d1fae5; color: #065f46; border: 1px solid #6ee7b7; }
-    .prog-q      { background-color: #fef3c7; color: #92400e; border: 1px solid #fcd34d; }
-    .prog-i      { background-color: #ffe4e6; color: #9f1239; border: 1px solid #fda4af; }
-    .prog-none   { background-color: #f8fafc; color: #94a3b8; border: 1px dashed #cbd5e1; }
-
-    .state-nat   { background-color: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; }
-    .state-imp   { background-color: #e0f2fe; color: #075985; border: 1px solid #7dd3fc; }
-    .state-mis   { background-color: #ffe4e6; color: #9f1239; border: 1px solid #fda4af; }
-
-    /* Selected tooth highlight */
+    /* Selected tooth highlight in Stage 2 */
     .tooth-selected {
       box-shadow: inset 0 0 0 2.5px #0284c7 !important;
     }
@@ -123,7 +130,7 @@
     }
   </style>
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="min-h-screen flex flex-col" onclick="closeAllCardMenus()">
 
   <!-- COMPACT TOP BAR -->
   <header class="bg-slate-900 text-white sticky top-0 z-40 shadow-sm">
@@ -131,7 +138,7 @@
       <div class="flex items-center gap-2.5 cursor-pointer" onclick="goHome()">
         <div class="w-7 h-7 rounded-lg bg-sky-500 flex items-center justify-center font-black text-xs text-slate-950">GMC</div>
         <span class="font-extrabold text-sm tracking-tight">שיקום הפה GMC</span>
-        <span id="nav-breadcrumb" class="text-xs text-slate-400 font-medium"></span>
+        <span id="nav-breadcrumb" class="text-xs text-slate-400 font-medium truncate max-w-[200px] sm:max-w-none"></span>
       </div>
 
       <div class="flex items-center gap-1.5">
@@ -149,21 +156,21 @@
   </header>
 
   <!-- MAIN CONTAINER -->
-  <main class="flex-1 max-w-6xl w-full mx-auto px-3 sm:px-5 py-5">
+  <main class="flex-1 max-w-6xl w-full mx-auto px-3 sm:px-5 py-4">
 
     <!-- ===================================================================== -->
-    <!-- SCREEN 1: מסך כניסה ודשבורד ראשי (HOME) -->
+    <!-- VIEW 1: דשבורד ראשי (HOME) עם כפתור + גדול ותפריט 3 נקודות לכל מטופל -->
     <!-- ===================================================================== -->
-    <section id="screen-home" class="space-y-5">
+    <section id="view-home" class="space-y-4">
       
       <!-- Big Primary CTA Button -->
-      <div class="bg-gradient-to-l from-sky-600 to-blue-700 rounded-2xl p-5 sm:p-6 text-white shadow-md flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="bg-gradient-to-l from-sky-600 to-blue-700 rounded-2xl p-5 text-white shadow-md flex flex-col sm:flex-row items-center justify-between gap-4">
         <div>
           <h1 class="text-lg sm:text-xl font-black">ניהול תוכניות שיקום – המרכז הרפואי לגליל</h1>
-          <p class="text-xs text-sky-100 mt-0.5">בניית תוכנית בצלב שיניים, מעקב קופ"ח לאומית והפקת מסמכים</p>
+          <p class="text-xs text-sky-100 mt-0.5">צלב שיניים רציף: מצב הפה ופרוגנוזה ⬅ קביעת תוכנית טיפול ⬅ אישורי לאומית ו-PDF</p>
         </div>
-        <button onclick="startNewPatientWizard()" class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-white hover:bg-sky-50 text-blue-900 font-black text-base shadow-lg transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
-          <span class="text-xl">➕</span>
+        <button type="button" onclick="createNewPatientAndOpen(event)" class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-white hover:bg-sky-50 text-blue-900 font-black text-base shadow-lg transition transform active:scale-95 flex items-center justify-center gap-2 cursor-pointer">
+          <span class="text-xl leading-none">➕</span>
           <span>הוספת מטופל חדש</span>
         </button>
       </div>
@@ -192,33 +199,23 @@
     </section>
 
     <!-- ===================================================================== -->
-    <!-- SCREEN 2A: הגדרת מטופל ומצב השיניים בפה (STEP 1 OF WIZARD) -->
+    <!-- VIEW 2: סביבת עבודה רציפה (PERSISTENT DENTAL CROSS WORKSPACE) -->
+    <!-- הטבלה נשארת קבועה במקומה והשלבים מתחלפים סביבה בזרימה חלקה -->
     <!-- ===================================================================== -->
-    <section id="screen-setup" class="hidden space-y-4">
-      
-      <!-- Step Progress Pill -->
-      <div class="flex items-center justify-between bg-white px-4 py-2.5 rounded-xl border border-slate-200 shadow-sm text-xs">
-        <div class="flex items-center gap-2 font-black text-sky-700">
-          <span class="w-5 h-5 rounded-full bg-sky-600 text-white flex items-center justify-center">1</span>
-          <span>שלב 1 מתוך 2: פרטי המטופל והגדרת מצב השיניים בפה</span>
-        </div>
-        <button onclick="goToStep2B()" class="text-slate-500 hover:text-slate-900 font-bold">דלג לבניית הטבלה ⬅</button>
-      </div>
+    <section id="view-workspace" class="hidden space-y-3.5">
 
-      <!-- Patient Info Card -->
-      <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm space-y-3">
-        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 text-xs">
-          <div>
-            <label class="block font-bold text-slate-600 mb-1">שם פרטי *</label>
-            <input type="text" id="setup-fname" placeholder="ישראל" class="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg font-bold">
-          </div>
-          <div>
-            <label class="block font-bold text-slate-600 mb-1">שם משפחה *</label>
-            <input type="text" id="setup-lname" placeholder="ישראלי" class="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg font-bold">
-          </div>
-          <div>
-            <label class="block font-bold text-slate-600 mb-1">קופת חולים</label>
-            <select id="setup-ins" class="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg font-bold text-sky-900">
+      <!-- COMPACT PATIENT HEADER + COLLAPSIBLE DETAILS -->
+      <div class="bg-white rounded-2xl border border-slate-200 p-3.5 shadow-sm space-y-3">
+        
+        <!-- Top Row: Patient Name Inputs & Stage Stepper Pills -->
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div class="flex flex-wrap items-center gap-2 text-xs">
+            <input type="text" id="ws-fname" oninput="savePatientHeaderFields()" placeholder="שם פרטי *" class="w-28 sm:w-32 px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg font-black text-slate-900 focus:ring-2 focus:ring-sky-500 focus:outline-none">
+            <input type="text" id="ws-lname" oninput="savePatientHeaderFields()" placeholder="שם משפחה *" class="w-28 sm:w-32 px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg font-black text-slate-900 focus:ring-2 focus:ring-sky-500 focus:outline-none">
+            
+            <select id="ws-doc" onchange="savePatientHeaderFields()" class="px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg font-bold text-slate-800"></select>
+
+            <select id="ws-ins" onchange="savePatientHeaderFields()" class="px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg font-bold text-sky-900">
               <option value="LEUMIT_GOLD">לאומית זהב</option>
               <option value="LEUMIT_SILVER">לאומית כסף</option>
               <option value="LEUMIT_72">לאומית מעל 72</option>
@@ -228,288 +225,265 @@
               <option value="MEUHEDET">מאוחדת</option>
               <option value="MOD">משרד הביטחון</option>
             </select>
-          </div>
-          <div>
-            <label class="block font-bold text-slate-600 mb-1">סיווג תוכנית</label>
-            <select id="setup-class" class="w-full px-2.5 py-1.5 bg-amber-50 border border-amber-300 rounded-lg font-bold text-amber-900">
+
+            <select id="ws-class" onchange="savePatientHeaderFields()" class="px-2.5 py-1.5 bg-amber-50 border border-amber-300 rounded-lg font-bold text-amber-900">
               <option value="INITIAL">תוכנית ראשונית</option>
               <option value="FINAL">תוכנית סופית</option>
             </select>
-          </div>
-          <div>
-            <label class="block font-bold text-slate-600 mb-1">רופא מטפל</label>
-            <select id="setup-doc" class="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg font-bold"></select>
-          </div>
-          <div>
-            <label class="block font-bold text-slate-600 mb-1">שיוך מטופל</label>
-            <select id="setup-group" class="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg font-bold">
-              <option value="UNDECIDED">⚪ עוד לא הוחלט</option>
+
+            <select id="ws-group" onchange="savePatientHeaderFields()" class="px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg font-bold">
+              <option value="UNDECIDED">⚪ לא הוחלט</option>
               <option value="RESIDENCY">🔵 התמחות</option>
               <option value="THURSDAY">🟢 ימי חמישי</option>
-              <option value="SHARAN">🟣 שר"ן – ד"ר נתנאל</option>
+              <option value="SHARAN">🟣 שר"ן</option>
             </select>
+
+            <button type="button" onclick="toggleConsultantsRow()" class="px-2 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold" title="רופאים מעורבים ממחלקות נוספות">
+              👥 צוות רב-תחומי
+            </button>
+          </div>
+
+          <!-- Seamless Stage Switcher Bar -->
+          <div class="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-black">
+            <button type="button" id="step-tab-1" onclick="switchWorkspaceStage(1)" class="px-3 py-1.5 rounded-lg transition">
+              1. מצב הפה ופרוגנוזה
+            </button>
+            <button type="button" id="step-tab-2" onclick="switchWorkspaceStage(2)" class="px-3 py-1.5 rounded-lg transition">
+              2. קביעת תוכנית טיפול
+            </button>
+            <button type="button" id="step-tab-3" onclick="switchWorkspaceStage(3)" class="px-3 py-1.5 rounded-lg transition">
+              3. לאומית ו-PDF
+            </button>
           </div>
         </div>
 
-        <!-- Multidisciplinary Consulting Chips -->
-        <div class="pt-2 border-t border-slate-100 flex flex-wrap items-center gap-1.5 text-xs">
+        <!-- Optional Multidisciplinary Chips Row -->
+        <div id="ws-consult-row" class="hidden pt-2 border-t border-slate-100 flex flex-wrap items-center gap-1.5 text-xs">
           <span class="font-bold text-slate-500">רופאים מעורבים (מחלקות נוספות):</span>
-          <div id="setup-consult-chips" class="flex flex-wrap gap-1"></div>
+          <div id="ws-consult-chips" class="flex flex-wrap gap-1"></div>
         </div>
       </div>
 
-      <!-- STEP 1 DENTAL CROSS: Mouth Status & Prognosis 16-Column Dental Cross -->
-      <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm space-y-3">
-        <div class="flex flex-wrap items-center justify-between gap-2">
+      <!-- =================================================================== -->
+      <!-- THE PERSISTENT DENTAL CROSS CONTAINER (STAYS ANCHORED IN PLACE!) -->
+      <!-- =================================================================== -->
+      <div class="bg-white rounded-2xl border border-slate-200 p-3.5 shadow-sm space-y-3">
+
+        <!-- STAGE 1 TOP BAR: Tooth Status & Prognosis Legend (Only visible in Stage 1) -->
+        <div id="bar-stage-1" class="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-slate-100 text-xs">
           <div>
-            <h2 class="text-sm font-black text-slate-900">צלב שיניים – הגדרת מצב השיניים בפה ופרוגנוזה</h2>
-            <p class="text-xs text-slate-500">לחץ על <strong>מספר השן</strong> או שורת <strong>מצב שן</strong> להחלפת (🦷 שן ➔ 🔩 שתל ➔ ❌ חסרה X) | לחץ על <strong>פרוגנוזה</strong> להחלפת (G / Q / I)</p>
+            <span class="font-black text-slate-900">שלב 1: הגדרת שיניים ופרוגנוזה</span>
+            <span class="text-slate-500 mr-2">לחץ על <strong>מספר השן</strong> להחלפת (שן בפה ➔ שתל ➔ לא בפה X) | לחץ על <strong>שורת הפרוגנוזה</strong> להחלפת (GOOD / QUESTIONABLE / IRRATIONAL)</span>
           </div>
           <div class="flex flex-wrap items-center gap-1.5 text-[11px] font-bold">
-            <span class="px-2 py-0.5 rounded state-nat">🦷 שן</span>
-            <span class="px-2 py-0.5 rounded state-imp">🔩 שתל</span>
-            <span class="px-2 py-0.5 rounded state-mis">❌ חסרה (X)</span>
-            <span class="text-slate-300">|</span>
-            <span class="px-2 py-0.5 rounded prog-g">G טוב</span>
-            <span class="px-2 py-0.5 rounded prog-q">Q בספק</span>
-            <span class="px-2 py-0.5 rounded prog-i">I אבוד/עקירה</span>
-            <button onclick="resetAllTeethToNatural()" class="mr-1 px-2.5 py-0.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300">🔄 איפוס לשיניים טבעיות</button>
+            <span class="px-2 py-0.5 rounded prog-good">GOOD</span>
+            <span class="px-2 py-0.5 rounded prog-quest">QUESTIONABLE</span>
+            <span class="px-2 py-0.5 rounded prog-irrat">IRRATIONAL TO TREAT</span>
+            <button type="button" onclick="resetAllTeethToNatural()" class="px-2 py-0.5 rounded bg-slate-100 hover:bg-slate-200 text-slate-600 border border-slate-300">איפוס</button>
           </div>
         </div>
 
-        <!-- 16-Column Dental Cross Table for Step 1 -->
-        <div class="overflow-x-auto rounded-xl border-2 border-slate-800">
-          <table class="dental-cross-table" id="cross-table-setup"></table>
-        </div>
-
-        <div class="pt-3 border-t border-slate-100 flex items-center justify-between flex-wrap gap-2">
-          <span class="text-xs text-slate-500 font-semibold">✨ כל מצבי השיניים (🦷 / 🔩 / ❌) והפרוגנוזות יועתקו אוטומטית לצלב תוכנית הטיפול בשלב הבא.</span>
-          <button onclick="goToStep2B()" class="px-7 py-3 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-black text-sm shadow-lg transition flex items-center gap-2">
-            <span>מעבר לתוכנית טיפול (צלב השיניים)</span>
-            <span>⬅</span>
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===================================================================== -->
-    <!-- SCREEN 2B: בניית צלב השיניים + 4 רובריקות (STEP 2 OF WIZARD) -->
-    <!-- ===================================================================== -->
-    <section id="screen-builder" class="hidden space-y-4">
-      
-      <!-- Top Bar -->
-      <div class="flex flex-wrap items-center justify-between gap-2 bg-white px-4 py-2.5 rounded-xl border border-slate-200 shadow-sm text-xs">
-        <div class="flex items-center gap-2">
-          <button onclick="backToStep2A()" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 font-bold text-slate-700">➡ חזרה להגדרת שיניים</button>
-          <span class="font-black text-slate-900" id="builder-patient-label"></span>
-        </div>
-
-        <!-- Family Color Legend -->
-        <div class="flex flex-wrap items-center gap-1.5 font-bold text-[11px]">
-          <span class="text-slate-400">משפחות:</span>
-          <span class="px-2 py-0.5 rounded fam-perio">חניכיים/שתל/ע'</span>
-          <span class="px-2 py-0.5 rounded fam-prostho">שיקום/כתר/מבנה</span>
-          <span class="px-2 py-0.5 rounded fam-endo">ט"ש/מיקרוסקופ</span>
-          <span class="px-2 py-0.5 rounded fam-rest">שחזור</span>
-          <span class="px-2 py-0.5 rounded fam-diag">הדמיה/מודל</span>
-        </div>
-      </div>
-
-      <!-- Quick Action Bar + Dental Cross -->
-      <div class="bg-white rounded-2xl border border-slate-200 p-3.5 shadow-sm space-y-3">
-        
-        <!-- Action Toolbar for Selected Teeth -->
-        <div class="bg-slate-900 text-white p-2.5 rounded-xl flex flex-wrap items-center justify-between gap-2 text-xs">
-          <div class="flex items-center gap-2 flex-wrap">
-            <span id="builder-selected-label" class="px-2.5 py-1 rounded-lg bg-sky-500/20 border border-sky-400/40 font-num font-bold text-sky-200">
-              בחר שן (תיבת ✓) או לחץ על מספר השן להחלפת 🦷/🔩/❌
-            </span>
-            <button onclick="promptBridgeRange()" class="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 border border-slate-600 text-[11px] font-bold">↔️ טווח גשר</button>
-            <button onclick="clearToothSelection()" class="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-[11px] text-slate-300">נקה</button>
+        <!-- STAGE 2 TOP BAR: Treatment Builder Toolbar (Only visible in Stage 2) -->
+        <div id="bar-stage-2" class="hidden space-y-2">
+          <div class="flex flex-wrap items-center justify-between gap-2 text-xs">
+            <div class="flex items-center gap-2">
+              <span class="font-black text-slate-900">שלב 2: קביעת תוכנית טיפול</span>
+              <span class="text-slate-500">סמן שיניים (תיבת ✓) להוספת טיפול/גשר • לחיצה על קפסולה מוחקת אותה</span>
+            </div>
+            <div class="flex flex-wrap items-center gap-1 font-bold text-[11px]">
+              <span class="px-2 py-0.5 rounded fam-perio">חניכיים/שתל/ע'</span>
+              <span class="px-2 py-0.5 rounded fam-prostho">שיקום/כתר/מבנה</span>
+              <span class="px-2 py-0.5 rounded fam-endo">ט"ש/מיקרוסקופ</span>
+              <span class="px-2 py-0.5 rounded fam-rest">שחזור</span>
+              <span class="px-2 py-0.5 rounded fam-diag">הדמיה/מודל</span>
+            </div>
           </div>
 
-          <div class="flex flex-wrap items-center gap-1">
-            <button onclick="addBundleToSelected('CROWN_TOOTH')" class="px-2.5 py-1 rounded-lg bg-sky-600 hover:bg-sky-500 font-bold">+ כתר ע"ג שן (מבנה+כ"ז+זירקוניה)</button>
-            <button onclick="addBundleToSelected('ENDO_CROWN')" class="px-2.5 py-1 rounded-lg bg-amber-600 hover:bg-amber-500 font-bold">+ ט"ש + מבנה + כתר</button>
-            <button onclick="addBundleToSelected('IMPLANT_CROWN')" class="px-2.5 py-1 rounded-lg bg-rose-600 hover:bg-rose-500 font-bold">+ שתל + חשיפה + שיקום</button>
-            <button onclick="addBundleToSelected('BRIDGE')" class="px-2.5 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-500 font-bold">🌉 גשר על הטווח</button>
-            
-            <select id="builder-single-select" class="bg-slate-800 border border-slate-700 rounded-lg px-2 py-1 text-white font-bold"></select>
-            <button onclick="addSingleToSelected()" class="px-2.5 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-500 font-bold">+ הוסף</button>
+          <div class="bg-slate-900 text-white p-2 rounded-xl flex flex-wrap items-center justify-between gap-2 text-xs">
+            <div class="flex items-center gap-1.5 flex-wrap">
+              <span id="builder-selected-label" class="px-2.5 py-1 rounded-lg bg-sky-500/20 border border-sky-400/40 font-num font-bold text-sky-200">
+                בחר שן (✓) או טווח גשר
+              </span>
+              <button type="button" onclick="promptBridgeRange()" class="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 border border-slate-600 text-[11px] font-bold">↔️ טווח גשר</button>
+              <button type="button" onclick="clearToothSelection()" class="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-[11px] text-slate-300">נקה</button>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-1">
+              <button type="button" onclick="addBundleToSelected('CROWN_TOOTH')" class="px-2.5 py-1 rounded-lg bg-sky-600 hover:bg-sky-500 font-bold">+ כתר ע"ג שן</button>
+              <button type="button" onclick="addBundleToSelected('ENDO_CROWN')" class="px-2.5 py-1 rounded-lg bg-amber-600 hover:bg-amber-500 font-bold">+ ט"ש + מבנה + כתר</button>
+              <button type="button" onclick="addBundleToSelected('IMPLANT_CROWN')" class="px-2.5 py-1 rounded-lg bg-rose-600 hover:bg-rose-500 font-bold">+ שתל + חשיפה + שיקום</button>
+              <button type="button" onclick="addBundleToSelected('BRIDGE')" class="px-2.5 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-500 font-bold">🌉 גשר על הטווח</button>
+              
+              <select id="builder-single-select" class="bg-slate-800 border border-slate-700 rounded-lg px-2 py-1 text-white font-bold"></select>
+              <button type="button" onclick="addSingleToSelected()" class="px-2.5 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-500 font-bold">+ הוסף</button>
+            </div>
           </div>
         </div>
 
-        <!-- THE DENTAL CROSS TABLE -->
-        <div class="overflow-x-auto rounded-xl border-2 border-slate-800">
-          <table class="dental-cross-table" id="cross-table-builder"></table>
-        </div>
-
-        <!-- Auto Iron-Rules Strip -->
-        <div class="flex flex-wrap items-center justify-between gap-2 text-xs bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-200">
-          <div class="flex items-center gap-3 font-bold text-slate-700">
-            <span>⚙️ קודים אוטומטיים:</span>
-            <span id="builder-auto-img">הדמיה (115): 0</span>
-            <span id="builder-auto-upper">מודל עליון (619): לא</span>
-            <span id="builder-auto-lower">מודל תחתון (619): לא</span>
-          </div>
-          <span class="text-[11px] text-slate-400">לחיצה על קפסולה בטבלה מוחקת אותה</span>
-        </div>
-      </div>
-
-      <!-- 4 CATEGORIZED SECTIONS UNDERNEATH THE TABLE (תותבות, חניכיים, סדים, שונות) -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
-        
-        <!-- 1. תותבות -->
-        <div class="bg-white rounded-2xl border border-slate-200 p-3.5 shadow-sm space-y-2">
-          <div class="font-black text-sky-900 border-b pb-1.5 flex items-center justify-between">
-            <span>🦷 1. תותבות</span>
-            <span class="text-[10px] px-1.5 py-0.5 rounded fam-prostho">שיקום</span>
-          </div>
-          <div class="grid grid-cols-1 gap-1.5 font-bold">
-            <button onclick="addGeneralOrArchItem('GMC-DEN01', 'UPPER', 'תותבת שלמה עליונה')" class="p-2 rounded-lg bg-slate-50 hover:bg-sky-50 border border-slate-200 text-right flex justify-between"><span>תותבת שלמה – לסת עליונה</span><span>+</span></button>
-            <button onclick="addGeneralOrArchItem('GMC-DEN01', 'LOWER', 'תותבת שלמה תחתונה')" class="p-2 rounded-lg bg-slate-50 hover:bg-sky-50 border border-slate-200 text-right flex justify-between"><span>תותבת שלמה – לסת תחתונה</span><span>+</span></button>
-            <button onclick="addGeneralOrArchItem('GMC-DEN02', 'UPPER', 'תותבת חלקית להוצאה עליונה')" class="p-2 rounded-lg bg-slate-50 hover:bg-sky-50 border border-slate-200 text-right flex justify-between"><span>תותבת חלקית להוצאה – עליונה</span><span>+</span></button>
-            <button onclick="addGeneralOrArchItem('GMC-DEN02', 'LOWER', 'תותבת חלקית להוצאה תחתונה')" class="p-2 rounded-lg bg-slate-50 hover:bg-sky-50 border border-slate-200 text-right flex justify-between"><span>תותבת חלקית להוצאה – תחתונה</span><span>+</span></button>
-            <button onclick="addGeneralOrArchItem('GMC-DEN03', 'GENERAL', 'ריפוד תותבת')" class="p-2 rounded-lg bg-slate-50 hover:bg-sky-50 border border-slate-200 text-right flex justify-between"><span>ריפוד / תיקון תותבת</span><span>+</span></button>
-          </div>
-        </div>
-
-        <!-- 2. חניכיים (פריודונטיה) -->
-        <div class="bg-white rounded-2xl border border-slate-200 p-3.5 shadow-sm space-y-2">
-          <div class="font-black text-rose-900 border-b pb-1.5 flex items-center justify-between">
-            <span>🩸 2. חניכיים (פריו)</span>
-            <span class="text-[10px] px-1.5 py-0.5 rounded fam-perio">פריודונטיה</span>
-          </div>
-          <div class="grid grid-cols-1 gap-1.5 font-bold">
-            <button onclick="addGeneralOrArchItem('GMC-HYG01', 'GENERAL', 'סילוק אבנית (שיננית)')" class="p-2 rounded-lg bg-slate-50 hover:bg-rose-50 border border-slate-200 text-right flex justify-between"><span>סילוק אבנית / הדרכת היגיינה</span><span>+</span></button>
-            <button onclick="addGeneralOrArchItem('GMC-PER01', 'UPPER', 'הקצעת שורשים - לסת עליונה')" class="p-2 rounded-lg bg-slate-50 hover:bg-rose-50 border border-slate-200 text-right flex justify-between"><span>הקצעת שורשים – לסת עליונה</span><span>+</span></button>
-            <button onclick="addGeneralOrArchItem('GMC-PER01', 'LOWER', 'הקצעת שורשים - לסת תחתונה')" class="p-2 rounded-lg bg-slate-50 hover:bg-rose-50 border border-slate-200 text-right flex justify-between"><span>הקצעת שורשים – לסת תחתונה</span><span>+</span></button>
-            <button onclick="addGeneralOrArchItem('GMC-PER02', 'SELECTED', 'הארכת כותרת')" class="p-2 rounded-lg bg-slate-50 hover:bg-rose-50 border border-slate-200 text-right flex justify-between"><span>הארכת כותרת (לשיניים מסומנות)</span><span>+</span></button>
-          </div>
-        </div>
-
-        <!-- 3. סדים -->
-        <div class="bg-white rounded-2xl border border-slate-200 p-3.5 shadow-sm space-y-2">
-          <div class="font-black text-indigo-900 border-b pb-1.5 flex items-center justify-between">
-            <span>🛡️ 3. סדים</span>
-            <span class="text-[10px] px-1.5 py-0.5 rounded fam-prostho">סדים</span>
-          </div>
-          <div class="grid grid-cols-1 gap-1.5 font-bold">
-            <button onclick="addGeneralOrArchItem('GMC-MSC01', 'UPPER', 'סד לילה קשיח / רך')" class="p-2 rounded-lg bg-slate-50 hover:bg-indigo-50 border border-slate-200 text-right flex justify-between"><span>סד לילה קשיח / רך ללסת</span><span>+</span></button>
-            <button onclick="addGeneralOrArchItem('GMC-IMP00', 'UPPER', 'סד כירורגי ממוחשב לשתלים')" class="p-2 rounded-lg bg-slate-50 hover:bg-indigo-50 border border-slate-200 text-right flex justify-between"><span>סד כירורגי ממוחשב לשתלים</span><span>+</span></button>
-            <button onclick="addGeneralOrArchItem('GMC-HYG06', 'GENERAL', 'סד הלבנת שיניים')" class="p-2 rounded-lg bg-slate-50 hover:bg-indigo-50 border border-slate-200 text-right flex justify-between"><span>סד הלבנה ללסת</span><span>+</span></button>
-          </div>
-        </div>
-
-        <!-- 4. שונות ואבחון -->
-        <div class="bg-white rounded-2xl border border-slate-200 p-3.5 shadow-sm space-y-2">
-          <div class="font-black text-slate-800 border-b pb-1.5 flex items-center justify-between">
-            <span>➕ 4. שונות וצילומים</span>
-            <span class="text-[10px] px-1.5 py-0.5 rounded fam-diag">כללי</span>
-          </div>
-          <div class="grid grid-cols-1 gap-1.5 font-bold">
-            <button onclick="addGeneralOrArchItem('GMC-EX01', 'GENERAL', 'מיפוי פה ראשוני')" class="p-2 rounded-lg bg-slate-50 hover:bg-slate-100 border border-slate-200 text-right flex justify-between"><span>מיפוי פה ראשוני (102)</span><span>+</span></button>
-            <button onclick="addGeneralOrArchItem('GMC-RAD05', 'GENERAL', 'צילום פנורמי')" class="p-2 rounded-lg bg-slate-50 hover:bg-slate-100 border border-slate-200 text-right flex justify-between"><span>צילום פנורמי (116)</span><span>+</span></button>
-            <button onclick="addGeneralOrArchItem('GMC-RAD07', 'GENERAL', 'צילום סטטוס מלא')" class="p-2 rounded-lg bg-slate-50 hover:bg-slate-100 border border-slate-200 text-right flex justify-between"><span>צילום סטטוס מלא (114)</span><span>+</span></button>
-            <button onclick="addGeneralOrArchItem('GMC-RAD09', 'GENERAL', 'צילום CT לסת')" class="p-2 rounded-lg bg-slate-50 hover:bg-slate-100 border border-slate-200 text-right flex justify-between"><span>צילום CT לסת (119)</span><span>+</span></button>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- General Items Added List + Approve & Continue CTA -->
-      <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div class="flex flex-wrap items-center gap-1.5 text-xs" id="builder-general-pills"></div>
-        
-        <button onclick="approvePlanAndGoToScreen3()" class="w-full sm:w-auto px-7 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-sm shadow-lg transition flex items-center justify-center gap-2 whitespace-nowrap">
-          <span>אישור תוכנית ומעבר לחלון אישורי קופ"ח לאומית</span>
-          <span>✔</span>
-        </button>
-      </div>
-    </section>
-
-    <!-- ===================================================================== -->
-    <!-- SCREEN 3: חלון התוכנית שאושרה – הזנת והוצאת נתונים מול לאומית -->
-    <!-- ===================================================================== -->
-    <section id="screen-approved" class="hidden space-y-4">
-      
-      <!-- Top Header Strip -->
-      <div class="bg-white rounded-2xl border border-slate-200 p-3.5 shadow-sm flex flex-wrap items-center justify-between gap-3">
-        <div class="flex items-center gap-2.5">
-          <span class="px-2.5 py-1 rounded-lg bg-emerald-100 text-emerald-900 font-black text-xs">✔ תוכנית מאושרת למעקב קופה</span>
-          <div>
-            <h2 id="approved-patient-title" class="text-sm sm:text-base font-black text-slate-900"></h2>
-            <p id="approved-patient-sub" class="text-xs text-slate-500"></p>
-          </div>
-        </div>
-
-        <div class="flex flex-wrap items-center gap-2 text-xs">
-          <button onclick="openScreen2BForEdit()" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold">
-            ✏️ ערוך טיפולים בטבלה
-          </button>
-          <button onclick="createContinuationPlanWizard()" class="px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold shadow-sm" title="מעתיק את מצב השיניים והצלב עם צבעי הסטטוס לתוכנית חדשה">
-            ➕ צור תוכנית המשך (תוכנית 2+)
-          </button>
-        </div>
-      </div>
-
-      <!-- Status Legend & iPhone Camera Scan Bar -->
-      <div class="bg-white rounded-2xl border border-slate-200 p-3.5 shadow-sm space-y-3">
-        <div class="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-slate-100 text-xs">
+        <!-- STAGE 3 TOP BAR: HMO Approval Status & iPhone Camera Scan (Only visible in Stage 3) -->
+        <div id="bar-stage-3" class="hidden flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-slate-100 text-xs">
           <div class="flex flex-wrap items-center gap-1.5 font-bold">
-            <span class="text-slate-500 ml-1">לחץ על כל קפסולה בצלב לשינוי סטטוס:</span>
-            <span class="px-2.5 py-0.5 rounded-md st-approved">🟢 אושר</span>
-            <span class="px-2.5 py-0.5 rounded-md st-reason">🟡 סיבה</span>
-            <span class="px-2.5 py-0.5 rounded-md st-denied">🔴 נדחה</span>
-            <span class="px-2.5 py-0.5 rounded-md st-noresp">🟠 ללא מענה</span>
-            <span class="px-2.5 py-0.5 rounded-md st-unreq">🩵 אושר ללא בקשה</span>
+            <span class="font-black text-slate-900 ml-1">שלב 3: אישורי לאומית (לחץ על קפסולה לשינוי):</span>
+            <span class="px-2 py-0.5 rounded st-approved">🟢 אושר</span>
+            <span class="px-2 py-0.5 rounded st-reason">🟡 סיבה</span>
+            <span class="px-2 py-0.5 rounded st-denied">🔴 נדחה</span>
+            <span class="px-2 py-0.5 rounded st-noresp">🟠 ללא מענה</span>
+            <span class="px-2 py-0.5 rounded st-unreq">🩵 אושר ללא בקשה</span>
           </div>
 
-          <div class="flex items-center gap-2">
+          <div class="flex flex-wrap items-center gap-1.5">
             <input type="file" id="iphone-scan-input" accept="image/*" capture="environment" class="hidden" onchange="simulateIphoneOcrScan()">
-            <button onclick="document.getElementById('iphone-scan-input').click()" class="px-3 py-1.5 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-black shadow-sm flex items-center gap-1.5">
-              <span>📷</span>
-              <span>צילום תשובת לאומית מהאייפון</span>
+            <button type="button" onclick="document.getElementById('iphone-scan-input').click()" class="px-3 py-1.5 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-black shadow-sm flex items-center gap-1">
+              <span>📷</span><span>צילום תשובת לאומית (אייפון)</span>
             </button>
-            <button onclick="openOcrVerificationModal()" class="px-2.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold">
-              ⚡ הדמיית קליטת תשובה
+            <button type="button" onclick="openOcrVerificationModal()" class="px-2.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold">
+              ⚡ הדמיית קליטה
+            </button>
+            <button type="button" onclick="createContinuationPlanWizard()" class="px-2.5 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold">
+              ➕ תוכנית המשך (2+)
             </button>
           </div>
         </div>
 
-        <!-- THE DENTAL CROSS IN HMO STATUS MODE -->
-        <div class="overflow-x-auto rounded-xl border-2 border-slate-800">
-          <table class="dental-cross-table" id="cross-table-approved"></table>
+        <!-- THE SINGLE PERSISTENT 16-COLUMN DENTAL CROSS TABLE -->
+        <div class="overflow-x-auto rounded-xl border-2 border-slate-900">
+          <table class="dental-cross-table" id="persistent-cross-table"></table>
+        </div>
+
+        <!-- Tooth Icon Legend + Stage Transition Primary Button -->
+        <div class="pt-2 flex flex-wrap items-center justify-between gap-3 text-xs">
+          
+          <!-- Clear Tooth Status Visual Legend -->
+          <div class="flex flex-wrap items-center gap-3 font-bold text-slate-700">
+            <span class="text-slate-400">מקרא מצב שן (לחיצה על מספר השן):</span>
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white border border-slate-300 shadow-sm">
+              <svg class="w-4 h-4 text-emerald-600" viewBox="0 0 24 24" fill="currentColor"><path d="M7 3C4.5 3 3 5 3 8c0 2.2 1 4 1.8 5.8.7 1.6 1.2 3.7 1.7 5.7.2.8 1 1.5 1.8 1.5.9 0 1.5-.7 1.8-1.8l.9-3.2h2l.9 3.2c.3 1.1.9 1.8 1.8 1.8.8 0 1.6-.7 1.8-1.5.5-2 1-4.1 1.7-5.7C20 12 21 10.2 21 8c0-3-1.5-5-4-5-1.8 0-3.2.8-5 .8S8.8 3 7 3z"/></svg>
+              <span>שן בפה</span>
+            </span>
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-sky-100 border border-sky-400 text-sky-950 shadow-sm">
+              <svg class="w-4 h-4 text-sky-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="7" y="2" width="10" height="4" rx="1" fill="currentColor"/><path d="M8 6h8l-1.5 15h-5L8 6z"/><line x1="6" y1="9" x2="18" y2="9"/><line x1="6.5" y1="13" x2="17.5" y2="13"/><line x1="7" y1="17" x2="17" y2="17"/></svg>
+              <span>שתל (Implant)</span>
+            </span>
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-rose-100 border border-rose-400 text-rose-950 shadow-sm">
+              <svg class="w-4 h-4 text-rose-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="4" y1="4" x2="20" y2="20"/><line x1="20" y1="4" x2="4" y2="20"/></svg>
+              <span>לא בפה / נעקרה (X)</span>
+            </span>
+          </div>
+
+          <!-- Stage Action Button -->
+          <div id="stage-cta-container">
+            <button type="button" id="btn-stage-next" onclick="advanceWorkspaceStage()" class="px-6 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-black text-sm shadow-md transition flex items-center gap-2">
+              <span id="btn-stage-next-text">אישור ומעבר לקביעת תוכנית טיפול</span>
+              <span>⬅</span>
+            </button>
+          </div>
         </div>
       </div>
 
-      <!-- 4 OFFICIAL PDF EXPORT CARDS + COMPACT CODES TABLE -->
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+      <!-- =================================================================== -->
+      <!-- STAGE 2 BOTTOM PANEL: 4 RUBRICS (תותבות, חניכיים, סדים, שונות) -->
+      <!-- =================================================================== -->
+      <div id="panel-stage-2" class="hidden space-y-3">
         
-        <!-- 4 Output Buttons (5 Cols) -->
+        <!-- Auto Iron-Rules Strip -->
+        <div class="flex flex-wrap items-center justify-between gap-2 text-xs bg-white px-4 py-2 rounded-xl border border-slate-200 shadow-sm">
+          <div class="flex items-center gap-4 font-bold text-slate-700">
+            <span>⚙️ קודי חובה אוטומטיים:</span>
+            <span id="builder-auto-img" class="text-sky-800">הדמיה (115): 0</span>
+            <span id="builder-auto-upper" class="text-sky-800">מודל עליון (619): לא</span>
+            <span id="builder-auto-lower" class="text-sky-800">מודל תחתון (619): לא</span>
+          </div>
+          <div id="builder-general-pills" class="flex flex-wrap items-center gap-1.5"></div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+          <!-- 1. תותבות -->
+          <div class="bg-white rounded-2xl border border-slate-200 p-3.5 shadow-sm space-y-2">
+            <div class="font-black text-sky-900 border-b pb-1.5 flex items-center justify-between">
+              <span>🦷 1. תותבות</span>
+              <span class="text-[10px] px-1.5 py-0.5 rounded fam-prostho">שיקום</span>
+            </div>
+            <div class="grid grid-cols-1 gap-1.5 font-bold">
+              <button type="button" onclick="addGeneralOrArchItem('GMC-DEN01', 'UPPER', 'תותבת שלמה עליונה')" class="p-2 rounded-lg bg-slate-50 hover:bg-sky-50 border border-slate-200 text-right flex justify-between"><span>תותבת שלמה – עליונה</span><span>+</span></button>
+              <button type="button" onclick="addGeneralOrArchItem('GMC-DEN01', 'LOWER', 'תותבת שלמה תחתונה')" class="p-2 rounded-lg bg-slate-50 hover:bg-sky-50 border border-slate-200 text-right flex justify-between"><span>תותבת שלמה – תחתונה</span><span>+</span></button>
+              <button type="button" onclick="addGeneralOrArchItem('GMC-DEN02', 'UPPER', 'תותבת חלקית להוצאה עליונה')" class="p-2 rounded-lg bg-slate-50 hover:bg-sky-50 border border-slate-200 text-right flex justify-between"><span>תותבת חלקית להוצאה – עליונה</span><span>+</span></button>
+              <button type="button" onclick="addGeneralOrArchItem('GMC-DEN02', 'LOWER', 'תותבת חלקית להוצאה תחתונה')" class="p-2 rounded-lg bg-slate-50 hover:bg-sky-50 border border-slate-200 text-right flex justify-between"><span>תותבת חלקית להוצאה – תחתונה</span><span>+</span></button>
+              <button type="button" onclick="addGeneralOrArchItem('GMC-DEN03', 'GENERAL', 'ריפוד תותבת')" class="p-2 rounded-lg bg-slate-50 hover:bg-sky-50 border border-slate-200 text-right flex justify-between"><span>ריפוד / תיקון תותבת</span><span>+</span></button>
+            </div>
+          </div>
+
+          <!-- 2. חניכיים -->
+          <div class="bg-white rounded-2xl border border-slate-200 p-3.5 shadow-sm space-y-2">
+            <div class="font-black text-rose-900 border-b pb-1.5 flex items-center justify-between">
+              <span>🩸 2. חניכיים (פריו)</span>
+              <span class="text-[10px] px-1.5 py-0.5 rounded fam-perio">פריו</span>
+            </div>
+            <div class="grid grid-cols-1 gap-1.5 font-bold">
+              <button type="button" onclick="addGeneralOrArchItem('GMC-HYG01', 'GENERAL', 'סילוק אבנית (שיננית)')" class="p-2 rounded-lg bg-slate-50 hover:bg-rose-50 border border-slate-200 text-right flex justify-between"><span>סילוק אבנית / היגיינה</span><span>+</span></button>
+              <button type="button" onclick="addGeneralOrArchItem('GMC-PER01', 'UPPER', 'הקצעת שורשים - עליונה')" class="p-2 rounded-lg bg-slate-50 hover:bg-rose-50 border border-slate-200 text-right flex justify-between"><span>הקצעת שורשים – עליונה</span><span>+</span></button>
+              <button type="button" onclick="addGeneralOrArchItem('GMC-PER01', 'LOWER', 'הקצעת שורשים - תחתונה')" class="p-2 rounded-lg bg-slate-50 hover:bg-rose-50 border border-slate-200 text-right flex justify-between"><span>הקצעת שורשים – תחתונה</span><span>+</span></button>
+              <button type="button" onclick="addGeneralOrArchItem('GMC-PER02', 'SELECTED', 'הארכת כותרת')" class="p-2 rounded-lg bg-slate-50 hover:bg-rose-50 border border-slate-200 text-right flex justify-between"><span>הארכת כותרת (למסומנות)</span><span>+</span></button>
+            </div>
+          </div>
+
+          <!-- 3. סדים -->
+          <div class="bg-white rounded-2xl border border-slate-200 p-3.5 shadow-sm space-y-2">
+            <div class="font-black text-indigo-900 border-b pb-1.5 flex items-center justify-between">
+              <span>🛡️ 3. סדים</span>
+              <span class="text-[10px] px-1.5 py-0.5 rounded fam-prostho">סדים</span>
+            </div>
+            <div class="grid grid-cols-1 gap-1.5 font-bold">
+              <button type="button" onclick="addGeneralOrArchItem('GMC-MSC01', 'UPPER', 'סד לילה קשיח / רך')" class="p-2 rounded-lg bg-slate-50 hover:bg-indigo-50 border border-slate-200 text-right flex justify-between"><span>סד לילה קשיח / רך</span><span>+</span></button>
+              <button type="button" onclick="addGeneralOrArchItem('GMC-IMP00', 'UPPER', 'סד כירורגי ממוחשב לשתלים')" class="p-2 rounded-lg bg-slate-50 hover:bg-indigo-50 border border-slate-200 text-right flex justify-between"><span>סד כירורגי לשתלים</span><span>+</span></button>
+              <button type="button" onclick="addGeneralOrArchItem('GMC-HYG06', 'GENERAL', 'סד הלבנת שיניים')" class="p-2 rounded-lg bg-slate-50 hover:bg-indigo-50 border border-slate-200 text-right flex justify-between"><span>סד הלבנה ללסת</span><span>+</span></button>
+            </div>
+          </div>
+
+          <!-- 4. שונות וצילומים -->
+          <div class="bg-white rounded-2xl border border-slate-200 p-3.5 shadow-sm space-y-2">
+            <div class="font-black text-slate-800 border-b pb-1.5 flex items-center justify-between">
+              <span>➕ 4. שונות וצילומים</span>
+              <span class="text-[10px] px-1.5 py-0.5 rounded fam-diag">אבחון</span>
+            </div>
+            <div class="grid grid-cols-1 gap-1.5 font-bold">
+              <button type="button" onclick="addGeneralOrArchItem('GMC-EX01', 'GENERAL', 'מיפוי פה ראשוני')" class="p-2 rounded-lg bg-slate-50 hover:bg-slate-100 border border-slate-200 text-right flex justify-between"><span>מיפוי פה ראשוני (102)</span><span>+</span></button>
+              <button type="button" onclick="addGeneralOrArchItem('GMC-RAD05', 'GENERAL', 'צילום פנורמי')" class="p-2 rounded-lg bg-slate-50 hover:bg-slate-100 border border-slate-200 text-right flex justify-between"><span>צילום פנורמי (116)</span><span>+</span></button>
+              <button type="button" onclick="addGeneralOrArchItem('GMC-RAD07', 'GENERAL', 'צילום סטטוס מלא')" class="p-2 rounded-lg bg-slate-50 hover:bg-slate-100 border border-slate-200 text-right flex justify-between"><span>צילום סטטוס מלא (114)</span><span>+</span></button>
+              <button type="button" onclick="addGeneralOrArchItem('GMC-RAD09', 'GENERAL', 'צילום CT לסת')" class="p-2 rounded-lg bg-slate-50 hover:bg-slate-100 border border-slate-200 text-right flex justify-between"><span>צילום CT לסת (119)</span><span>+</span></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- =================================================================== -->
+      <!-- STAGE 3 BOTTOM PANEL: 4 OFFICIAL PDF CARDS & HMO CODES TABLE -->
+      <!-- =================================================================== -->
+      <div id="panel-stage-3" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-4">
+        
+        <!-- 4 Output PDF Buttons (5 Cols) -->
         <div class="lg:col-span-5 bg-white rounded-2xl border border-slate-200 p-4 shadow-sm space-y-3">
           <div class="flex items-center justify-between border-b pb-2">
-            <h3 class="text-xs font-black text-slate-800 uppercase">הפקת מסמכי PDF רשמיים ושיתוף</h3>
+            <h3 class="text-xs font-black text-slate-800">הפקת מסמכי PDF רשמיים ושיתוף</h3>
             <span id="approved-total-badge" class="text-sm font-black text-sky-700 font-num">סה"כ: ₪0</span>
           </div>
 
           <div class="grid grid-cols-2 gap-2 text-xs font-bold">
-            <button onclick="openPdfModal('HMO_REQ')" class="p-3 rounded-xl border border-slate-200 bg-slate-50 hover:bg-sky-50 hover:border-sky-300 text-right space-y-1 transition">
+            <button type="button" onclick="openPdfModal('HMO_REQ')" class="p-3 rounded-xl border border-slate-200 bg-slate-50 hover:bg-sky-50 hover:border-sky-300 text-right space-y-1 transition">
               <div class="flex justify-between text-sm"><span>1. דרישה לקופה</span><span>📄</span></div>
-              <div class="text-[10px] text-slate-500 font-normal">טבלת קודים + הדמיה ומודלים</div>
+              <div class="text-[10px] text-slate-500 font-normal">קודים + הדמיה ומודלים</div>
             </button>
 
-            <button onclick="openPdfModal('PATIENT_QUOTE')" class="p-3 rounded-xl border border-slate-200 bg-slate-50 hover:bg-emerald-50 hover:border-emerald-300 text-right space-y-1 transition">
+            <button type="button" onclick="openPdfModal('PATIENT_QUOTE')" class="p-3 rounded-xl border border-slate-200 bg-slate-50 hover:bg-emerald-50 hover:border-emerald-300 text-right space-y-1 transition">
               <div class="flex justify-between text-sm"><span>2. הצעה למטופל</span><span>💰</span></div>
               <div class="text-[10px] text-slate-500 font-normal">השתתפות עצמית והצהרה</div>
             </button>
 
-            <button onclick="openPdfModal('EXCEPTIONS')" class="p-3 rounded-xl border border-slate-200 bg-slate-50 hover:bg-rose-50 hover:border-rose-300 text-right space-y-1 transition">
+            <button type="button" onclick="openPdfModal('EXCEPTIONS')" class="p-3 rounded-xl border border-slate-200 bg-slate-50 hover:bg-rose-50 hover:border-rose-300 text-right space-y-1 transition">
               <div class="flex justify-between text-sm"><span>3. דו"ח חריגים</span><span>⚠️</span></div>
               <div class="text-[10px] text-slate-500 font-normal">נדחה / סיבה / ללא מענה</div>
             </button>
 
-            <button onclick="openPdfModal('JUSTIFICATION')" class="p-3 rounded-xl border border-amber-300 bg-amber-50 hover:bg-amber-100 text-right space-y-1 transition">
+            <button type="button" onclick="openPdfModal('JUSTIFICATION')" class="p-3 rounded-xl border border-amber-300 bg-amber-50 hover:bg-amber-100 text-right space-y-1 transition">
               <div class="flex justify-between text-sm text-amber-950"><span>4. מכתב סיבה</span><span>📝</span></div>
               <div class="text-[10px] text-amber-800 font-normal">נייר לוגו GMC + שיתוף</div>
             </button>
@@ -519,7 +493,7 @@
           <div class="pt-2 border-t border-slate-100 space-y-1.5 text-xs">
             <div class="flex items-center justify-between">
               <span class="font-bold text-teal-800">🩵 אושר ללא בקשה (מוחרג מהצעת המחיר):</span>
-              <button onclick="addUnrequestedCode()" class="text-[11px] font-bold text-teal-700 hover:underline">+ הוסף קוד</button>
+              <button type="button" onclick="addUnrequestedCode()" class="text-[11px] font-bold text-teal-700 hover:underline">+ הוסף קוד</button>
             </div>
             <div id="approved-unreq-list" class="flex flex-wrap gap-1"></div>
           </div>
@@ -532,7 +506,7 @@
             <span class="text-slate-400">לחיצה על הסטטוס מחליפה אותו מיידית</span>
           </div>
 
-          <div class="overflow-y-auto max-h-[250px] flex-1">
+          <div class="overflow-y-auto max-h-[240px] flex-1">
             <table class="w-full text-right text-xs">
               <thead class="bg-slate-50 text-slate-500 font-bold sticky top-0">
                 <tr>
@@ -548,8 +522,8 @@
             </table>
           </div>
         </div>
-
       </div>
+
     </section>
 
   </main>
@@ -641,16 +615,15 @@
       'ד"ר נועה פלד (אורתודונטיה)'
     ];
 
-    // Fixed Horizontal Rows for Strict Row Alignment
     const CROSS_ROWS = [
-      { key: 'ARCH',    label: 'תותבת / סד' },
-      { key: 'IMAGING', label: 'הדמיה' },
+      { key: 'ARCH',        label: 'תותבת / סד' },
+      { key: 'IMAGING',     label: 'הדמיה' },
       { key: 'IMPLANT_ROW', label: 'שתל / חשיפה' },
-      { key: 'PONTIC',  label: 'כד"מ' },
-      { key: 'TEMP',    label: 'כ"ז' },
-      { key: 'CROWN',   label: 'כתר סופי' },
-      { key: 'CORE',    label: 'מבנה / שחזור' },
-      { key: 'ENDO',    label: 'ט"ש / ע\'' }
+      { key: 'PONTIC',      label: 'כד"מ' },
+      { key: 'TEMP',        label: 'כ"ז' },
+      { key: 'CROWN',       label: 'כתר סופי' },
+      { key: 'CORE',        label: 'מבנה / שחזור' },
+      { key: 'ENDO',        label: 'ט"ש / ע\'' }
     ];
 
     const CATALOG = [
@@ -699,14 +672,14 @@
         group: 'THURSDAY',
         consultants: ['ד"ר רמי כהן (פה ולסת)', 'ד"ר מיכל לוי (פריודונטיה)'],
         planNumber: 1,
-        stage: 'APPROVED', // 'SETUP', 'BUILDER', 'APPROVED'
+        wsStage: 3, // 1=Prognosis, 2=Treatment Plan, 3=HMO Status
         keepStatusColorsInBuilder: false,
         teethState: {
           '18': 'MISSING', '16': 'IMPLANT', '14': 'IMPLANT', '24': 'MISSING',
           '48': 'MISSING', '46': 'IMPLANT', '42': 'MISSING', '41': 'MISSING', '31': 'MISSING', '32': 'MISSING', '38': 'MISSING'
         },
         prognosis: {
-          '16': 'G', '15': 'G', '14': 'G', '12': 'Q', '21': 'Q', '28': 'I', '42': 'I', '32': 'I', '35': 'G'
+          '16': 'GOOD', '15': 'GOOD', '14': 'GOOD', '12': 'QUESTIONABLE', '21': 'QUESTIONABLE', '28': 'IRRATIONAL', '42': 'IRRATIONAL', '32': 'IRRATIONAL', '35': 'GOOD'
         },
         capsules: [
           { id: 'C1', arch: 'UPPER', teeth: ['16'], gmc: 'GMC-PRO23', status: 'APPROVED', done: false },
@@ -745,34 +718,67 @@
         unrequested: [
           { code: '201', name: 'סילוק אבנית (אושר ללא בקשה)' }
         ]
+      },
+      {
+        id: 'PT-DRAFT-1',
+        firstName: 'טיוטה',
+        lastName: 'לבדיקה (ניתן למחוק ב-⋮)',
+        insurance: 'LEUMIT_SILVER',
+        classification: 'INITIAL',
+        treatingDoc: 'לא שויך',
+        group: 'UNDECIDED',
+        consultants: [],
+        planNumber: 1,
+        wsStage: 1,
+        keepStatusColorsInBuilder: false,
+        teethState: { '16': 'MISSING', '36': 'IMPLANT' },
+        prognosis: { '16': 'IRRATIONAL', '36': 'GOOD' },
+        capsules: [],
+        generalItems: [],
+        unrequested: []
       }
     ];
 
     // =========================================================================
-    // 2. STATE & NAVIGATION ENGINE
+    // 2. STATE & INITIALIZATION
     // =========================================================================
     let App = {
       patients: [],
       catalog: [],
       activePtId: null,
+      wsStage: 1, // 1: Tooth Status & Prognosis, 2: Treatment Plan, 3: HMO Status
       homeGroupFilter: 'ALL',
-      selectedTeeth: new Set()
+      selectedTeeth: new Set(),
+      openMenuPtId: null
     };
 
     function init() {
-      const savedPts = localStorage.getItem('GMC_WIZ_PATIENTS_V4');
-      App.patients = savedPts ? JSON.parse(savedPts) : JSON.parse(JSON.stringify(DEFAULT_PATIENTS));
+      try {
+        const savedPts = localStorage.getItem('GMC_PERSISTENT_PTS_V5');
+        App.patients = savedPts ? JSON.parse(savedPts) : JSON.parse(JSON.stringify(DEFAULT_PATIENTS));
+        if (!Array.isArray(App.patients) || App.patients.length === 0) {
+          App.patients = JSON.parse(JSON.stringify(DEFAULT_PATIENTS));
+        }
+      } catch (e) {
+        App.patients = JSON.parse(JSON.stringify(DEFAULT_PATIENTS));
+      }
 
-      const savedCat = localStorage.getItem('GMC_WIZ_CATALOG_V4');
-      App.catalog = savedCat ? JSON.parse(savedCat) : JSON.parse(JSON.stringify(CATALOG));
+      try {
+        const savedCat = localStorage.getItem('GMC_PERSISTENT_CAT_V5');
+        App.catalog = savedCat ? JSON.parse(savedCat) : JSON.parse(JSON.stringify(CATALOG));
+      } catch (e) {
+        App.catalog = JSON.parse(JSON.stringify(CATALOG));
+      }
 
       initDropdowns();
       goHome();
     }
 
     function saveState() {
-      localStorage.setItem('GMC_WIZ_PATIENTS_V4', JSON.stringify(App.patients));
-      localStorage.setItem('GMC_WIZ_CATALOG_V4', JSON.stringify(App.catalog));
+      try {
+        localStorage.setItem('GMC_PERSISTENT_PTS_V5', JSON.stringify(App.patients));
+        localStorage.setItem('GMC_PERSISTENT_CAT_V5', JSON.stringify(App.catalog));
+      } catch (e) {}
     }
 
     function getPt() {
@@ -792,28 +798,19 @@
       setTimeout(() => el.remove(), 2600);
     }
 
-    function showScreen(screenId, breadcrumbText) {
-      ['screen-home', 'screen-setup', 'screen-builder', 'screen-approved'].forEach(id => {
-        document.getElementById(id).classList.toggle('hidden', id !== screenId);
-      });
-      document.getElementById('btn-back-home').classList.toggle('hidden', screenId === 'screen-home');
-      document.getElementById('nav-breadcrumb').textContent = breadcrumbText ? `/ ${breadcrumbText}` : '';
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
     // =========================================================================
-    // 3. SCREEN 1: HOME DASHBOARD
+    // 3. HOME DASHBOARD, "+ הוספת מטופל חדש" & 3-DOTS MENU (`⋮`)
     // =========================================================================
     function initDropdowns() {
       const docFilter = document.getElementById('home-filter-doc');
-      const setupDoc = document.getElementById('setup-doc');
+      const wsDoc = document.getElementById('ws-doc');
       docFilter.innerHTML = '<option value="ALL">כל הרופאים המטפלים</option>';
-      setupDoc.innerHTML = '';
+      wsDoc.innerHTML = '';
 
       DOCTORS.forEach(d => {
         const label = d === 'לא שויך' ? '⚠️ לא שויך' : d;
         docFilter.add(new Option(label, d));
-        setupDoc.add(new Option(label, d));
+        wsDoc.add(new Option(label, d));
       });
 
       const singleSel = document.getElementById('builder-single-select');
@@ -828,8 +825,44 @@
     function goHome() {
       App.activePtId = null;
       App.selectedTeeth.clear();
+      App.openMenuPtId = null;
+      document.getElementById('view-home').classList.remove('hidden');
+      document.getElementById('view-workspace').classList.add('hidden');
+      document.getElementById('btn-back-home').classList.add('hidden');
+      document.getElementById('nav-breadcrumb').textContent = '';
       renderHomePatients();
-      showScreen('screen-home', '');
+    }
+
+    // FIXED: Reliable "+ הוספת מטופל חדש" creation and immediate opening in Stage 1
+    function createNewPatientAndOpen(e) {
+      if (e) e.stopPropagation();
+      const newPt = {
+        id: 'PT-' + Date.now(),
+        firstName: '',
+        lastName: '',
+        insurance: 'LEUMIT_GOLD',
+        classification: 'INITIAL',
+        treatingDoc: 'לא שויך',
+        group: 'UNDECIDED',
+        consultants: [],
+        planNumber: 1,
+        wsStage: 1,
+        keepStatusColorsInBuilder: false,
+        teethState: {},
+        prognosis: {},
+        capsules: [],
+        generalItems: [],
+        unrequested: []
+      };
+
+      App.patients.unshift(newPt);
+      saveState();
+      openPatientWorkspace(newPt.id, 1);
+      setTimeout(() => {
+        const fnameInput = document.getElementById('ws-fname');
+        if (fnameInput) fnameInput.focus();
+      }, 60);
+      toast('נפתח כרטיס מטופל חדש – שלב 1: הגדרת מצב הפה ופרוגנוזה');
     }
 
     function setHomeGroupFilter(grp) {
@@ -841,13 +874,55 @@
       renderHomePatients();
     }
 
+    function toggleCardMenu(e, ptId) {
+      e.stopPropagation();
+      App.openMenuPtId = (App.openMenuPtId === ptId) ? null : ptId;
+      renderHomePatients();
+    }
+
+    function closeAllCardMenus() {
+      if (App.openMenuPtId !== null) {
+        App.openMenuPtId = null;
+        renderHomePatients();
+      }
+    }
+
+    function deletePatientFromMenu(e, ptId) {
+      e.stopPropagation();
+      const pt = App.patients.find(p => p.id === ptId);
+      const name = pt ? `${pt.firstName || 'מטופל'} ${pt.lastName || 'חדש'}` : '';
+      App.patients = App.patients.filter(p => p.id !== ptId);
+      App.openMenuPtId = null;
+      saveState();
+      renderHomePatients();
+      toast(`המטופל/טיוטה "${name}" נמחק מהרשימה`);
+    }
+
+    function duplicatePatientPlanFromMenu(e, ptId) {
+      e.stopPropagation();
+      const orig = App.patients.find(p => p.id === ptId);
+      if (!orig) return;
+      const copy = JSON.parse(JSON.stringify(orig));
+      copy.id = 'PT-' + Date.now();
+      copy.planNumber = (orig.planNumber || 1) + 1;
+      copy.classification = 'FINAL';
+      copy.keepStatusColorsInBuilder = true;
+      copy.wsStage = 2;
+      App.patients.unshift(copy);
+      App.openMenuPtId = null;
+      saveState();
+      openPatientWorkspace(copy.id, 2);
+      toast(`נוצרה תוכנית המשך #${copy.planNumber} עבור ${copy.firstName} ${copy.lastName}`);
+    }
+
     function renderHomePatients() {
       const grid = document.getElementById('home-patients-grid');
       const q = (document.getElementById('home-search').value || '').trim().toLowerCase();
       const doc = document.getElementById('home-filter-doc').value;
 
       const list = App.patients.filter(p => {
-        if (q && !`${p.firstName} ${p.lastName}`.toLowerCase().includes(q)) return false;
+        const fullName = `${p.firstName || ''} ${p.lastName || ''}`.toLowerCase();
+        if (q && !fullName.includes(q)) return false;
         if (doc !== 'ALL' && p.treatingDoc !== doc) return false;
         if (App.homeGroupFilter !== 'ALL' && p.group !== App.homeGroupFilter) return false;
         return true;
@@ -860,96 +935,122 @@
         SHARAN:    '<span class="px-2 py-0.5 rounded-md bg-purple-50 text-purple-700 text-[10px] font-bold">🟣 שר"ן</span>'
       };
 
-      grid.innerHTML = list.map(p => `
-        <div class="p-3.5 rounded-2xl border border-slate-200 hover:border-sky-400 bg-slate-50/50 hover:bg-white transition flex flex-col justify-between gap-3 shadow-sm">
-          <div>
-            <div class="flex items-center justify-between">
-              <span class="font-black text-base text-slate-900">${p.firstName} ${p.lastName}</span>
-              ${grpBadge[p.group] || grpBadge.UNDECIDED}
-            </div>
-            <div class="text-xs text-slate-500 mt-1 flex items-center justify-between">
-              <span>רופא: <strong class="text-slate-800">${p.treatingDoc}</strong></span>
-              <span class="font-bold text-sky-700">תוכנית #${p.planNumber || 1} (${p.classification === 'FINAL' ? 'סופית' : 'ראשונית'})</span>
-            </div>
-          </div>
-          <div class="flex items-center gap-1.5 pt-2 border-t border-slate-200/80 text-xs font-bold">
-            <button onclick="openPatientScreen('${p.id}', 'SETUP')" class="px-2.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700" title="שלב 1: צלב מצב הפה ופרוגנוזה">
-              1. מצב הפה
-            </button>
-            <button onclick="openPatientScreen('${p.id}', 'BUILDER')" class="px-2.5 py-1.5 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800">
-              2. תוכנית
-            </button>
-            <button onclick="openPatientScreen('${p.id}', 'APPROVED')" class="flex-1 py-1.5 rounded-xl bg-sky-600 hover:bg-sky-500 text-white text-center">
-              3. לאומית ו-PDF
-            </button>
-          </div>
-        </div>
-      `).join('');
-    }
-
-    function openPatientScreen(ptId, targetStage) {
-      App.activePtId = ptId;
-      App.selectedTeeth.clear();
-      const pt = getPt();
-      if (targetStage === 'SETUP') {
-        renderScreen2A();
-        showScreen('screen-setup', `${pt.firstName} ${pt.lastName} – שלב 1: צלב מצב הפה ופרוגנוזה`);
-      } else if (targetStage === 'BUILDER') {
-        renderScreen2B();
-        showScreen('screen-builder', `${pt.firstName} ${pt.lastName} – שלב 2: תוכנית טיפול`);
-      } else {
-        renderScreen3();
-        showScreen('screen-approved', `${pt.firstName} ${pt.lastName} – שלב 3: תוכנית מאושרת`);
+      if (list.length === 0) {
+        grid.innerHTML = `<div class="col-span-full py-8 text-center text-slate-400 font-bold text-sm">לא נמצאו מטופלים בסינון הנוכחי. לחץ על "+ הוספת מטופל חדש" למעלה.</div>`;
+        return;
       }
+
+      grid.innerHTML = list.map(p => {
+        const displayName = (p.firstName || p.lastName) ? `${p.firstName} ${p.lastName}` : 'טיוטת מטופל חדש (ללא שם)';
+        const isMenuOpen = App.openMenuPtId === p.id;
+        return `
+          <div class="relative p-3.5 rounded-2xl border border-slate-200 hover:border-sky-400 bg-slate-50/60 hover:bg-white transition flex flex-col justify-between gap-3 shadow-sm">
+            <div>
+              <div class="flex items-start justify-between gap-2">
+                <div class="flex items-center gap-1.5">
+                  <!-- 3-Dots Action Menu Button -->
+                  <div class="relative">
+                    <button type="button" onclick="toggleCardMenu(event, '${p.id}')" class="w-7 h-7 rounded-lg hover:bg-slate-200 flex items-center justify-center text-slate-600 font-black text-base leading-none" title="אפשרויות ומחיקה">
+                      ⋮
+                    </button>
+                    ${isMenuOpen ? `
+                      <div onclick="event.stopPropagation()" class="absolute right-0 top-8 w-48 bg-white rounded-xl shadow-xl border border-slate-200 py-1.5 z-30 text-xs font-bold">
+                        <button type="button" onclick="openPatientWorkspace('${p.id}', 1)" class="w-full px-3 py-2 text-right hover:bg-slate-50 flex items-center gap-2 text-slate-700">
+                          <span>✏️</span><span>ערוך פרטי מטופל ופרוגנוזה</span>
+                        </button>
+                        <button type="button" onclick="duplicatePatientPlanFromMenu(event, '${p.id}')" class="w-full px-3 py-2 text-right hover:bg-slate-50 flex items-center gap-2 text-indigo-700">
+                          <span>➕</span><span>שכפל לתוכנית המשך (2+)</span>
+                        </button>
+                        <div class="my-1 border-t border-slate-100"></div>
+                        <button type="button" onclick="deletePatientFromMenu(event, '${p.id}')" class="w-full px-3 py-2 text-right hover:bg-rose-50 flex items-center gap-2 text-rose-600 font-black">
+                          <span>🗑️</span><span>מחק מטופל / טיוטה</span>
+                        </button>
+                      </div>
+                    ` : ''}
+                  </div>
+                  <span onclick="openPatientWorkspace('${p.id}', ${p.wsStage || 1})" class="font-black text-base text-slate-900 hover:text-sky-700 cursor-pointer">${displayName}</span>
+                </div>
+                ${grpBadge[p.group] || grpBadge.UNDECIDED}
+              </div>
+
+              <div class="text-xs text-slate-500 mt-1.5 flex items-center justify-between pr-8">
+                <span>רופא: <strong class="text-slate-800">${p.treatingDoc}</strong></span>
+                <span class="font-bold text-sky-700">תוכנית #${p.planNumber || 1} (${p.classification === 'FINAL' ? 'סופית' : 'ראשונית'})</span>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-1.5 pt-2 border-t border-slate-200/80 text-xs font-bold">
+              <button type="button" onclick="openPatientWorkspace('${p.id}', 1)" class="px-2.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700">
+                1. פרוגנוזה
+              </button>
+              <button type="button" onclick="openPatientWorkspace('${p.id}', 2)" class="px-2.5 py-1.5 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800">
+                2. תוכנית טיפול
+              </button>
+              <button type="button" onclick="openPatientWorkspace('${p.id}', 3)" class="flex-1 py-1.5 rounded-xl bg-sky-600 hover:bg-sky-500 text-white text-center">
+                3. לאומית ו-PDF
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
     }
 
     // =========================================================================
-    // 4. SCREEN 2A: NEW PATIENT & INITIAL MOUTH SETUP DENTAL CROSS
+    // 4. PERSISTENT WORKSPACE & SEAMLESS STAGE TRANSITIONS (STAGE 1 -> 2 -> 3)
     // =========================================================================
-    function startNewPatientWizard() {
-      const newPt = {
-        id: 'PT-' + Date.now(),
-        firstName: '',
-        lastName: '',
-        insurance: 'LEUMIT_GOLD',
-        classification: 'INITIAL',
-        treatingDoc: 'לא שויך',
-        group: 'UNDECIDED',
-        consultants: [],
-        planNumber: 1,
-        stage: 'SETUP',
-        keepStatusColorsInBuilder: false,
-        teethState: {},
-        prognosis: {},
-        capsules: [],
-        generalItems: [],
-        unrequested: []
-      };
-      App.patients.unshift(newPt);
-      App.activePtId = newPt.id;
+    function openPatientWorkspace(ptId, stageNum) {
+      App.activePtId = ptId;
+      App.openMenuPtId = null;
       App.selectedTeeth.clear();
-      saveState();
-      renderScreen2A();
-      showScreen('screen-setup', 'הוספת מטופל חדש – שלב 1: צלב מצב הפה ופרוגנוזה');
+      const pt = getPt();
+      if (!pt) return;
+
+      if (!pt.teethState) pt.teethState = {};
+      if (!pt.prognosis) pt.prognosis = {};
+      if (!pt.capsules) pt.capsules = [];
+      if (!pt.generalItems) pt.generalItems = [];
+      if (!pt.unrequested) pt.unrequested = [];
+
+      // Populate Header Bar Fields
+      document.getElementById('ws-fname').value = pt.firstName || '';
+      document.getElementById('ws-lname').value = pt.lastName || '';
+      document.getElementById('ws-doc').value = pt.treatingDoc || 'לא שויך';
+      document.getElementById('ws-ins').value = pt.insurance || 'LEUMIT_GOLD';
+      document.getElementById('ws-class').value = pt.classification || 'INITIAL';
+      document.getElementById('ws-group').value = pt.group || 'UNDECIDED';
+
+      renderConsultantsChips();
+
+      document.getElementById('view-home').classList.add('hidden');
+      document.getElementById('view-workspace').classList.remove('hidden');
+      document.getElementById('btn-back-home').classList.remove('hidden');
+
+      switchWorkspaceStage(stageNum || pt.wsStage || 1);
     }
 
-    function renderScreen2A() {
+    function savePatientHeaderFields() {
       const pt = getPt();
-      if (!pt.prognosis) pt.prognosis = {};
-      if (!pt.teethState) pt.teethState = {};
+      if (!pt) return;
+      pt.firstName = document.getElementById('ws-fname').value.trim();
+      pt.lastName = document.getElementById('ws-lname').value.trim();
+      pt.treatingDoc = document.getElementById('ws-doc').value;
+      pt.insurance = document.getElementById('ws-ins').value;
+      pt.classification = document.getElementById('ws-class').value;
+      pt.group = document.getElementById('ws-group').value;
+      saveState();
+      updateBreadcrumb();
+    }
 
-      document.getElementById('setup-fname').value = pt.firstName;
-      document.getElementById('setup-lname').value = pt.lastName;
-      document.getElementById('setup-ins').value = pt.insurance;
-      document.getElementById('setup-class').value = pt.classification;
-      document.getElementById('setup-doc').value = pt.treatingDoc;
-      document.getElementById('setup-group').value = pt.group;
+    function toggleConsultantsRow() {
+      document.getElementById('ws-consult-row').classList.toggle('hidden');
+    }
 
-      // Consultants chips
-      const cBox = document.getElementById('setup-consult-chips');
+    function renderConsultantsChips() {
+      const pt = getPt();
+      const cBox = document.getElementById('ws-consult-chips');
       cBox.innerHTML = '';
       CONSULTANTS.forEach(c => {
-        const active = pt.consultants.includes(c);
+        const active = (pt.consultants || []).includes(c);
         const btn = document.createElement('button');
         btn.type = 'button';
         btn.className = `px-2.5 py-0.5 rounded-full text-[11px] font-bold border transition ${
@@ -959,323 +1060,217 @@
         btn.onclick = () => {
           if (active) pt.consultants = pt.consultants.filter(x => x !== c);
           else pt.consultants.push(c);
-          renderScreen2A();
+          saveState();
+          renderConsultantsChips();
         };
         cBox.appendChild(btn);
       });
-
-      renderSetupMouthCross();
     }
 
-    // Renders Step 1 as a full 16-column Dental Cross for Tooth State & Prognosis
-    function renderSetupMouthCross() {
+    function updateBreadcrumb() {
       const pt = getPt();
-      const table = document.getElementById('cross-table-setup');
-      table.innerHTML = '';
-      const tbody = document.createElement('tbody');
-
-      // 1. Upper Prognosis Row (G / Q / I / -)
-      tbody.appendChild(buildSetupPrognosisRow('פרוגנוזה ע\'', UPPER_TEETH, pt));
-      // 2. Upper Tooth State Capsule Row (שן / שתל / חסרה X)
-      tbody.appendChild(buildSetupStateCapsuleRow('מצב שן ע\'', UPPER_TEETH, pt));
-      // 3. Central Upper Axis (18..11 | 21..28)
-      tbody.appendChild(buildAxisRow('עליונה', UPPER_TEETH, pt, 'SETUP', 'axis-upper'));
-      // 4. Central Lower Axis (48..41 | 31..38)
-      tbody.appendChild(buildAxisRow('תחתונה', LOWER_TEETH, pt, 'SETUP', 'axis-lower'));
-      // 5. Lower Tooth State Capsule Row (שן / שתל / חסרה X)
-      tbody.appendChild(buildSetupStateCapsuleRow('מצב שן ת\'', LOWER_TEETH, pt));
-      // 6. Lower Prognosis Row (G / Q / I / -)
-      tbody.appendChild(buildSetupPrognosisRow('פרוגנוזה ת\'', LOWER_TEETH, pt));
-
-      table.appendChild(tbody);
+      if (!pt) return;
+      const name = (pt.firstName || pt.lastName) ? `${pt.firstName} ${pt.lastName}` : 'מטופל חדש';
+      const stageNames = { 1: 'שלב 1: מצב הפה ופרוגנוזה', 2: 'שלב 2: קביעת תוכנית טיפול', 3: 'שלב 3: אישורי לאומית ו-PDF' };
+      document.getElementById('nav-breadcrumb').textContent = `/ ${name} — ${stageNames[App.wsStage]}`;
     }
 
-    function buildSetupPrognosisRow(label, archTeeth, pt) {
-      const tr = document.createElement('tr');
-      tr.innerHTML = `<td class="row-label">${label}</td>`;
-      archTeeth.forEach((t, idx) => {
-        const td = document.createElement('td');
-        if (idx === 7) td.classList.add('midline-left');
-        const p = (pt.prognosis && pt.prognosis[t]) || '-';
-        let cls = 'prog-none';
-        let txt = '-';
-        if (p === 'G') { cls = 'prog-g'; txt = 'G טוב'; }
-        else if (p === 'Q') { cls = 'prog-q'; txt = 'Q בספק'; }
-        else if (p === 'I') { cls = 'prog-i'; txt = 'I אבוד'; }
-
-        td.innerHTML = `<div class="capsule ${cls}" onclick="cycleToothPrognosis('${t}')">${txt}</div>`;
-        tr.appendChild(td);
-      });
-      return tr;
-    }
-
-    function buildSetupStateCapsuleRow(label, archTeeth, pt) {
-      const tr = document.createElement('tr');
-      tr.innerHTML = `<td class="row-label">${label}</td>`;
-      archTeeth.forEach((t, idx) => {
-        const td = document.createElement('td');
-        if (idx === 7) td.classList.add('midline-left');
-        const st = (pt.teethState && pt.teethState[t]) || 'NATURAL';
-        let cls = 'state-nat';
-        let txt = 'שן';
-        if (st === 'IMPLANT') { cls = 'state-imp'; txt = 'שתל'; }
-        else if (st === 'MISSING') { cls = 'state-mis'; txt = 'חסרה X'; }
-
-        td.innerHTML = `<div class="capsule ${cls}" onclick="cycleToothState('${t}', 'SETUP')">${txt}</div>`;
-        tr.appendChild(td);
-      });
-      return tr;
-    }
-
-    function cycleToothPrognosis(t) {
+    // Core Seamless Stage Switcher: Keeps the Dental Cross Table in place and swaps surrounding rows/controls
+    function switchWorkspaceStage(stageNum) {
+      App.wsStage = stageNum;
       const pt = getPt();
-      if (!pt.prognosis) pt.prognosis = {};
-      const order = ['-', 'G', 'Q', 'I'];
-      const curr = pt.prognosis[t] || '-';
-      const next = order[(order.indexOf(curr) + 1) % order.length];
-      if (next === '-') delete pt.prognosis[t];
-      else pt.prognosis[t] = next;
+      if (pt) {
+        pt.wsStage = stageNum;
+        saveState();
+      }
 
-      // If marked 'I' (Hopeless), auto-add extraction capsule if not already present
-      if (next === 'I') {
-        const arch = UPPER_TEETH.includes(t) ? 'UPPER' : 'LOWER';
-        const hasExt = (pt.capsules || []).some(c => c.teeth.length === 1 && c.teeth[0] === t && c.gmc === 'GMC-SUR01');
-        if (!hasExt) {
-          pt.capsules.push({ id: `C-EXT-${Date.now()}-${t}`, arch, teeth: [t], gmc: 'GMC-SUR01', status: 'APPROVED', done: false });
+      // Update Stepper Tabs UI
+      [1, 2, 3].forEach(n => {
+        const tab = document.getElementById(`step-tab-${n}`);
+        if (n === stageNum) {
+          tab.className = 'px-3 py-1.5 rounded-lg bg-sky-600 text-white shadow-sm transition';
+        } else {
+          tab.className = 'px-3 py-1.5 rounded-lg text-slate-600 hover:bg-slate-200 transition';
         }
-      }
-      saveState();
-      renderSetupMouthCross();
-    }
-
-    function cycleToothState(t, screenContext) {
-      const pt = getPt();
-      if (!pt.teethState) pt.teethState = {};
-      const st = pt.teethState[t] || 'NATURAL';
-      const order = ['NATURAL', 'IMPLANT', 'MISSING'];
-      pt.teethState[t] = order[(order.indexOf(st) + 1) % 3];
-      saveState();
-      if (screenContext === 'SETUP') renderSetupMouthCross();
-      else if (screenContext === 'BUILDER') renderScreen2B();
-      else renderScreen3();
-    }
-
-    function resetAllTeethToNatural() {
-      const pt = getPt();
-      pt.teethState = {};
-      pt.prognosis = {};
-      saveState();
-      renderSetupMouthCross();
-      toast('כל השיניים אופסו למצב שן טבעית');
-    }
-
-    function goToStep2B() {
-      const pt = getPt();
-      pt.firstName = document.getElementById('setup-fname').value.trim() || 'מטופל';
-      pt.lastName = document.getElementById('setup-lname').value.trim() || 'חדש';
-      pt.insurance = document.getElementById('setup-ins').value;
-      pt.classification = document.getElementById('setup-class').value;
-      pt.treatingDoc = document.getElementById('setup-doc').value;
-      pt.group = document.getElementById('setup-group').value;
-      pt.stage = 'BUILDER';
-      saveState();
-
-      renderScreen2B();
-      showScreen('screen-builder', `${pt.firstName} ${pt.lastName} – שלב 2: בניית תוכנית`);
-      toast('מצב הפה והפרוגנוזה הועברו לצלב תוכנית הטיפול');
-    }
-
-    function backToStep2A() {
-      renderScreen2A();
-      showScreen('screen-setup', 'שלב 1: צלב מצב הפה ופרוגנוזה');
-    }
-
-    function openPatientScreen(ptId, targetStage) {
-      App.activePtId = ptId;
-      App.selectedTeeth.clear();
-      const pt = getPt();
-      if (targetStage === 'BUILDER') {
-        renderScreen2B();
-        showScreen('screen-builder', `${pt.firstName} ${pt.lastName} – בניית תוכנית`);
-      } else {
-        renderScreen3();
-        showScreen('screen-approved', `${pt.firstName} ${pt.lastName} – תוכנית מאושרת`);
-      }
-    }
-
-    // =========================================================================
-    // 4. SCREEN 2A: NEW PATIENT & INITIAL MOUTH SETUP (TOOTH / IMPLANT / X)
-    // =========================================================================
-    function startNewPatientWizard() {
-      const newPt = {
-        id: 'PT-' + Date.now(),
-        firstName: '',
-        lastName: '',
-        insurance: 'LEUMIT_GOLD',
-        classification: 'INITIAL',
-        treatingDoc: 'לא שויך',
-        group: 'UNDECIDED',
-        consultants: [],
-        planNumber: 1,
-        stage: 'SETUP',
-        keepStatusColorsInBuilder: false,
-        teethState: {},
-        capsules: [],
-        generalItems: [],
-        unrequested: []
-      };
-      App.patients.unshift(newPt);
-      App.activePtId = newPt.id;
-      App.selectedTeeth.clear();
-      saveState();
-      renderScreen2A();
-      showScreen('screen-setup', 'הוספת מטופל חדש – שלב 1');
-    }
-
-    function renderScreen2A() {
-      const pt = getPt();
-      document.getElementById('setup-fname').value = pt.firstName;
-      document.getElementById('setup-lname').value = pt.lastName;
-      document.getElementById('setup-ins').value = pt.insurance;
-      document.getElementById('setup-class').value = pt.classification;
-      document.getElementById('setup-doc').value = pt.treatingDoc;
-      document.getElementById('setup-group').value = pt.group;
-
-      // Consultants chips
-      const cBox = document.getElementById('setup-consult-chips');
-      cBox.innerHTML = '';
-      CONSULTANTS.forEach(c => {
-        const active = pt.consultants.includes(c);
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = `px-2.5 py-0.5 rounded-full text-[11px] font-bold border transition ${
-          active ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-slate-50 text-slate-600 border-slate-300'
-        }`;
-        btn.textContent = c;
-        btn.onclick = () => {
-          if (active) pt.consultants = pt.consultants.filter(x => x !== c);
-          else pt.consultants.push(c);
-          renderScreen2A();
-        };
-        cBox.appendChild(btn);
       });
 
-      renderSetupMouthGrid();
-    }
+      // Toggle Top Bars & Bottom Panels around the Persistent Table
+      document.getElementById('bar-stage-1').classList.toggle('hidden', stageNum !== 1);
+      document.getElementById('bar-stage-2').classList.toggle('hidden', stageNum !== 2);
+      document.getElementById('bar-stage-3').classList.toggle('hidden', stageNum !== 3);
 
-    function renderSetupMouthGrid() {
-      const pt = getPt();
-      const buildRow = (teeth, containerId) => {
-        const box = document.getElementById(containerId);
-        box.innerHTML = '';
-        teeth.forEach(t => {
-          const st = pt.teethState[t] || 'NATURAL';
-          let cls = 'bg-slate-50 border-slate-300 text-slate-900';
-          let icon = '🦷';
-          if (st === 'IMPLANT') { cls = 'bg-sky-100 border-sky-400 text-sky-950'; icon = '🔩'; }
-          if (st === 'MISSING') { cls = 'bg-rose-100 border-rose-400 text-rose-950'; icon = '❌'; }
+      document.getElementById('panel-stage-2').classList.toggle('hidden', stageNum !== 2);
+      document.getElementById('panel-stage-3').classList.toggle('hidden', stageNum !== 3);
 
-          const btn = document.createElement('button');
-          btn.type = 'button';
-          btn.className = `h-14 rounded-xl border ${cls} flex flex-col items-center justify-center transition hover:scale-105`;
-          btn.innerHTML = `<span class="font-num font-black text-xs">${t}</span><span class="text-sm mt-0.5">${icon}</span>`;
-          btn.onclick = () => {
-            const order = ['NATURAL', 'IMPLANT', 'MISSING'];
-            pt.teethState[t] = order[(order.indexOf(st) + 1) % 3];
-            saveState();
-            renderSetupMouthGrid();
-          };
-          box.appendChild(btn);
-        });
-      };
-
-      buildRow(UPPER_TEETH, 'setup-mouth-upper');
-      buildRow(LOWER_TEETH, 'setup-mouth-lower');
-    }
-
-    function goToStep2B() {
-      const pt = getPt();
-      pt.firstName = document.getElementById('setup-fname').value.trim() || 'מטופל';
-      pt.lastName = document.getElementById('setup-lname').value.trim() || 'חדש';
-      pt.insurance = document.getElementById('setup-ins').value;
-      pt.classification = document.getElementById('setup-class').value;
-      pt.treatingDoc = document.getElementById('setup-doc').value;
-      pt.group = document.getElementById('setup-group').value;
-      pt.stage = 'BUILDER';
-      saveState();
-
-      renderScreen2B();
-      showScreen('screen-builder', `${pt.firstName} ${pt.lastName} – שלב 2: בניית תוכנית`);
-    }
-
-    function backToStep2A() {
-      renderScreen2A();
-      showScreen('screen-setup', 'שלב 1: הגדרת הפה');
-    }
-
-    // =========================================================================
-    // 5. SCREEN 2B: DENTAL CROSS BUILDER + 4 RUBRICS
-    // =========================================================================
-    function renderScreen2B() {
-      const pt = getPt();
-      document.getElementById('builder-patient-label').textContent = `${pt.firstName} ${pt.lastName} • תוכנית #${pt.planNumber || 1} (${pt.classification === 'FINAL' ? 'סופית' : 'ראשונית'})`;
-      
-      // If continuation plan (Plan 2+), keep HMO status colors as requested; otherwise use Family colors
-      const colorMode = pt.keepStatusColorsInBuilder ? 'STATUS' : 'FAMILY';
-      renderCrossGrid('cross-table-builder', pt, colorMode, 'BUILDER');
-
-      // Update Auto Iron-Rule indicators
-      const auto = getAutoIronRuleCounts(pt);
-      document.getElementById('builder-auto-img').textContent = `הדמיה (115): ${auto.imgTeeth.length} שיניים`;
-      document.getElementById('builder-auto-upper').textContent = `מודל עליון (619): ${auto.upperModel ? 'פעיל ✓' : 'לא'}`;
-      document.getElementById('builder-auto-lower').textContent = `מודל תחתון (619): ${auto.lowerModel ? 'פעיל ✓' : 'לא'}`;
-
-      // Render General Items Pills
-      const gBox = document.getElementById('builder-general-pills');
-      if (!pt.generalItems || pt.generalItems.length === 0) {
-        gBox.innerHTML = `<span class="text-slate-400">טרם נוספו פריטים כלליים מתחת לטבלה</span>`;
+      // Update Bottom Right CTA Button
+      const nextBtn = document.getElementById('btn-stage-next');
+      const nextTxt = document.getElementById('btn-stage-next-text');
+      if (stageNum === 1) {
+        nextBtn.className = 'px-6 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-black text-sm shadow-md transition flex items-center gap-2';
+        nextTxt.textContent = 'אישור ומעבר לקביעת תוכנית טיפול';
+        nextBtn.classList.remove('hidden');
+      } else if (stageNum === 2) {
+        nextBtn.className = 'px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-sm shadow-md transition flex items-center gap-2';
+        nextTxt.textContent = 'אישור תוכנית ומעבר להזנת תשובות קופה';
+        nextBtn.classList.remove('hidden');
       } else {
-        gBox.innerHTML = pt.generalItems.map((g, i) => `
-          <span class="px-2.5 py-1 rounded-lg bg-slate-100 border border-slate-300 font-bold flex items-center gap-1.5">
-            <span>${g.label}</span>
-            <button onclick="removeGeneralItem(${i})" class="text-rose-600 font-black">✕</button>
-          </span>
-        `).join('');
+        nextBtn.classList.add('hidden');
       }
 
-      const selArr = Array.from(App.selectedTeeth);
-      document.getElementById('builder-selected-label').textContent = selArr.length
-        ? `שיניים מסומנות (${selArr.length}): ${selArr.join(', ')}`
-        : 'סמן שן (תיבת ✓) להוספת טיפול או לחץ על מספר השן להחלפת 🦷/🔩/❌';
+      updateBreadcrumb();
+      renderPersistentDentalCross();
+
+      if (stageNum === 2) renderStage2Panels();
+      if (stageNum === 3) renderStage3Panels();
     }
 
-    // Shared 16-Column Dental Cross Renderer (Used in Screen 2B and Screen 3)
-    function renderCrossGrid(tableId, pt, colorMode, screenContext) {
-      const table = document.getElementById(tableId);
+    function advanceWorkspaceStage() {
+      savePatientHeaderFields();
+      if (App.wsStage === 1) {
+        switchWorkspaceStage(2);
+        toast('הטבלה עברה לשלב 2: קביעת תוכנית טיפול');
+      } else if (App.wsStage === 2) {
+        switchWorkspaceStage(3);
+        toast('התוכנית אושרה! הטבלה עברה לשלב 3: אישורי קופ"ח לאומית');
+      }
+    }
+
+    // =========================================================================
+    // 5. PERSISTENT 16-COLUMN DENTAL CROSS RENDERER (ALL 3 STAGES IN 1 TABLE)
+    // =========================================================================
+    function renderPersistentDentalCross() {
+      const pt = getPt();
+      if (!pt) return;
+      const table = document.getElementById('persistent-cross-table');
       table.innerHTML = '';
       const tbody = document.createElement('tbody');
-      const auto = getAutoIronRuleCounts(pt);
 
-      // Upper Rows (From top ARCH down to ENDO closest to tooth)
-      const upperOrder = ['ARCH', 'IMAGING', 'IMPLANT_ROW', 'PONTIC', 'TEMP', 'CROWN', 'CORE', 'ENDO'];
-      upperOrder.forEach(rKey => {
-        tbody.appendChild(buildCrossRow('UPPER', rKey, UPPER_TEETH, pt, colorMode, screenContext, auto));
-      });
+      if (App.wsStage === 1) {
+        // STAGE 1: ONLY Prognosis (GOOD / QUESTIONABLE / IRRATIONAL TO TREAT) & Tooth Axis
+        tbody.appendChild(buildStage1PrognosisRow('פרוגנוזה (עליונה)', UPPER_TEETH, pt));
+        tbody.appendChild(buildAxisRow('לסת עליונה', UPPER_TEETH, pt, 'axis-upper'));
+        tbody.appendChild(buildAxisRow('לסת תחתונה', LOWER_TEETH, pt, 'axis-lower'));
+        tbody.appendChild(buildStage1PrognosisRow('פרוגנוזה (תחתונה)', LOWER_TEETH, pt));
+      } else {
+        // STAGE 2 (Builder) OR STAGE 3 (HMO Status): Treatment Rows around the exact same Tooth Axis
+        const auto = getAutoIronRuleCounts(pt);
+        const colorMode = (App.wsStage === 2 && !pt.keepStatusColorsInBuilder) ? 'FAMILY' : 'STATUS';
 
-      // Central Axis: Upper & Lower Teeth
-      tbody.appendChild(buildAxisRow('עליונה', UPPER_TEETH, pt, screenContext, 'axis-upper'));
-      tbody.appendChild(buildAxisRow('תחתונה', LOWER_TEETH, pt, screenContext, 'axis-lower'));
+        const upperOrder = ['ARCH', 'IMAGING', 'IMPLANT_ROW', 'PONTIC', 'TEMP', 'CROWN', 'CORE', 'ENDO'];
+        upperOrder.forEach(rKey => {
+          tbody.appendChild(buildTreatmentCrossRow('UPPER', rKey, UPPER_TEETH, pt, colorMode, auto));
+        });
 
-      // Lower Rows (From ENDO closest to tooth down to ARCH)
-      const lowerOrder = ['ENDO', 'CORE', 'TEMP', 'PONTIC', 'CROWN', 'IMPLANT_ROW', 'IMAGING', 'ARCH'];
-      lowerOrder.forEach(rKey => {
-        tbody.appendChild(buildCrossRow('LOWER', rKey, LOWER_TEETH, pt, colorMode, screenContext, auto));
-      });
+        tbody.appendChild(buildAxisRow('לסת עליונה', UPPER_TEETH, pt, 'axis-upper'));
+        tbody.appendChild(buildAxisRow('לסת תחתונה', LOWER_TEETH, pt, 'axis-lower'));
+
+        const lowerOrder = ['ENDO', 'CORE', 'TEMP', 'PONTIC', 'CROWN', 'IMPLANT_ROW', 'IMAGING', 'ARCH'];
+        lowerOrder.forEach(rKey => {
+          tbody.appendChild(buildTreatmentCrossRow('LOWER', rKey, LOWER_TEETH, pt, colorMode, auto));
+        });
+      }
 
       table.appendChild(tbody);
     }
 
-    function buildCrossRow(arch, rowKey, archTeeth, pt, colorMode, screenContext, auto) {
+    // STAGE 1 ROW: GOOD / QUESTIONABLE / IRRATIONAL TO TREAT
+    function buildStage1PrognosisRow(label, archTeeth, pt) {
+      const tr = document.createElement('tr');
+      tr.style.height = '34px';
+      tr.innerHTML = `<td class="row-label">${label}</td>`;
+
+      archTeeth.forEach((t, idx) => {
+        const td = document.createElement('td');
+        if (idx === 7) td.classList.add('midline-left');
+        const p = (pt.prognosis && pt.prognosis[t]) || '';
+        let cls = 'prog-empty';
+        let txt = '+ פרוגנוזה';
+        if (p === 'GOOD') { cls = 'prog-good'; txt = 'GOOD'; }
+        else if (p === 'QUESTIONABLE') { cls = 'prog-quest'; txt = 'QUESTIONABLE'; }
+        else if (p === 'IRRATIONAL') { cls = 'prog-irrat'; txt = 'IRRATIONAL'; }
+
+        td.innerHTML = `<div class="capsule ${cls}" title="${p === 'IRRATIONAL' ? 'IRRATIONAL TO TREAT (מסמן עקירה אוטומטית)' : 'לחץ להחלפת פרוגנוזה'}" onclick="cycleToothPrognosis('${t}')">${txt}</div>`;
+        tr.appendChild(td);
+      });
+      return tr;
+    }
+
+    // CENTRAL TOOTH AXIS ROW WITH CRYSTAL-CLEAR SVG ICONS FOR TOOTH / IMPLANT / MISSING (X)
+    function buildAxisRow(label, archTeeth, pt, rowCls) {
+      const tr = document.createElement('tr');
+      tr.className = rowCls;
+      tr.innerHTML = `<td class="row-label font-black text-slate-900 bg-slate-100">${label}</td>`;
+
+      archTeeth.forEach((t, idx) => {
+        const st = (pt.teethState && pt.teethState[t]) || 'NATURAL';
+        const prog = (pt.prognosis && pt.prognosis[t]) || '';
+        const isSel = App.selectedTeeth.has(t);
+        const td = document.createElement('td');
+        if (idx === 7) td.classList.add('midline-left');
+
+        let cellBg = 'bg-white hover:bg-slate-50';
+        let stateLabel = 'שן בפה';
+        let svgIcon = `
+          <svg class="w-4 h-4 text-emerald-600/80" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M7 3C4.5 3 3 5 3 8c0 2.2 1 4 1.8 5.8.7 1.6 1.2 3.7 1.7 5.7.2.8 1 1.5 1.8 1.5.9 0 1.5-.7 1.8-1.8l.9-3.2h2l.9 3.2c.3 1.1.9 1.8 1.8 1.8.8 0 1.6-.7 1.8-1.5.5-2 1-4.1 1.7-5.7C20 12 21 10.2 21 8c0-3-1.5-5-4-5-1.8 0-3.2.8-5 .8S8.8 3 7 3z"/>
+          </svg>
+        `;
+
+        if (st === 'IMPLANT') {
+          cellBg = 'bg-sky-100 hover:bg-sky-200/70';
+          stateLabel = 'שתל';
+          svgIcon = `
+            <svg class="w-4 h-4 text-sky-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+              <rect x="7" y="2" width="10" height="4" rx="1" fill="currentColor"/>
+              <path d="M8 6h8l-1.5 15h-5L8 6z"/>
+              <line x1="6" y1="9" x2="18" y2="9"/>
+              <line x1="6.5" y1="13" x2="17.5" y2="13"/>
+              <line x1="7" y1="17" x2="17" y2="17"/>
+            </svg>
+          `;
+        } else if (st === 'MISSING') {
+          cellBg = 'bg-rose-100/90 hover:bg-rose-200/70';
+          stateLabel = 'חסרה X';
+          svgIcon = `
+            <svg class="w-4 h-4 text-rose-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2">
+              <line x1="4" y1="4" x2="20" y2="20"/>
+              <line x1="20" y1="4" x2="4" y2="20"/>
+            </svg>
+          `;
+        }
+
+        // Small prognosis indicator dot in Stage 2 & 3
+        let progBadge = '';
+        if (App.wsStage > 1 && prog) {
+          const pMap = {
+            GOOD: { txt: 'G', cls: 'bg-emerald-200 text-emerald-950' },
+            QUESTIONABLE: { txt: 'Q', cls: 'bg-amber-200 text-amber-950' },
+            IRRATIONAL: { txt: 'I', cls: 'bg-rose-200 text-rose-950' }
+          };
+          const b = pMap[prog];
+          if (b) progBadge = `<span class="absolute bottom-0.5 left-0.5 px-1 rounded text-[8px] font-black ${b.cls}">${b.txt}</span>`;
+        }
+
+        td.className = `${cellBg} cursor-pointer select-none ${isSel && App.wsStage === 2 ? 'tooth-selected' : ''}`;
+        td.innerHTML = `
+          <div class="relative w-full h-full flex flex-col items-center justify-center py-0.5" title="שן ${t}: ${stateLabel} (לחץ להחלפת מצב שן)">
+            ${App.wsStage === 2 ? `<input type="checkbox" ${isSel ? 'checked' : ''} onclick="toggleSelectToothBuilder(event, '${t}')" class="absolute top-0.5 right-0.5 w-3.5 h-3.5 accent-sky-600 cursor-pointer z-20" title="סמן שן להוספת טיפול">` : ''}
+            ${progBadge}
+            <span class="font-num font-black text-xs sm:text-sm leading-none text-slate-950">${t}</span>
+            <div class="mt-0.5 flex items-center gap-0.5">
+              ${svgIcon}
+              <span class="text-[9px] font-extrabold leading-none ${st === 'IMPLANT' ? 'text-sky-800' : st === 'MISSING' ? 'text-rose-800' : 'text-slate-500'}">${stateLabel}</span>
+            </div>
+          </div>
+        `;
+        td.onclick = () => cycleToothState(t);
+        tr.appendChild(td);
+      });
+
+      return tr;
+    }
+
+    function buildTreatmentCrossRow(arch, rowKey, archTeeth, pt, colorMode, auto) {
       const rowSpec = CROSS_ROWS.find(r => r.key === rowKey);
       const tr = document.createElement('tr');
       tr.innerHTML = `<td class="row-label">${rowSpec.label}</td>`;
@@ -1308,7 +1303,7 @@
           const cat = getCat(spanCap.gmc);
           const cls = getPillClass(spanCap, cat, colorMode);
           const doneMark = spanCap.done ? ' ✓' : '';
-          td.innerHTML = `<div class="capsule ${cls}" onclick="onCapsuleClick('${spanCap.id}', '${screenContext}')">${spanCap.label || cat.short}${doneMark}</div>`;
+          td.innerHTML = `<div class="capsule ${cls}" onclick="onCapsuleClick('${spanCap.id}')">${spanCap.label || cat.short}${doneMark}</div>`;
           tr.appendChild(td);
           i += len;
           continue;
@@ -1322,7 +1317,7 @@
           const cat = getCat(singleCap.gmc);
           const cls = getPillClass(singleCap, cat, colorMode);
           const doneMark = singleCap.done ? ' ✓' : '';
-          td.innerHTML = `<div class="capsule ${cls}" onclick="onCapsuleClick('${singleCap.id}', '${screenContext}')">${singleCap.label || cat.short}${doneMark}</div>`;
+          td.innerHTML = `<div class="capsule ${cls}" onclick="onCapsuleClick('${singleCap.id}')">${singleCap.label || cat.short}${doneMark}</div>`;
         }
         tr.appendChild(td);
         i++;
@@ -1331,47 +1326,50 @@
       return tr;
     }
 
-    function buildAxisRow(label, archTeeth, pt, screenContext, rowCls) {
-      const tr = document.createElement('tr');
-      tr.className = rowCls;
-      tr.innerHTML = `<td class="row-label font-black text-slate-900 bg-slate-100">${label}</td>`;
+    // =========================================================================
+    // 6. INTERACTIVE TOOTH STATUS, PROGNOSIS & TREATMENT ACTIONS
+    // =========================================================================
+    function cycleToothState(t) {
+      const pt = getPt();
+      if (!pt) return;
+      if (!pt.teethState) pt.teethState = {};
+      const st = pt.teethState[t] || 'NATURAL';
+      const order = ['NATURAL', 'IMPLANT', 'MISSING'];
+      pt.teethState[t] = order[(order.indexOf(st) + 1) % 3];
+      saveState();
+      renderPersistentDentalCross();
+    }
 
-      archTeeth.forEach((t, idx) => {
-        const st = (pt.teethState && pt.teethState[t]) || 'NATURAL';
-        const prog = (pt.prognosis && pt.prognosis[t]) || '';
-        const isSel = App.selectedTeeth.has(t);
-        const td = document.createElement('td');
-        if (idx === 7) td.classList.add('midline-left');
+    function cycleToothPrognosis(t) {
+      const pt = getPt();
+      if (!pt) return;
+      if (!pt.prognosis) pt.prognosis = {};
+      const order = ['', 'GOOD', 'QUESTIONABLE', 'IRRATIONAL'];
+      const curr = pt.prognosis[t] || '';
+      const next = order[(order.indexOf(curr) + 1) % order.length];
+      if (!next) delete pt.prognosis[t];
+      else pt.prognosis[t] = next;
 
-        let cellBg = 'bg-slate-50';
-        let backIcon = `<span class="text-slate-400/25 text-lg">🦷</span>`;
-        if (st === 'IMPLANT') {
-          cellBg = 'bg-sky-100/90';
-          backIcon = `<span class="text-sky-600/35 text-base">🔩</span>`;
-        } else if (st === 'MISSING') {
-          cellBg = 'bg-rose-100/90';
-          backIcon = `<span class="text-rose-500/45 font-black text-xl">✕</span>`;
+      // If marked IRRATIONAL TO TREAT, automatically add extraction ('ע') to the treatment plan
+      if (next === 'IRRATIONAL') {
+        const arch = UPPER_TEETH.includes(t) ? 'UPPER' : 'LOWER';
+        const hasExt = (pt.capsules || []).some(c => c.teeth.length === 1 && c.teeth[0] === t && c.gmc === 'GMC-SUR01');
+        if (!hasExt) {
+          pt.capsules.push({ id: `C-EXT-${Date.now()}-${t}`, arch, teeth: [t], gmc: 'GMC-SUR01', status: 'APPROVED', done: false });
         }
+      }
+      saveState();
+      renderPersistentDentalCross();
+    }
 
-        let progDot = '';
-        if (prog === 'G') progDot = `<span class="absolute bottom-0.5 left-0.5 px-1 rounded text-[9px] font-black bg-emerald-200 text-emerald-900">${prog}</span>`;
-        else if (prog === 'Q') progDot = `<span class="absolute bottom-0.5 left-0.5 px-1 rounded text-[9px] font-black bg-amber-200 text-amber-900">${prog}</span>`;
-        else if (prog === 'I') progDot = `<span class="absolute bottom-0.5 left-0.5 px-1 rounded text-[9px] font-black bg-rose-200 text-rose-900">${prog}</span>`;
-
-        td.className = `${cellBg} cursor-pointer select-none ${isSel && screenContext === 'BUILDER' ? 'tooth-selected' : ''}`;
-        td.innerHTML = `
-          <div class="relative w-full h-full flex items-center justify-center">
-            <div class="absolute inset-0 flex items-center justify-center pointer-events-none">${backIcon}</div>
-            ${screenContext === 'BUILDER' ? `<input type="checkbox" ${isSel ? 'checked' : ''} onclick="toggleSelectToothBuilder(event, '${t}')" class="absolute top-0.5 right-0.5 w-3 h-3 accent-sky-600 cursor-pointer z-20">` : ''}
-            ${progDot}
-            <span class="relative z-10 font-num font-black text-xs sm:text-sm text-slate-900">${t}</span>
-          </div>
-        `;
-        td.onclick = () => cycleToothState(t, screenContext);
-        tr.appendChild(td);
-      });
-
-      return tr;
+    function resetAllTeethToNatural() {
+      const pt = getPt();
+      if (!pt) return;
+      pt.teethState = {};
+      pt.prognosis = {};
+      saveState();
+      renderPersistentDentalCross();
+      toast('כל השיניים אופסו למצב שן בפה');
     }
 
     function getPillClass(cap, cat, colorMode) {
@@ -1384,21 +1382,22 @@
       }
     }
 
-    function onCapsuleClick(capId, screenContext) {
+    function onCapsuleClick(capId) {
       const pt = getPt();
-      if (screenContext === 'BUILDER') {
-        // In Builder, clicking a capsule removes it cleanly
+      if (!pt) return;
+      if (App.wsStage === 2) {
         pt.capsules = pt.capsules.filter(c => c.id !== capId);
         saveState();
-        renderScreen2B();
-      } else {
-        // In Approved Screen 3, clicking a capsule cycles its HMO status!
+        renderPersistentDentalCross();
+        renderStage2Panels();
+      } else if (App.wsStage === 3) {
         const cap = pt.capsules.find(c => c.id === capId);
         if (!cap) return;
         const order = ['APPROVED', 'REASON', 'DENIED', 'NORESP', 'UNREQ'];
         cap.status = order[(order.indexOf(cap.status) + 1) % order.length];
         saveState();
-        renderScreen3();
+        renderPersistentDentalCross();
+        renderStage3Panels();
       }
     }
 
@@ -1406,12 +1405,14 @@
       e.stopPropagation();
       if (App.selectedTeeth.has(t)) App.selectedTeeth.delete(t);
       else App.selectedTeeth.add(t);
-      renderScreen2B();
+      renderPersistentDentalCross();
+      renderStage2Panels();
     }
 
     function clearToothSelection() {
       App.selectedTeeth.clear();
-      renderScreen2B();
+      renderPersistentDentalCross();
+      renderStage2Panels();
     }
 
     function promptBridgeRange() {
@@ -1423,7 +1424,8 @@
       if (i1 === -1 || i2 === -1) return;
       App.selectedTeeth.clear();
       for (let i = Math.min(i1, i2); i <= Math.max(i1, i2); i++) App.selectedTeeth.add(arch[i]);
-      renderScreen2B();
+      renderPersistentDentalCross();
+      renderStage2Panels();
     }
 
     function addBundleToSelected(type) {
@@ -1452,7 +1454,6 @@
           const arch = UPPER_TEETH.includes(t) ? 'UPPER' : 'LOWER';
           if (type === 'IMPLANT_CROWN') pt.teethState[t] = 'IMPLANT';
           (map[type] || []).forEach((gmc, idx) => {
-            // Remove duplicate in same row on same tooth before adding
             const rowKey = getCat(gmc).rowKey;
             pt.capsules = pt.capsules.filter(c => !(c.teeth.length === 1 && c.teeth[0] === t && getCat(c.gmc).rowKey === rowKey));
             pt.capsules.push({ id: `C-${Date.now()}-${t}-${idx}`, arch, teeth: [t], gmc, status: 'APPROVED', done: false });
@@ -1461,12 +1462,13 @@
       }
 
       saveState();
-      renderScreen2B();
+      renderPersistentDentalCross();
+      renderStage2Panels();
     }
 
     function addSingleToSelected() {
       const sel = Array.from(App.selectedTeeth);
-      if (!sel.length) { toast('סמן שן בטבלה'); return; }
+      if (!sel.length) { toast('סמן שן בטבלה (תיבת ✓)'); return; }
       const gmc = document.getElementById('builder-single-select').value;
       const pt = getPt();
       sel.forEach(t => {
@@ -1476,7 +1478,8 @@
         pt.capsules.push({ id: `C-${Date.now()}-${t}`, arch, teeth: [t], gmc, status: 'APPROVED', done: false });
       });
       saveState();
-      renderScreen2B();
+      renderPersistentDentalCross();
+      renderStage2Panels();
     }
 
     function addGeneralOrArchItem(gmc, target, label) {
@@ -1496,7 +1499,8 @@
         pt.generalItems.push({ id: 'G-' + Date.now(), gmc, label, status: 'APPROVED' });
       }
       saveState();
-      renderScreen2B();
+      renderPersistentDentalCross();
+      renderStage2Panels();
       toast(`נוסף לתוכנית: ${label}`);
     }
 
@@ -1504,7 +1508,7 @@
       const pt = getPt();
       pt.generalItems.splice(idx, 1);
       saveState();
-      renderScreen2B();
+      renderStage2Panels();
     }
 
     function getAutoIronRuleCounts(pt) {
@@ -1524,27 +1528,35 @@
       };
     }
 
-    function approvePlanAndGoToScreen3() {
+    function renderStage2Panels() {
       const pt = getPt();
-      pt.stage = 'APPROVED';
-      saveState();
-      renderScreen3();
-      showScreen('screen-approved', `${pt.firstName} ${pt.lastName} – תוכנית מאושרת (לאומית)`);
-      toast('התוכנית אושרה! צלב השיניים עבר למצב הזנת תשובות קופ"ח לאומית.');
+      if (!pt) return;
+      const auto = getAutoIronRuleCounts(pt);
+      document.getElementById('builder-auto-img').textContent = `הדמיה (115): ${auto.imgTeeth.length} שיניים`;
+      document.getElementById('builder-auto-upper').textContent = `מודל עליון (619): ${auto.upperModel ? 'פעיל ✓' : 'לא'}`;
+      document.getElementById('builder-auto-lower').textContent = `מודל תחתון (619): ${auto.lowerModel ? 'פעיל ✓' : 'לא'}`;
+
+      const gBox = document.getElementById('builder-general-pills');
+      if (!pt.generalItems || pt.generalItems.length === 0) {
+        gBox.innerHTML = `<span class="text-slate-400">ללא פריטים כלליים נוספים</span>`;
+      } else {
+        gBox.innerHTML = pt.generalItems.map((g, i) => `
+          <span class="px-2 py-0.5 rounded-lg bg-slate-100 border border-slate-300 font-bold flex items-center gap-1">
+            <span>${g.label}</span>
+            <button type="button" onclick="removeGeneralItem(${i})" class="text-rose-600 font-black">✕</button>
+          </span>
+        `).join('');
+      }
+
+      const selArr = Array.from(App.selectedTeeth);
+      document.getElementById('builder-selected-label').textContent = selArr.length
+        ? `שיניים מסומנות (${selArr.length}): ${selArr.join(', ')}`
+        : 'בחר שן (תיבת ✓) או טווח גשר';
     }
 
-    // =========================================================================
-    // 6. SCREEN 3: APPROVED PLAN & LEUMIT STATUS / PDF WINDOW
-    // =========================================================================
-    function renderScreen3() {
+    function renderStage3Panels() {
       const pt = getPt();
-      document.getElementById('approved-patient-title').textContent = `${pt.firstName} ${pt.lastName} – תוכנית #${pt.planNumber || 1} (${pt.classification === 'FINAL' ? 'סופית' : 'ראשונית'})`;
-      document.getElementById('approved-patient-sub').textContent = `רופא מטפל: ${pt.treatingDoc} | קופה: ${pt.insurance === 'LEUMIT_GOLD' ? 'לאומית זהב' : pt.insurance === 'LEUMIT_SILVER' ? 'לאומית כסף' : 'כללי'}`;
-
-      // Render Dental Cross in STATUS mode
-      renderCrossGrid('cross-table-approved', pt, 'STATUS', 'APPROVED');
-
-      // Render Status Table & Calculate Patient Quote
+      if (!pt) return;
       const tbody = document.getElementById('approved-codes-tbody');
       tbody.innerHTML = '';
       let total = 0;
@@ -1570,7 +1582,7 @@
           <td class="p-1.5 font-mono text-sky-700 font-bold">${cat.leumit}</td>
           <td class="p-1.5 font-semibold">${c.label || cat.name}</td>
           <td class="p-1.5 font-num font-bold">₪${price}</td>
-          <td class="p-1.5 cursor-pointer" onclick="onCapsuleClick('${c.id}', 'APPROVED')">${badgeHtml[c.status] || badgeHtml.APPROVED}</td>
+          <td class="p-1.5 cursor-pointer" onclick="onCapsuleClick('${c.id}')">${badgeHtml[c.status] || badgeHtml.APPROVED}</td>
           <td class="p-1.5 text-center"><input type="checkbox" ${c.done ? 'checked' : ''} onchange="toggleDone('${c.id}', this.checked)" class="accent-emerald-600 cursor-pointer"></td>
         `;
         tbody.appendChild(tr);
@@ -1578,12 +1590,11 @@
 
       document.getElementById('approved-total-badge').textContent = `סה"כ משוער: ₪${total.toLocaleString()}`;
 
-      // Render Unrequested list
       const uBox = document.getElementById('approved-unreq-list');
       uBox.innerHTML = (pt.unrequested || []).map((u, i) => `
         <span class="px-2 py-0.5 rounded st-unreq font-bold flex items-center gap-1">
           <span>${u.code} - ${u.name}</span>
-          <button onclick="removeUnreq(${i})" class="text-rose-700">✕</button>
+          <button type="button" onclick="removeUnreq(${i})" class="text-rose-700">✕</button>
         </span>
       `).join('');
     }
@@ -1598,7 +1609,12 @@
     function toggleDone(capId, val) {
       const pt = getPt();
       const cap = pt.capsules.find(c => c.id === capId);
-      if (cap) { cap.done = val; saveState(); renderScreen3(); }
+      if (cap) {
+        cap.done = val;
+        saveState();
+        renderPersistentDentalCross();
+        renderStage3Panels();
+      }
     }
 
     function addUnrequestedCode() {
@@ -1609,19 +1625,19 @@
       if (!pt.unrequested) pt.unrequested = [];
       pt.unrequested.push({ code, name });
       saveState();
-      renderScreen3();
+      renderStage3Panels();
     }
 
     function removeUnreq(i) {
       const pt = getPt();
       pt.unrequested.splice(i, 1);
       saveState();
-      renderScreen3();
+      renderStage3Panels();
     }
 
     function simulateIphoneOcrScan() {
       const inp = document.getElementById('iphone-scan-input');
-      if (inp) inp.value = ''; // Zero-retention: purge file reference immediately
+      if (inp) inp.value = '';
       openOcrVerificationModal();
     }
 
@@ -1659,24 +1675,18 @@
       });
       saveState();
       document.getElementById('modal-ocr').classList.add('hidden');
-      renderScreen3();
-      toast('📱 סטטוסי קופ"ח לאומית עודכנו בצלב השיניים (התמונה נמחקה מהזיכרון).');
+      renderPersistentDentalCross();
+      renderStage3Panels();
+      toast('📱 סטטוסי לאומית עודכנו בצלב השיניים (התמונה נמחקה מהזיכרון).');
     }
 
-    function openScreen2BForEdit() {
-      renderScreen2B();
-      showScreen('screen-builder', 'עריכת טבלת הטיפולים');
-    }
-
-    // Create Plan 2+ keeping existing tooth states AND keeping HMO Status colors in Builder!
     function createContinuationPlanWizard() {
       const pt = getPt();
       pt.planNumber = (pt.planNumber || 1) + 1;
       pt.classification = 'FINAL';
-      pt.keepStatusColorsInBuilder = true; // Shows original table with HMO status colors in builder!
+      pt.keepStatusColorsInBuilder = true;
       saveState();
-      renderScreen2B();
-      showScreen('screen-builder', `תוכנית המשך #${pt.planNumber} (עריכה ע"ג צבעי הסטטוס)`);
+      switchWorkspaceStage(2);
       toast(`נפתחה תוכנית המשך #${pt.planNumber}! מצב השיניים וצבעי הסטטוס נשמרו לעריכה.`);
     }
 
@@ -1792,7 +1802,7 @@
 
     function openCatalogModal() {
       const tbody = document.getElementById('catalog-tbody');
-      tbody.innerHTML = App.catalog.map((c, i) => `
+      tbody.innerHTML = App.catalog.map(c => `
         <tr>
           <td class="p-1.5 border font-mono font-bold">${c.gmc}</td>
           <td class="p-1.5 border font-mono">${c.leumit}</td>
