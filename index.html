@@ -31,7 +31,7 @@
     /* Persistent 16-Column Dental Cross Table */
     .dental-cross-table {
       width: 100%;
-      min-width: 960px;
+      min-width: 980px;
       border-collapse: separate;
       border-spacing: 0;
       table-layout: fixed;
@@ -41,16 +41,16 @@
       padding: 2px;
       text-align: center;
       vertical-align: middle;
-      height: 27px;
+      height: 26px;
       position: relative;
       transition: background-color 0.15s ease;
     }
     .dental-cross-table .row-label {
-      width: 106px;
+      width: 112px;
       background: #f8fafc;
       font-size: 11px;
       font-weight: 800;
-      color: #475569;
+      color: #334155;
       border-left: 2px solid #cbd5e1;
       text-align: right;
       padding: 0 8px;
@@ -62,13 +62,13 @@
     .axis-upper td {
       border-top: 2.5px solid #0f172a !important;
       border-bottom: 1.5px solid #0f172a !important;
-      height: 50px;
+      height: 52px;
       padding: 0;
     }
     .axis-lower td {
       border-top: 1.5px solid #0f172a !important;
       border-bottom: 2.5px solid #0f172a !important;
-      height: 50px;
+      height: 52px;
       padding: 0;
     }
 
@@ -78,7 +78,7 @@
       align-items: center;
       justify-content: center;
       width: 100%;
-      height: 21px;
+      height: 20px;
       padding: 0 3px;
       border-radius: 6px;
       font-size: 10.5px;
@@ -160,31 +160,29 @@
   <main class="flex-1 max-w-6xl w-full mx-auto px-3 sm:px-5 py-4">
 
     <!-- ===================================================================== -->
-    <!-- VIEW 1: דשבורד ראשי (HOME) עם כפתור + גדול ותפריט 3 נקודות לכל מטופל -->
+    <!-- VIEW 1: מסך כניסה (HOME) עם כפתור + גדול ותפריט 3 נקודות לכל מטופל -->
     <!-- ===================================================================== -->
     <section id="view-home" class="space-y-4">
       
-      <!-- Big Primary CTA Button -->
       <div class="bg-gradient-to-l from-sky-600 to-blue-700 rounded-2xl p-5 text-white shadow-md flex flex-col sm:flex-row items-center justify-between gap-4">
         <div>
           <h1 class="text-lg sm:text-xl font-black">ניהול תוכניות שיקום – המרכז הרפואי לגליל</h1>
-          <p class="text-xs text-sky-100 mt-0.5">צלב שיניים רציף: מצב הפה ופרוגנוזה ⬅ קביעת תוכנית טיפול ⬅ אישורי לאומית ו-PDF</p>
         </div>
         <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto">
           <button type="button" id="btn-main-new-patient" onclick="window.openNewPatientModal(event)" class="flex-1 sm:flex-initial px-6 py-3.5 rounded-xl bg-white hover:bg-sky-50 text-blue-900 font-black text-base shadow-lg transition transform active:scale-95 flex items-center justify-center gap-2 cursor-pointer">
             <span class="text-xl leading-none">➕</span>
             <span>הוספת מטופל חדש</span>
           </button>
-          <button type="button" onclick="window.quickCreateDraftPatient(event)" class="px-3.5 py-3.5 rounded-xl bg-sky-800/80 hover:bg-sky-800 text-white font-bold text-xs shadow transition cursor-pointer" title="פתיחה מיידית של כרטיס חדש ישר לצלב השיניים">
+          <button type="button" onclick="window.quickCreateDraftPatient(event)" class="px-3.5 py-3.5 rounded-xl bg-sky-800/80 hover:bg-sky-800 text-white font-bold text-xs shadow transition cursor-pointer">
             ⚡ פתיחה מהירה
           </button>
         </div>
       </div>
 
-      <!-- Compact Search & Filters -->
+      <!-- Search & Filters -->
       <div class="bg-white rounded-2xl border border-slate-200 p-3.5 shadow-sm space-y-3">
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
-          <input type="text" id="home-search" oninput="window.renderHomePatients()" placeholder="🔍 חיפוש מטופל (שם פרטי / משפחה)..." class="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-semibold focus:outline-none focus:ring-2 focus:ring-sky-500">
+          <input type="text" id="home-search" oninput="window.renderHomePatients()" placeholder="🔍 חיפוש מטופל..." class="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-semibold focus:outline-none focus:ring-2 focus:ring-sky-500">
           
           <select id="home-filter-doc" onchange="window.renderHomePatients()" class="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-700">
             <option value="ALL">מתכנן ההצעה</option>
@@ -192,14 +190,13 @@
 
           <select id="home-filter-group" onchange="window.renderHomePatients()" class="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-700">
             <option value="ALL">מסגרת טיפולית</option>
-            <option value="UNDECIDED">⚪ לא הוחלט</option>
-            <option value="RESIDENCY">🔵 התמחות</option>
-            <option value="THURSDAY">🟢 ימי חמישי</option>
-            <option value="SHARAN">🟣 שר"ן (ד"ר נתנאל)</option>
+            <option value="UNDECIDED">לא הוחלט</option>
+            <option value="RESIDENCY">התמחות</option>
+            <option value="THURSDAY">ימי חמישי</option>
+            <option value="SHARAN">שר"ן - ד"ר נתנאל</option>
           </select>
         </div>
 
-        <!-- Patients Grid -->
         <div id="home-patients-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 pt-1"></div>
       </div>
     </section>
@@ -209,10 +206,8 @@
     <!-- ===================================================================== -->
     <section id="view-workspace" class="hidden space-y-3.5">
 
-      <!-- COMPACT PATIENT HEADER + COLLAPSIBLE DETAILS -->
+      <!-- PATIENT HEADER -->
       <div class="bg-white rounded-2xl border border-slate-200 p-3.5 shadow-sm space-y-3">
-        
-        <!-- Top Row: Patient Name Inputs & Stage Stepper Pills -->
         <div class="flex flex-wrap items-center justify-between gap-2">
           <div class="flex flex-wrap items-center gap-2 text-xs">
             <input type="text" id="ws-fname" oninput="window.savePatientHeaderFields()" placeholder="שם פרטי *" class="w-28 sm:w-32 px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg font-black text-slate-900 focus:ring-2 focus:ring-sky-500 focus:outline-none">
@@ -220,15 +215,19 @@
             
             <select id="ws-doc" onchange="window.savePatientHeaderFields()" class="px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg font-bold text-slate-800"></select>
 
+            <select id="ws-group" onchange="window.savePatientHeaderFields()" class="px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg font-bold">
+              <option value="">מסגרת טיפולית</option>
+              <option value="UNDECIDED">לא הוחלט</option>
+              <option value="RESIDENCY">התמחות</option>
+              <option value="THURSDAY">ימי חמישי</option>
+              <option value="SHARAN">שר"ן - ד"ר נתנאל</option>
+            </select>
+
             <select id="ws-ins" onchange="window.savePatientHeaderFields()" class="px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg font-bold text-sky-900">
               <option value="LEUMIT_GOLD">לאומית זהב</option>
               <option value="LEUMIT_SILVER">לאומית כסף</option>
-              <option value="LEUMIT_72">לאומית מעל 72</option>
-              <option value="GENERAL">לאומית כללי / פרטי</option>
-              <option value="MACCABI">מכבי</option>
-              <option value="CLALIT">כללית</option>
-              <option value="MEUHEDET">מאוחדת</option>
-              <option value="MOD">משרד הביטחון</option>
+              <option value="GENERAL">מחירון כללי</option>
+              <option value="LEUMIT_72">מעל גיל 72</option>
             </select>
 
             <select id="ws-class" onchange="window.savePatientHeaderFields()" class="px-2.5 py-1.5 bg-amber-50 border border-amber-300 rounded-lg font-bold text-amber-900">
@@ -236,15 +235,7 @@
               <option value="FINAL">תוכנית סופית</option>
             </select>
 
-            <select id="ws-group" onchange="window.savePatientHeaderFields()" class="px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg font-bold">
-              <option value="">מסגרת טיפולית</option>
-              <option value="UNDECIDED">לא הוחלט</option>
-              <option value="RESIDENCY">🔵 התמחות</option>
-              <option value="THURSDAY">🟢 ימי חמישי</option>
-              <option value="SHARAN">🟣 שר"ן (ד"ר נתנאל)</option>
-            </select>
-
-            <button type="button" onclick="window.toggleConsultantsRow()" class="px-2 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold" title="רופאים מעורבים ממחלקות נוספות">
+            <button type="button" onclick="window.toggleConsultantsRow()" class="px-2 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold">
               👥 צוות רב-תחומי
             </button>
           </div>
@@ -252,10 +243,10 @@
           <!-- Seamless Stage Switcher Bar -->
           <div class="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-black">
             <button type="button" id="step-tab-1" onclick="window.switchWorkspaceStage(1)" class="px-3 py-1.5 rounded-lg transition">
-              1. מצב הפה ופרוגנוזה
+              1. הגדרת שיניים ופרוגנוזה
             </button>
             <button type="button" id="step-tab-2" onclick="window.switchWorkspaceStage(2)" class="px-3 py-1.5 rounded-lg transition">
-              2. קביעת תוכנית טיפול
+              2. תוכנית טיפול
             </button>
             <button type="button" id="step-tab-3" onclick="window.switchWorkspaceStage(3)" class="px-3 py-1.5 rounded-lg transition">
               3. לאומית ו-PDF
@@ -263,24 +254,20 @@
           </div>
         </div>
 
-        <!-- Optional Multidisciplinary Chips Row -->
         <div id="ws-consult-row" class="hidden pt-2 border-t border-slate-100 flex flex-wrap items-center gap-1.5 text-xs">
-          <span class="font-bold text-slate-500">רופאים מעורבים (מחלקות נוספות):</span>
+          <span class="font-bold text-slate-500">רופאים מעורבים:</span>
           <div id="ws-consult-chips" class="flex flex-wrap gap-1"></div>
         </div>
       </div>
 
       <!-- =================================================================== -->
-      <!-- THE PERSISTENT DENTAL CROSS CONTAINER (STAYS ANCHORED IN PLACE!) -->
+      <!-- THE PERSISTENT DENTAL CROSS CONTAINER -->
       <!-- =================================================================== -->
       <div class="bg-white rounded-2xl border border-slate-200 p-3.5 shadow-sm space-y-3">
 
-        <!-- STAGE 1 TOP BAR: Tooth Status & Prognosis Legend (Only visible in Stage 1) -->
+        <!-- STAGE 1 TOP BAR -->
         <div id="bar-stage-1" class="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-slate-100 text-xs">
-          <div>
-            <span class="font-black text-slate-900">שלב 1: הגדרת שיניים ופרוגנוזה</span>
-            <span class="text-slate-500 mr-2">לחץ על <strong>מספר השן</strong> להחלפת (שן בפה ➔ שתל ➔ לא בפה X) | לחץ על <strong>+</strong> בשורת הפרוגנוזה להחלפת (<strong>G</strong> / <strong>Q</strong> / <strong>I</strong>)</span>
-          </div>
+          <span class="font-black text-slate-900">שלב 1: הגדרת שיניים ופרוגנוזה</span>
           <div class="flex flex-wrap items-center gap-1.5 text-[11px] font-bold">
             <span class="px-2 py-0.5 rounded prog-good">G = GOOD</span>
             <span class="px-2 py-0.5 rounded prog-quest">Q = QUESTIONABLE</span>
@@ -289,62 +276,57 @@
           </div>
         </div>
 
-        <!-- STAGE 2 TOP BAR: Treatment Builder Toolbar (Only visible in Stage 2 - NO legend squares underneath!) -->
+        <!-- STAGE 2 TOP BAR (NO color legend boxes under the header!) -->
         <div id="bar-stage-2" class="hidden space-y-2">
-          <div class="flex flex-wrap items-center justify-between gap-2 text-xs">
-            <div class="flex items-center gap-2">
-              <span class="font-black text-slate-900">שלב 2: קביעת תוכנית טיפול</span>
-              <span class="text-slate-500">סמן שיניים (תיבת ✓) ולחץ על קוד קיצור דרך • לחיצה על קפסולה מוחקת אותה</span>
-            </div>
+          <div class="flex items-center justify-between text-xs">
+            <span class="font-black text-slate-900">שלב 2: קביעת תוכנית טיפול</span>
           </div>
 
-          <!-- Dark Shortcuts Box ("קודים קיצורי דרך") synced with Google Sheet -->
+          <!-- Dark Box: "קודים קיצורי דרך" (NO "בחר שן", "טווח גשר", or "נקה"!) -->
           <div class="bg-slate-900 text-white p-2.5 rounded-xl space-y-2 text-xs">
             <div class="flex items-center justify-between border-b border-slate-800 pb-1.5">
-              <div class="flex items-center gap-2">
-                <span class="font-black text-sky-400 text-xs tracking-wide">קודים קיצורי דרך</span>
-                <span id="complexes-sync-badge" class="text-[10px] text-slate-400 font-semibold">מסונכרן מול Google Sheets (ט"ש/חט"ש מחשב תעלות אוטומטית לפי שן + מיקרוסקופ ומבנה)</span>
-              </div>
-              <div class="flex items-center gap-1.5">
-                <button type="button" onclick="window.openCustomShortcutModal()" class="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-sky-300 border border-slate-700 font-bold text-[11px]">+ קיצור דרך חדש</button>
-                <button type="button" onclick="window.fetchSheetComplexes(true)" class="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 text-[10px]">🔄 רענן</button>
-              </div>
+              <span class="font-black text-sky-400 text-xs">קודים קיצורי דרך</span>
             </div>
 
             <div class="flex flex-wrap items-center justify-between gap-2">
-              <!-- Dynamic Shortcut Buttons from Sheet Column A & B -->
+              <!-- Exact 10 Shortcut Buttons from "קודים קיצורי דרך" -->
               <div id="sheet-complexes-buttons" class="flex flex-wrap items-center gap-1.5"></div>
 
-              <!-- Single Procedure Picker with + -->
+              <!-- Green + Button with Dropdown Arrow containing the exact "קטלוג_טיפולים_וקודים" list -->
               <div class="flex items-center gap-1 mr-auto">
-                <select id="builder-single-select" class="bg-slate-800 border border-slate-700 rounded-lg px-2 py-1 text-white font-bold"></select>
-                <button type="button" onclick="window.addSingleToSelected()" class="px-2.5 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-500 font-black" title="הוסף קוד בודד">+</button>
+                <div class="relative flex items-center">
+                  <select id="builder-single-select" class="appearance-none bg-slate-800 border border-slate-700 rounded-r-lg pl-6 pr-2.5 py-1.5 text-white font-bold text-xs focus:outline-none focus:border-emerald-500 max-w-[230px] cursor-pointer"></select>
+                  <span class="pointer-events-none absolute left-2 text-emerald-400 text-xs font-black">▾</span>
+                </div>
+                <button type="button" onclick="window.addSingleToSelected()" class="px-3 py-1.5 rounded-l-lg bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs shadow flex items-center gap-1 cursor-pointer">
+                  <span>+</span>
+                </button>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- STAGE 3 TOP BAR: HMO Approval Status & iPhone Camera Scan (Only visible in Stage 3) -->
+        <!-- STAGE 3 TOP BAR -->
         <div id="bar-stage-3" class="hidden flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-slate-100 text-xs">
           <div class="flex flex-wrap items-center gap-1.5 font-bold">
-            <span class="font-black text-slate-900 ml-1">שלב 3: אישורי לאומית (לחץ על קפסולה לשינוי):</span>
-            <span class="px-2 py-0.5 rounded st-approved">🟢 אושר</span>
-            <span class="px-2 py-0.5 rounded st-reason">🟡 סיבה</span>
-            <span class="px-2 py-0.5 rounded st-denied">🔴 נדחה</span>
-            <span class="px-2 py-0.5 rounded st-noresp">🟠 ללא מענה</span>
-            <span class="px-2 py-0.5 rounded st-unreq">🩵 אושר ללא בקשה</span>
+            <span class="font-black text-slate-900 ml-1">סטטוס קופ"ח לאומית:</span>
+            <span class="px-2 py-0.5 rounded st-approved">אושר</span>
+            <span class="px-2 py-0.5 rounded st-reason">סיבה</span>
+            <span class="px-2 py-0.5 rounded st-denied">נדחה</span>
+            <span class="px-2 py-0.5 rounded st-noresp">ללא מענה</span>
+            <span class="px-2 py-0.5 rounded st-unreq">אושר ללא בקשה</span>
           </div>
 
           <div class="flex flex-wrap items-center gap-1.5">
             <input type="file" id="iphone-scan-input" accept="image/*" capture="environment" class="hidden" onchange="window.simulateIphoneOcrScan()">
             <button type="button" onclick="document.getElementById('iphone-scan-input').click()" class="px-3 py-1.5 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-black shadow-sm flex items-center gap-1">
-              <span>📷</span><span>צילום תשובת קופ"ח לאומית</span>
+              <span>📷</span><span>צילום תשובת קופה (לאומית)</span>
             </button>
             <button type="button" onclick="window.openOcrVerificationModal()" class="px-2.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold">
               ⚡ הדמיית קליטה
             </button>
             <button type="button" onclick="window.createContinuationPlanWizard()" class="px-2.5 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold">
-              ➕ תוכנית המשך (2+)
+              ➕ תוכנית המשך
             </button>
           </div>
         </div>
@@ -354,30 +336,26 @@
           <table class="dental-cross-table" id="persistent-cross-table"></table>
         </div>
 
-        <!-- Tooth Icon Legend + Stage Transition Primary Button -->
+        <!-- Tooth Status Icons Legend + Stage Action Button -->
         <div class="pt-2 flex flex-wrap items-center justify-between gap-3 text-xs">
-          
-          <!-- Clear Tooth Status Visual Legend -->
-          <div class="flex flex-wrap items-center gap-3 font-bold text-slate-700">
-            <span class="text-slate-400">מקרא מצב שן (לחיצה על מספר השן):</span>
+          <div class="flex flex-wrap items-center gap-2.5 font-bold text-slate-700">
             <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white border border-slate-300 shadow-sm">
               <svg class="w-4 h-4 text-emerald-600" viewBox="0 0 24 24" fill="currentColor"><path d="M7 3C4.5 3 3 5 3 8c0 2.2 1 4 1.8 5.8.7 1.6 1.2 3.7 1.7 5.7.2.8 1 1.5 1.8 1.5.9 0 1.5-.7 1.8-1.8l.9-3.2h2l.9 3.2c.3 1.1.9 1.8 1.8 1.8.8 0 1.6-.7 1.8-1.5.5-2 1-4.1 1.7-5.7C20 12 21 10.2 21 8c0-3-1.5-5-4-5-1.8 0-3.2.8-5 .8S8.8 3 7 3z"/></svg>
               <span>שן בפה</span>
             </span>
             <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-sky-100 border border-sky-400 text-sky-950 shadow-sm">
               <svg class="w-4 h-4 text-sky-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="7" y="2" width="10" height="4" rx="1" fill="currentColor"/><path d="M8 6h8l-1.5 15h-5L8 6z"/><line x1="6" y1="9" x2="18" y2="9"/><line x1="6.5" y1="13" x2="17.5" y2="13"/><line x1="7" y1="17" x2="17" y2="17"/></svg>
-              <span>שתל (Implant)</span>
+              <span>שתל</span>
             </span>
             <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-rose-100 border border-rose-400 text-rose-950 shadow-sm">
               <svg class="w-4 h-4 text-rose-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="4" y1="4" x2="20" y2="20"/><line x1="20" y1="4" x2="4" y2="20"/></svg>
-              <span>לא בפה / נעקרה (X)</span>
+              <span>לא בפה (X)</span>
             </span>
           </div>
 
-          <!-- Stage Action Button -->
           <div id="stage-cta-container">
             <button type="button" id="btn-stage-next" onclick="window.advanceWorkspaceStage()" class="px-6 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-black text-sm shadow-md transition flex items-center gap-2">
-              <span id="btn-stage-next-text">אישור ומעבר לקביעת תוכנית טיפול</span>
+              <span id="btn-stage-next-text">אישור</span>
               <span>⬅</span>
             </button>
           </div>
@@ -385,31 +363,27 @@
       </div>
 
       <!-- =================================================================== -->
-      <!-- STAGE 2 BOTTOM PANEL: "קודים - תוספות" (CATEGORIZED SHORTCUTS) -->
+      <!-- STAGE 2 BOTTOM PANEL: "קודים - תוספות" (EXACT SHEET STRUCTURE, NO SUBTITLES) -->
       <!-- =================================================================== -->
       <div id="panel-stage-2" class="hidden space-y-3">
         
-        <!-- Auto Iron-Rules Strip (Clean unit counts only, no numbers in parentheses) -->
+        <!-- Auto Mandatory Codes Strip (Unit counts only, no numbers in parentheses) -->
         <div class="flex flex-wrap items-center justify-between gap-2 text-xs bg-white px-4 py-2.5 rounded-xl border border-slate-200 shadow-sm">
           <div class="flex items-center gap-5 font-bold text-slate-700">
-            <span>⚙️ קודי חובה אוטומטיים:</span>
+            <span>קודי חובה אוטומטיים:</span>
             <span id="builder-auto-models" class="text-sky-800 font-black">מודל: 0 יח'</span>
             <span id="builder-auto-img" class="text-sky-800 font-black">הדמיה: 0 יח'</span>
           </div>
           <div id="builder-general-pills" class="flex flex-wrap items-center gap-1.5"></div>
         </div>
 
-        <!-- Section Header: קודים - תוספות -->
+        <!-- Section Header: קודים - תוספות (Clean header only, no helper explanation text) -->
         <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm space-y-3">
-          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-2">
-            <div class="flex items-center gap-2">
-              <h3 class="text-sm font-black text-slate-900">➕ קודים - תוספות</h3>
-              <span class="text-xs text-slate-500">4 קטגוריות (תותבות, חניכיים, סדים, תחום כללי) – לחיצה על + מוסיפה יחידות ופורסת את תתי-הקודים</span>
-            </div>
-            <button type="button" onclick="window.openAdditionCustomModal()" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs">+ הוסף קיצור לתוספות</button>
+          <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+            <h3 class="text-sm font-black text-slate-900">קודים - תוספות</h3>
           </div>
 
-          <div id="additions-domains-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs"></div>
+          <div id="additions-domains-grid" class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs"></div>
         </div>
       </div>
 
@@ -418,66 +392,54 @@
       <!-- =================================================================== -->
       <div id="panel-stage-3" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-4">
         
-        <!-- 4 Output PDF Buttons (5 Cols) -->
         <div class="lg:col-span-5 bg-white rounded-2xl border border-slate-200 p-4 shadow-sm space-y-3">
           <div class="flex items-center justify-between border-b pb-2">
-            <h3 class="text-xs font-black text-slate-800">הפקת מסמכי PDF רשמיים ושיתוף</h3>
+            <h3 class="text-xs font-black text-slate-800">מסמכי PDF</h3>
             <span id="approved-total-badge" class="text-sm font-black text-sky-700 font-num">סה"כ: ₪0</span>
           </div>
 
           <div class="grid grid-cols-2 gap-2 text-xs font-bold">
             <button type="button" onclick="window.openPdfModal('HMO_REQ')" class="p-3 rounded-xl border border-slate-200 bg-slate-50 hover:bg-sky-50 hover:border-sky-300 text-right space-y-1 transition">
               <div class="flex justify-between text-sm"><span>1. דרישה לקופה</span><span>📄</span></div>
-              <div class="text-[10px] text-slate-500 font-normal">קודים + הדמיה ומודלים</div>
             </button>
 
             <button type="button" onclick="window.openPdfModal('PATIENT_QUOTE')" class="p-3 rounded-xl border border-slate-200 bg-slate-50 hover:bg-emerald-50 hover:border-emerald-300 text-right space-y-1 transition">
               <div class="flex justify-between text-sm"><span>2. הצעה למטופל</span><span>💰</span></div>
-              <div class="text-[10px] text-slate-500 font-normal">השתתפות עצמית והצהרה</div>
             </button>
 
             <button type="button" onclick="window.openPdfModal('EXCEPTIONS')" class="p-3 rounded-xl border border-slate-200 bg-slate-50 hover:bg-rose-50 hover:border-rose-300 text-right space-y-1 transition">
               <div class="flex justify-between text-sm"><span>3. דו"ח חריגים</span><span>⚠️</span></div>
-              <div class="text-[10px] text-slate-500 font-normal">נדחה / סיבה / ללא מענה</div>
             </button>
 
             <button type="button" onclick="window.openPdfModal('JUSTIFICATION')" class="p-3 rounded-xl border border-amber-300 bg-amber-50 hover:bg-amber-100 text-right space-y-1 transition">
               <div class="flex justify-between text-sm text-amber-950"><span>4. מכתב סיבה</span><span>📝</span></div>
-              <div class="text-[10px] text-amber-800 font-normal">נייר לוגו GMC + שיתוף</div>
             </button>
           </div>
 
-          <!-- Unrequested Approved Codes ("אושר ללא בקשה") -->
           <div class="pt-2 border-t border-slate-100 space-y-2 text-xs">
-            <div class="flex items-center justify-between">
-              <span class="font-bold text-indigo-900">🩵 אושר ללא בקשה (מוחרג מהצעת המחיר):</span>
-            </div>
+            <span class="font-bold text-indigo-900">אושר ללא בקשה:</span>
             <div class="flex items-center gap-1.5">
-              <input type="text" id="unreq-code-input" placeholder="קוד (למשל 201)" class="w-24 px-2 py-1 border border-slate-300 rounded-lg text-xs">
-              <input type="text" id="unreq-name-input" placeholder="תיאור הטיפול" class="flex-1 px-2 py-1 border border-slate-300 rounded-lg text-xs">
-              <button type="button" onclick="window.addUnrequestedCodeInline()" class="px-2.5 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-bold">+ הוסף</button>
+              <select id="unreq-catalog-select" class="flex-1 px-2 py-1 border border-slate-300 rounded-lg text-xs font-bold"></select>
+              <button type="button" onclick="window.addUnrequestedCodeInline()" class="px-2.5 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-bold">+</button>
             </div>
             <div id="approved-unreq-list" class="flex flex-wrap gap-1"></div>
           </div>
         </div>
 
-        <!-- Compact Status List (7 Cols) -->
         <div class="lg:col-span-7 bg-white rounded-2xl border border-slate-200 p-4 shadow-sm flex flex-col">
           <div class="flex items-center justify-between border-b pb-2 mb-2 text-xs">
-            <span class="font-black text-slate-900">ריכוז קודים וסטטוסי אישור קופ"ח לאומית</span>
-            <span class="text-slate-400">לחיצה על הסטטוס מחליפה אותו מיידית</span>
+            <span class="font-black text-slate-900">ריכוז טיפולים וסטטוסים</span>
           </div>
 
-          <div class="overflow-y-auto max-h-[260px] flex-1">
+          <div class="overflow-y-auto max-h-[280px] flex-1">
             <table class="w-full text-right text-xs">
               <thead class="bg-slate-50 text-slate-500 font-bold sticky top-0">
                 <tr>
                   <th class="p-1.5">שן/אזור</th>
-                  <th class="p-1.5">קוד</th>
                   <th class="p-1.5">טיפול</th>
-                  <th class="p-1.5">השתתפות</th>
+                  <th class="p-1.5">מחיר</th>
                   <th class="p-1.5">סטטוס קופה</th>
-                  <th class="p-1.5 text-center">עבר לביצוע</th>
+                  <th class="p-1.5 text-center">בוצע</th>
                 </tr>
               </thead>
               <tbody id="approved-codes-tbody" class="divide-y divide-slate-100"></tbody>
@@ -491,31 +453,24 @@
   </main>
 
   <!-- ===================================================================== -->
-  <!-- MODAL 1: הוספת מטופל חדש (INSTANT CUSTOM MODAL - NEVER BLOCKED!) -->
+  <!-- MODAL 1: הוספת מטופל חדש -->
   <!-- ===================================================================== -->
   <div id="modal-new-patient" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3">
     <div class="bg-white rounded-2xl max-w-lg w-full shadow-2xl overflow-hidden border border-slate-200">
       <div class="p-4 bg-gradient-to-l from-sky-600 to-blue-700 text-white flex items-center justify-between">
-        <div class="flex items-center gap-2">
-          <span class="text-lg">➕</span>
-          <span class="font-black text-base">פתיחת כרטיס מטופל חדש</span>
-        </div>
+        <span class="font-black text-base">הוספת מטופל חדש</span>
         <button type="button" onclick="window.closeNewPatientModal()" class="text-sky-100 hover:text-white text-lg font-bold px-2">✕</button>
       </div>
 
       <div class="p-4 space-y-3.5 text-xs">
-        <div class="p-2.5 rounded-xl bg-sky-50 border border-sky-200 text-sky-900 font-semibold">
-          🔒 שמירת פרטיות מלאה: מזינים שם פרטי ושם משפחה בלבד (ללא ת"ז, טלפון או כתובת).
-        </div>
-
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label class="block font-bold text-slate-700 mb-1">שם פרטי *</label>
-            <input type="text" id="np-fname" placeholder="לדוגמה: דוד" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl font-bold text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
+            <input type="text" id="np-fname" placeholder="שם פרטי" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl font-bold text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
           </div>
           <div>
             <label class="block font-bold text-slate-700 mb-1">שם משפחה *</label>
-            <input type="text" id="np-lname" placeholder="לדוגמה: כהן" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl font-bold text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
+            <input type="text" id="np-lname" placeholder="שם משפחה" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl font-bold text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
           </div>
         </div>
 
@@ -528,25 +483,21 @@
             <label class="block font-bold text-slate-700 mb-1">מסגרת טיפולית</label>
             <select id="np-group" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl font-bold text-slate-800">
               <option value="UNDECIDED">לא הוחלט</option>
-              <option value="RESIDENCY">🔵 התמחות</option>
-              <option value="THURSDAY">🟢 ימי חמישי</option>
-              <option value="SHARAN">🟣 שר"ן (ד"ר נתנאל)</option>
+              <option value="RESIDENCY">התמחות</option>
+              <option value="THURSDAY">ימי חמישי</option>
+              <option value="SHARAN">שר"ן - ד"ר נתנאל</option>
             </select>
           </div>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
-            <label class="block font-bold text-slate-700 mb-1">קופת חולים / ביטוח</label>
+            <label class="block font-bold text-slate-700 mb-1">מחירון / קופה</label>
             <select id="np-ins" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl font-bold text-sky-900">
               <option value="LEUMIT_GOLD">לאומית זהב</option>
               <option value="LEUMIT_SILVER">לאומית כסף</option>
-              <option value="LEUMIT_72">לאומית מעל 72</option>
-              <option value="GENERAL">לאומית כללי / פרטי</option>
-              <option value="MACCABI">מכבי</option>
-              <option value="CLALIT">כללית</option>
-              <option value="MEUHEDET">מאוחדת</option>
-              <option value="MOD">משרד הביטחון</option>
+              <option value="GENERAL">מחירון כללי</option>
+              <option value="LEUMIT_72">מעל גיל 72</option>
             </select>
           </div>
           <div>
@@ -560,12 +511,12 @@
 
         <div class="pt-3 border-t border-slate-200 flex flex-wrap items-center justify-between gap-2">
           <button type="button" onclick="window.quickCreateDraftPatient(event)" class="px-3.5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold">
-            ⚡ פתיחה מהירה ללא שם (טיוטה)
+            ⚡ פתיחה מהירה (טיוטה)
           </button>
           <div class="flex items-center gap-2">
             <button type="button" onclick="window.closeNewPatientModal()" class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold">ביטול</button>
             <button type="button" onclick="window.confirmCreateNewPatient()" class="px-5 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-black shadow-md">
-              צור מטופל והמשך לצלב השיניים ⬅
+              אישור ⬅
             </button>
           </div>
         </div>
@@ -573,85 +524,25 @@
     </div>
   </div>
 
-  <!-- ===================================================================== -->
-  <!-- MODAL 2: הוספת קיצור דרך חדש (CUSTOM MODAL INSTEAD OF PROMPT) -->
-  <!-- ===================================================================== -->
-  <div id="modal-custom-shortcut" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3">
-    <div class="bg-white rounded-2xl max-w-md w-full shadow-2xl overflow-hidden">
-      <div class="p-3.5 bg-slate-900 text-white flex items-center justify-between">
-        <span class="font-black text-sm">+ הוספת קוד קיצור דרך חדש</span>
-        <button type="button" onclick="document.getElementById('modal-custom-shortcut').classList.add('hidden')" class="text-slate-400 hover:text-white">✕</button>
-      </div>
-      <div class="p-4 space-y-3 text-xs">
-        <div>
-          <label class="block font-bold text-slate-700 mb-1">שם קיצור הדרך (עמודה A בגיליון)</label>
-          <input type="text" id="cs-name" placeholder="לדוגמה: פונטיק / כתר שן" class="w-full px-3 py-2 border border-slate-300 rounded-xl font-bold">
-        </div>
-        <div>
-          <label class="block font-bold text-slate-700 mb-1">קודים מופעלים מופרדים בפסיק (עמודה B בגיליון)</label>
-          <input type="text" id="cs-items" placeholder='לדוגמה: כ"ז, כד"מ, כתר זירקוניה' class="w-full px-3 py-2 border border-slate-300 rounded-xl font-bold">
-        </div>
-        <div class="pt-2 flex justify-end gap-2 font-bold">
-          <button type="button" onclick="document.getElementById('modal-custom-shortcut').classList.add('hidden')" class="px-4 py-2 rounded-xl bg-slate-100 text-slate-700">ביטול</button>
-          <button type="button" onclick="window.saveCustomShortcutModal()" class="px-5 py-2 rounded-xl bg-sky-600 text-white">שמור קיצור דרך</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ===================================================================== -->
-  <!-- MODAL 3: הוספת קיצור לתוספות (CUSTOM MODAL INSTEAD OF PROMPT) -->
-  <!-- ===================================================================== -->
-  <div id="modal-custom-addition" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3">
-    <div class="bg-white rounded-2xl max-w-md w-full shadow-2xl overflow-hidden">
-      <div class="p-3.5 bg-slate-900 text-white flex items-center justify-between">
-        <span class="font-black text-sm">+ הוספת קיצור דרך ל"קודים - תוספות"</span>
-        <button type="button" onclick="document.getElementById('modal-custom-addition').classList.add('hidden')" class="text-slate-400 hover:text-white">✕</button>
-      </div>
-      <div class="p-4 space-y-3 text-xs">
-        <div>
-          <label class="block font-bold text-slate-700 mb-1">בחר תחום</label>
-          <select id="ca-domain" class="w-full px-3 py-2 border border-slate-300 rounded-xl font-bold">
-            <option value="0">1. תותבות</option>
-            <option value="1">2. חניכיים</option>
-            <option value="2">3. סדים</option>
-            <option value="3" selected>4. תחום כללי</option>
-          </select>
-        </div>
-        <div>
-          <label class="block font-bold text-slate-700 mb-1">שם קיצור הדרך</label>
-          <input type="text" id="ca-name" placeholder="לדוגמה: הכנה לשיקום מורכב" class="w-full px-3 py-2 border border-slate-300 rounded-xl font-bold">
-        </div>
-        <div>
-          <label class="block font-bold text-slate-700 mb-1">תתי-קודים שייווצרו תחתיו (מופרדים בפסיק)</label>
-          <input type="text" id="ca-subs" placeholder="לדוגמה: מיפוי פה ראשוני, צילום פנורמי, צילום סטטוס" class="w-full px-3 py-2 border border-slate-300 rounded-xl font-bold">
-        </div>
-        <div class="pt-2 flex justify-end gap-2 font-bold">
-          <button type="button" onclick="document.getElementById('modal-custom-addition').classList.add('hidden')" class="px-4 py-2 rounded-xl bg-slate-100 text-slate-700">ביטול</button>
-          <button type="button" onclick="window.saveAdditionCustomModal()" class="px-5 py-2 rounded-xl bg-sky-600 text-white">שמור לתוספות</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL: INTERACTIVE CATALOG -->
+  <!-- MODAL: FULL INTERACTIVE CATALOG ("קטלוג_טיפולים_וקודים") -->
   <div id="modal-catalog" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3">
-    <div class="bg-white rounded-2xl max-w-4xl w-full max-h-[88vh] flex flex-col shadow-2xl overflow-hidden">
+    <div class="bg-white rounded-2xl max-w-5xl w-full max-h-[88vh] flex flex-col shadow-2xl overflow-hidden">
       <div class="p-3.5 bg-slate-900 text-white flex items-center justify-between">
-        <span class="font-black text-sm">קטלוג קודים ומחירון קופ"ח לאומית</span>
+        <span class="font-black text-sm">קטלוג_טיפולים_וקודים</span>
         <button type="button" onclick="document.getElementById('modal-catalog').classList.add('hidden')" class="text-slate-400 hover:text-white">✕</button>
       </div>
       <div class="p-3 overflow-y-auto flex-1">
         <table class="w-full text-right text-xs border">
-          <thead class="bg-slate-100 font-bold">
+          <thead class="bg-slate-100 font-bold sticky top-0">
             <tr>
-              <th class="p-2 border">קוד GMC</th>
-              <th class="p-2 border">קוד לאומית</th>
-              <th class="p-2 border">שם הטיפול</th>
-              <th class="p-2 border">קיצור בצלב</th>
-              <th class="p-2 border">כללי (₪)</th>
-              <th class="p-2 border">כסף (₪)</th>
-              <th class="p-2 border">זהב (₪)</th>
+              <th class="p-2 border">קטגוריה</th>
+              <th class="p-2 border">כינוי</th>
+              <th class="p-2 border">טיפול</th>
+              <th class="p-2 border">מחירון כללי</th>
+              <th class="p-2 border">לאומית כסף</th>
+              <th class="p-2 border">לאומית זהב</th>
+              <th class="p-2 border">אישור מוקדם</th>
+              <th class="p-2 border">רלוונטי לשיקום</th>
             </tr>
           </thead>
           <tbody id="catalog-tbody" class="divide-y"></tbody>
@@ -664,9 +555,9 @@
   <div id="modal-pdf" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3">
     <div class="bg-white rounded-2xl max-w-3xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden">
       <div class="p-3 bg-slate-900 text-white flex items-center justify-between no-print">
-        <span id="pdf-modal-title" class="font-black text-sm">מסמך רשמי</span>
+        <span id="pdf-modal-title" class="font-black text-sm">מסמך</span>
         <div class="flex items-center gap-2 text-xs font-bold">
-          <button type="button" onclick="window.sharePdfMobile()" class="px-3 py-1.5 rounded-lg bg-sky-600 hover:bg-sky-500">📲 שתף מהאייפון</button>
+          <button type="button" onclick="window.sharePdfMobile()" class="px-3 py-1.5 rounded-lg bg-sky-600 hover:bg-sky-500">📲 שתף</button>
           <button type="button" onclick="window.print()" class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500">🖨️ הדפס / PDF</button>
           <button type="button" onclick="document.getElementById('modal-pdf').classList.add('hidden')" class="px-2 text-slate-400 hover:text-white">✕</button>
         </div>
@@ -675,21 +566,18 @@
     </div>
   </div>
 
-  <!-- MODAL: OCR SCAN VERIFICATION (ZERO RETENTION) -->
+  <!-- MODAL: OCR SCAN VERIFICATION -->
   <div id="modal-ocr" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3">
     <div class="bg-white rounded-2xl max-w-xl w-full flex flex-col shadow-2xl overflow-hidden">
       <div class="p-3.5 bg-slate-900 text-white flex items-center justify-between">
-        <span class="font-black text-sm">📷 בקרת קריאת מסמך תשובת לאומית (Zero-Retention)</span>
+        <span class="font-black text-sm">📷 קליטת תשובת קופ"ח לאומית</span>
         <button type="button" onclick="document.getElementById('modal-ocr').classList.add('hidden')" class="text-slate-400 hover:text-white">✕</button>
       </div>
       <div class="p-4 space-y-3 text-xs">
-        <div class="p-2.5 rounded-xl bg-sky-50 border border-sky-200 text-sky-900 font-semibold">
-          🔒 התמונה עובדה בזיכרון המקומי בלבד ונמחקה לצמיתות. להלן פירוט השורות שזוהו:
-        </div>
-        <div class="space-y-1.5" id="ocr-verification-list"></div>
+        <div class="space-y-1.5 max-h-[320px] overflow-y-auto" id="ocr-verification-list"></div>
         <div class="pt-3 border-t flex justify-end gap-2 font-bold">
           <button type="button" onclick="document.getElementById('modal-ocr').classList.add('hidden')" class="px-4 py-2 rounded-xl bg-slate-100 text-slate-700">ביטול</button>
-          <button type="button" onclick="window.confirmOcrScanUpdates()" class="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white shadow">אשר ועדכן צבעי סטטוס בצלב ✔</button>
+          <button type="button" onclick="window.confirmOcrScanUpdates()" class="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white shadow">אישור ✔</button>
         </div>
       </div>
     </div>
@@ -700,17 +588,9 @@
 
   <script>
     // =========================================================================
-    // 1. CORE DATA & CONSTANTS
+    // 1. EXACT DATA TABLES FROM USER'S SHEETS (100% STRICT FIDELITY)
     // =========================================================================
-    const STORAGE_KEY_PATIENTS  = "gmc_rehab_patients_v5";
-    const STORAGE_KEY_CATALOG   = "gmc_rehab_catalog_v5";
-    const STORAGE_KEY_SHORTCUTS = "gmc_rehab_shortcuts_v5";
-    const STORAGE_KEY_ADDITIONS = "gmc_rehab_additions_v5";
-
-    const GMC_SHEETS_URL = "https://script.google.com/macros/s/AKfycbxiLM64QuwuG9D9lUCosprm-Yyt2ppExP7A9MrGXEmYThzZSlqxJd2EIl4fappbkSc32w/exec";
-    const COMPLEXES_SHEET_ID = "14ALE8lnswXTrBCxcm4QcaTb2XBC8Ksf9zQLxizKL9Ic";
-    const COMPLEXES_GID = "1864113095";
-    const COMPLEXES_CSV_URL = `https://docs.google.com/spreadsheets/d/${COMPLEXES_SHEET_ID}/export?format=csv&gid=${COMPLEXES_GID}`;
+    const STORAGE_KEY_PATIENTS = "gmc_rehab_patients_v6";
 
     const UPPER_TEETH = ['18','17','16','15','14','13','12','11','21','22','23','24','25','26','27','28'];
     const LOWER_TEETH = ['48','47','46','45','44','43','42','41','31','32','33','34','35','36','37','38'];
@@ -720,188 +600,6 @@
       'ד"ר אלדד שרון', 'ד"ר אלכס פרסון', 'ד"ר אליאס עבסאוי', 'ד"ר עינת ורון שחר',
       'ד"ר אמיר סוואעד', 'ד"ר מרדכי ליפובצקי-אדלר', 'ד"ר ברק מרימסקי', 'ד"ר נתנאל שורקי',
       'ד"ר עלאא דאוד', 'ד"ר עפרה עבדי', 'ד"ר יארה מנסור', 'ד"ר דורון טאובין'
-    ];
-
-    // Built-in "קודים קיצורי דרך" matching the Google Sheet tab
-    const DEFAULT_SHEET_COMPLEXES = [
-      { name: 'שתל', items: ['שתל', 'שתל - חשיפה'], color: 'bg-rose-600 hover:bg-rose-500' },
-      { name: 'שיקום שתל', items: ['מבנה ע"ג שתל', 'כ"ז', 'כתר זירקוניה ע"ג שתל'], color: 'bg-teal-600 hover:bg-teal-500' },
-      { name: 'כתר שן', items: ['מבנה', 'כ"ז', 'כתר זירקוניה'], color: 'bg-sky-600 hover:bg-sky-500' },
-      { name: 'פונטיק', items: ['כ"ז', 'כד"מ', 'כתר זירקוניה'], color: 'bg-indigo-600 hover:bg-indigo-500' },
-      { name: 'ט"ש', items: ['ט"ש לפי תעלות', 'מיקרוסקופ', 'מבנה'], isSmartEndo: 'RCT', color: 'bg-amber-600 hover:bg-amber-500' },
-      { name: 'חט"ש', items: ['חט"ש לפי תעלות', 'מיקרוסקופ', 'מבנה'], isSmartEndo: 'RET', color: 'bg-orange-600 hover:bg-orange-500' },
-      { name: 'עקירה', items: ["ע'"], color: 'bg-rose-700 hover:bg-rose-600' },
-      { name: 'גשר', items: ['כ"ז', 'כד"מ', 'כתר זירקוניה'], isBridge: true, color: 'bg-purple-600 hover:bg-purple-500' }
-    ];
-
-    // "קודים - תוספות" organized into 4 categories with +/- unit counters and sub-code expansion
-    const DEFAULT_ADDITIONS_SHORTCUTS = [
-      {
-        domainKey: 'DENTURES',
-        domainTitle: '🦷 1. תותבות',
-        badgeText: 'שיקום נשלף',
-        badgeCls: 'fam-prostho',
-        shortcuts: [
-          {
-            id: 'ADD-DEN-UP-FULL',
-            name: 'תותבת שלמה עליונה',
-            archTarget: 'UPPER',
-            archGmc: 'GMC-DEN01',
-            subCodes: [
-              { gmc: 'GMC-DEN01', label: 'תותבת שלמה ע\'' },
-              { gmc: 'GMC-PRO16', label: 'כף אינדיבידואלית ורישום סגר ע\'' }
-            ]
-          },
-          {
-            id: 'ADD-DEN-LOW-FULL',
-            name: 'תותבת שלמה תחתונה',
-            archTarget: 'LOWER',
-            archGmc: 'GMC-DEN01',
-            subCodes: [
-              { gmc: 'GMC-DEN01', label: 'תותבת שלמה ת\'' },
-              { gmc: 'GMC-PRO16', label: 'כף אינדיבידואלית ורישום סגר ת\'' }
-            ]
-          },
-          {
-            id: 'ADD-DEN-RPD',
-            name: 'תותבת חלקית להוצאה (RPD)',
-            archTarget: 'LOWER',
-            archGmc: 'GMC-DEN02',
-            subCodes: [
-              { gmc: 'GMC-DEN02', label: 'תח"ל שלד מתכת' },
-              { gmc: 'GMC-DEN03', label: 'ווים יצוקים והתאמה' }
-            ]
-          },
-          {
-            id: 'ADD-DEN-TRANS',
-            name: 'תותבת מעבר (זמנית)',
-            archTarget: 'GENERAL',
-            subCodes: [
-              { gmc: 'GMC-DEN03', label: 'תותבת מעבר אקרילית' },
-              { gmc: 'GMC-DEN03', label: 'ריפוד רך לתותבת' }
-            ]
-          }
-        ]
-      },
-      {
-        domainKey: 'PERIO',
-        domainTitle: '🩸 2. חניכיים',
-        badgeText: 'פריודונטיה',
-        badgeCls: 'fam-perio',
-        shortcuts: [
-          {
-            id: 'ADD-PER-SRP',
-            name: 'הקצעת שורשים (לפי רביע)',
-            archTarget: 'GENERAL',
-            subCodes: [
-              { gmc: 'GMC-PER01', label: 'הקצעת שורשים עמוקה' },
-              { gmc: 'GMC-HYG01', label: 'ביקורת פריודונטלית' }
-            ]
-          },
-          {
-            id: 'ADD-PER-CL',
-            name: 'הארכת כותרת קלינית',
-            archTarget: 'SELECTED',
-            archGmc: 'GMC-PER02',
-            subCodes: [
-              { gmc: 'GMC-PER02', label: 'ניתוח הארכת כותרת' },
-              { gmc: 'GMC-HYG01', label: 'הסרת תפרים וביקורת' }
-            ]
-          },
-          {
-            id: 'ADD-PER-HYG',
-            name: 'סילוק אבנית והדרכת היגיינה',
-            archTarget: 'GENERAL',
-            subCodes: [
-              { gmc: 'GMC-HYG01', label: 'סילוק אבנית (שיננית)' },
-              { gmc: 'GMC-EX01',  label: 'הדרכת היגיינה אוראלית' }
-            ]
-          },
-          {
-            id: 'ADD-PER-SINUS',
-            name: 'הרמת סינוס והשתלת עצם',
-            archTarget: 'GENERAL',
-            subCodes: [
-              { gmc: 'GMC-IMP01', label: 'הרמת סינוס פתוחה/סגורה' },
-              { gmc: 'GMC-IMP09', label: 'תחליף עצם וממברנה' }
-            ]
-          }
-        ]
-      },
-      {
-        domainKey: 'SPLINTS',
-        domainTitle: '🛡️ 3. סדים',
-        badgeText: 'סדים',
-        badgeCls: 'fam-prostho',
-        shortcuts: [
-          {
-            id: 'ADD-SPL-NIGHT',
-            name: 'סד לילה קשיח',
-            archTarget: 'UPPER',
-            archGmc: 'GMC-MSC01',
-            subCodes: [
-              { gmc: 'GMC-MSC01', label: 'סד לילה אקרילי קשיח' },
-              { gmc: 'GMC-PRO16', label: 'איזון סגרי ומסירה' }
-            ]
-          },
-          {
-            id: 'ADD-SPL-BLEACH',
-            name: 'סד הלבנה / פלואוריד',
-            archTarget: 'GENERAL',
-            subCodes: [
-              { gmc: 'GMC-HYG06', label: 'סד סיליקון רך ע\'' },
-              { gmc: 'GMC-HYG06', label: 'סד סיליקון רך ת\'' }
-            ]
-          },
-          {
-            id: 'ADD-SPL-OCC',
-            name: 'סד סיגרי / כירורגי מונחה',
-            archTarget: 'UPPER',
-            archGmc: 'GMC-IMP00',
-            subCodes: [
-              { gmc: 'GMC-IMP00', label: 'סד כירורגי ממוחשב' },
-              { gmc: 'GMC-PRO16', label: 'תכנון דיגיטלי תלת-ממדי' }
-            ]
-          }
-        ]
-      },
-      {
-        domainKey: 'GENERAL_DIAG',
-        domainTitle: '➕ 4. תחום כללי',
-        badgeText: 'קיצורי דרך כלליים',
-        badgeCls: 'fam-diag',
-        shortcuts: [
-          {
-            id: 'ADD-GEN-INIT-MAP',
-            name: 'בדיקה ומיפוי ראשוני',
-            archTarget: 'GENERAL',
-            subCodes: [
-              { gmc: 'GMC-EX01',  label: 'בדיקת מומחה לשיקום הפה' },
-              { gmc: 'GMC-RAD05', label: 'צילום פנורמי' },
-              { gmc: 'GMC-EX01',  label: 'מיפוי פה ראשוני' }
-            ]
-          },
-          {
-            id: 'ADD-GEN-COMPLEX-PREP',
-            name: 'הכנה לשיקום מורכב',
-            archTarget: 'GENERAL',
-            subCodes: [
-              { gmc: 'GMC-PRO16', label: 'מודלים אבחנתיים' },
-              { gmc: 'GMC-PRO16', label: 'גילוף אבחנתי (Wax-up)' },
-              { gmc: 'GMC-RAD07', label: 'צילומי סטטוס מלא' }
-            ]
-          },
-          {
-            id: 'ADD-GEN-CT-SURG',
-            name: 'בירור הדמייתי CT לשתלים',
-            archTarget: 'GENERAL',
-            subCodes: [
-              { gmc: 'GMC-RAD09', label: 'צילום CT דנטלי' },
-              { gmc: 'GMC-RAD05', label: 'צילום פנורמי בקרה' }
-            ]
-          }
-        ]
-      }
     ];
 
     const CONSULTANTS = [
@@ -914,58 +612,333 @@
     // Fixed Horizontal Procedure Rows on the Dental Cross
     const CROSS_ROWS = [
       { key: 'IMAGING', label: 'הדמיה' },
-      { key: 'PONTIC',  label: 'כד"מ' },
+      { key: 'TEMP_B',  label: 'כז"מ' },
       { key: 'TEMP',    label: 'כ"ז' },
-      { key: 'CROWN',   label: 'כתר סופי / שתל' },
-      { key: 'CORE',    label: 'מבנה / מיקרוסקופ' },
-      { key: 'ENDO',    label: 'ט"ש / חט"ש / ע\'' },
-      { key: 'ARCH',    label: 'תותבת / סד' }
+      { key: 'CROWN',   label: 'כתר / שחזור' },
+      { key: 'ABUT_MU', label: 'מז"ש' },
+      { key: 'CORE',    label: 'מבנה / מ"ש' },
+      { key: 'MICRO',   label: 'מיקרוסקופ / חשיפה' },
+      { key: 'ENDO',    label: 'ט"ש / חט"ש / שתל / עקירה' }
     ];
 
-    const CATALOG = [
-      { gmc: 'GMC-RAD04', leumit: '115', family: 'DIAG', rowKey: 'IMAGING', name: 'הדמיה לשן מטופלת', short: 'הדמיה', pGen: 23, pSilv: 18, pGold: 14, p72: 0 },
-      { gmc: 'GMC-PRO16', leumit: '619', family: 'DIAG', rowKey: 'ARCH', name: 'מודל לימוד ללסת', short: 'מודל', pGen: 120, pSilv: 82, pGold: 65, p72: 0 },
-      { gmc: 'GMC-EX01',  leumit: '102', family: 'DIAG', rowKey: 'ARCH', name: 'מיפוי פה ראשוני', short: 'מיפוי פה', pGen: 120, pSilv: 41, pGold: 34, p72: 0 },
-      { gmc: 'GMC-RAD05', leumit: '116', family: 'DIAG', rowKey: 'ARCH', name: 'צילום פנורמי', short: 'פנורמי', pGen: 130, pSilv: 104, pGold: 80, p72: 38 },
-      { gmc: 'GMC-RAD07', leumit: '114', family: 'DIAG', rowKey: 'ARCH', name: 'צילום סטטוס מלא', short: 'סטטוס', pGen: 219, pSilv: 175, pGold: 135, p72: 38 },
-      { gmc: 'GMC-RAD09', leumit: '119', family: 'DIAG', rowKey: 'ARCH', name: 'צילום CT לסת', short: 'CT לסת', pGen: 585, pSilv: 468, pGold: 360, p72: 38 },
+    // -------------------------------------------------------------------------
+    // A. EXACT CATALOG ("קטלוג_טיפולים_וקודים")
+    // [קטגוריה, כינוי, טיפול, מחירון כללי, לאומית כסף, לאומית זהב, אישור מוקדם, רלוונטי לשיקום, family, rowKey]
+    // -------------------------------------------------------------------------
+    const RAW_CATALOG = [
+      // בדיקה וצילומי רנטגן
+      ['בדיקה וצילומי רנטגן', '', 'מיפוי פה ראשוני', 120, 41, 34, 'לא', 'כן', 'DIAG', 'IMAGING'],
+      ['בדיקה וצילומי רנטגן', '', 'צילום נשך בודד', 22.75, 18.2, 14, 'לא', 'לא', 'DIAG', 'IMAGING'],
+      ['בדיקה וצילומי רנטגן', '2 נשכים', 'צילום נשך +2', 45.5, 36.4, 28, 'לא', 'לא', 'DIAG', 'IMAGING'],
+      ['בדיקה וצילומי רנטגן', '4 נשכים', 'צילום נשך +4', 91, 72.8, 56, 'לא', 'לא', 'DIAG', 'IMAGING'],
+      ['בדיקה וצילומי רנטגן', '', 'צילום פריפיקאלי', 22.75, 18.2, 14, 'לא', 'כן', 'DIAG', 'IMAGING'],
+      ['בדיקה וצילומי רנטגן', 'פנורמי', 'צילום פנורמי', 130, 104, 80, 'לא צוין', 'כן', 'DIAG', 'IMAGING'],
+      ['בדיקה וצילומי רנטגן', '', 'צילום אוקלוזלי', 56.88, 45.5, 35, 'לא', 'לא', 'DIAG', 'IMAGING'],
+      ['בדיקה וצילומי רנטגן', 'סטטוס', 'צילום סטטוס', 219.38, 175.5, 135, 'לא צוין', 'כן', 'DIAG', 'IMAGING'],
+      ['בדיקה וצילומי רנטגן', 'סטטוס נשכים', 'צילום סטטוס מקביליות', 321.75, 257.4, 198, 'לא צוין', 'כן', 'DIAG', 'IMAGING'],
+      ['בדיקה וצילומי רנטגן', 'סיטי לסת אחת', 'צילום לסת CT בודדת', 585, 468, 360, 'לא צוין', 'כן', 'DIAG', 'IMAGING'],
+      ['בדיקה וצילומי רנטגן', '', 'סט צילומים אורתודונטים', 646.75, 517.4, 398, 'לא צוין', 'לא', 'DIAG', 'IMAGING'],
+      ['בדיקה וצילומי רנטגן', '', 'סריקה לקשתיות- יישור שיניים', 618, 494, 395, 'לא צוין', 'לא', 'DIAG', 'IMAGING'],
 
-      { gmc: 'GMC-SUR01', leumit: '501', family: 'PERIO', rowKey: 'ENDO', name: 'עקירה', short: "ע'", pGen: 275, pSilv: 161, pGold: 68, p72: 38 },
-      { gmc: 'GMC-IMP01', leumit: '550', family: 'PERIO', rowKey: 'CROWN', name: 'התקנת שתל דנטלי', short: 'שתל', pGen: 3864, pSilv: 2053, pGold: 1560, p72: 116 },
-      { gmc: 'GMC-IMP09', leumit: '555', family: 'PERIO', rowKey: 'CORE', name: 'שתל - חשיפה', short: 'שתל - חשיפה', pGen: 450, pSilv: 310, pGold: 220, p72: 0 },
-      { gmc: 'GMC-PER01', leumit: '210', family: 'PERIO', rowKey: 'ARCH', name: 'הקצעת שורשים', short: 'הקצעת שורשים', pGen: 715, pSilv: 580, pGold: 299, p72: 116 },
-      { gmc: 'GMC-PER02', leumit: '520', family: 'PERIO', rowKey: 'ENDO', name: 'הארכת כותרת', short: 'ה.כותרת', pGen: 1039, pSilv: 707, pGold: 483, p72: 0 },
-      { gmc: 'GMC-HYG01', leumit: '201', family: 'PERIO', rowKey: 'ARCH', name: 'סילוק אבנית (שיננית)', short: 'שיננית', pGen: 198, pSilv: 99, pGold: 49, p72: 0 },
+      // טיפולי חירום
+      ['טיפולי חירום', '', 'טיפול חירום (עזרה ראשונה)', 158, 122, 94, 'לא', 'לא', 'ENDO', 'ENDO'],
+      ['טיפולי חירום', '', 'אקסטרפציה', 158, 108, 90, 'לא', 'לא', 'ENDO', 'ENDO'],
+      ['טיפולי חירום', '', 'החזרת שן שנעקרה וקיבוע', 580, 374, 312, 'לא', 'לא', 'PERIO', 'ENDO'],
+      ['טיפולי חירום', '', 'טיפול במכתשית יבשה', 170, 120, 99, 'לא', 'לא', 'PERIO', 'ENDO'],
 
-      // Canal-Specific Root Canal Codes (ט"ש 1, 2, 3, 4 תעלות)
-      { gmc: 'GMC-RCT01', leumit: '401', family: 'ENDO', rowKey: 'ENDO', name: 'טיפול שורש - 1 תעלות', short: 'ט"ש 1 תע\'', pGen: 589, pSilv: 440, pGold: 68, p72: 155 },
-      { gmc: 'GMC-RCT02', leumit: '402', family: 'ENDO', rowKey: 'ENDO', name: 'טיפול שורש - 2 תעלות', short: 'ט"ש 2 תע\'', pGen: 727, pSilv: 582, pGold: 68, p72: 155 },
-      { gmc: 'GMC-RCT03', leumit: '403', family: 'ENDO', rowKey: 'ENDO', name: 'טיפול שורש - 3 תעלות', short: 'ט"ש 3 תע\'', pGen: 914, pSilv: 690, pGold: 68, p72: 155 },
-      { gmc: 'GMC-RCT04', leumit: '404', family: 'ENDO', rowKey: 'ENDO', name: 'טיפול שורש - 4 תעלות', short: 'ט"ש 4 תע\'', pGen: 1085, pSilv: 810, pGold: 68, p72: 155 },
+      // גהות הפה
+      ['גהות הפה', 'שיננית (כל חצי שנה)', 'הסרת אבנית פעם בחצי שנה', 198, 99, 49, 'לא צוין', 'לא', 'PERIO', 'MICRO'],
+      ['גהות הפה', 'פלואוריד', 'טיפול בפלואור/ דוראפאט', 123, 77, 59, 'לא צוין', 'לא', 'REST', 'MICRO'],
+      ['גהות הפה', '', 'הסרת אבנית מעבר למכסה', 200, 151, 126, 'לא צוין', 'לא', 'PERIO', 'MICRO'],
+      ['גהות הפה', '', 'הסרת אבנית במרפאת פריודונט', 305, 231, 180, 'לא צוין', 'לא', 'PERIO', 'MICRO'],
+      ['גהות הפה', '', 'איטום חריצים', 90, 67, 49, 'לא צוין', 'לא', 'REST', 'CROWN'],
+      ['גהות הפה', 'הלבנה (לסת)', 'הלבנה קוסמטית ללסת אחת', 1058, 862, 718, 'לא צוין', 'לא', 'REST', 'CROWN'],
 
-      // Canal-Specific Retreatment Codes (חט"ש 1, 2, 3, 4 תעלות)
-      { gmc: 'GMC-RCT11', leumit: '411', family: 'ENDO', rowKey: 'ENDO', name: 'חידוש ט"ש - 1 תעלות', short: 'חט"ש 1 תע\'', pGen: 890, pSilv: 620, pGold: 68, p72: 155 },
-      { gmc: 'GMC-RCT12', leumit: '412', family: 'ENDO', rowKey: 'ENDO', name: 'חידוש ט"ש - 2 תעלות', short: 'חט"ש 2 תע\'', pGen: 1050, pSilv: 710, pGold: 68, p72: 155 },
-      { gmc: 'GMC-RCT13', leumit: '413', family: 'ENDO', rowKey: 'ENDO', name: 'חידוש ט"ש - 3 תעלות', short: 'חט"ש 3 תע\'', pGen: 1167, pSilv: 752, pGold: 68, p72: 155 },
-      { gmc: 'GMC-RCT14', leumit: '414', family: 'ENDO', rowKey: 'ENDO', name: 'חידוש ט"ש - 4 תעלות', short: 'חט"ש 4 תע\'', pGen: 1340, pSilv: 890, pGold: 68, p72: 155 },
+      // שחזורים
+      ['שחזורים', '', 'גז צחוק (נייטרוס) כתוספת לטיפול', 180, 140, 100, 'לא צוין', 'לא', 'DIAG', 'MICRO'],
+      ['שחזורים', '', 'שחזור אמלגם משטח אחד', 227, 175, 49, 'לא צוין', 'לא', 'REST', 'CROWN'],
+      ['שחזורים', '', 'שחזור אמלגם שני משטחים', 208, 187, 49, 'לא צוין', 'לא', 'REST', 'CROWN'],
+      ['שחזורים', '', 'שחזור אמלגם שלושה משטחים', 255, 196, 49, 'לא צוין', 'לא', 'REST', 'CROWN'],
+      ['שחזורים', 'סתימה/ שחזור קומפוזיט', 'שחזור מרוכב קדמי/אחורי', 308, 237, 49, 'לא צוין', 'לא', 'REST', 'CROWN'],
+      ['שחזורים', '', 'השלמת שן לצורך אסתטי', 983, 756, 630, 'לא צוין', 'לא', 'REST', 'CROWN'],
 
-      { gmc: 'GMC-RCT06', leumit: '406', family: 'ENDO', rowKey: 'CORE', name: 'תוספת מיקרוסקופ', short: 'מיקרוסקופ', pGen: 370, pSilv: 290, pGold: 242, p72: 0 },
+      // טיפול שורש
+      ['טיפול שורש', '', 'בדיקה על ידי מורשה לטיפולי שורש', 191, 103, 90, 'לא צוין', 'כן', 'ENDO', 'ENDO'],
+      ['טיפול שורש', '', 'אפקספיקציה - חיוד או טיפול בשורש פתוח', 236, 182, 80, 'לא צוין', 'כן', 'ENDO', 'ENDO'],
+      ['טיפול שורש', 'ט"ש1', 'טיפול שורש- תעלה אחת', 589, 469, 68, 'לא צוין', 'כן', 'ENDO', 'ENDO'],
+      ['טיפול שורש', 'ט"ש2', 'טיפול שורש- שתי תעלות', 727, 582, 68, 'לא צוין', 'כן', 'ENDO', 'ENDO'],
+      ['טיפול שורש', 'ט"ש3', 'טיפול שורש- שלוש תעלות', 914, 752, 68, 'לא צוין', 'כן', 'ENDO', 'ENDO'],
+      ['טיפול שורש', 'ט"ש4', 'טיפול שורש- ארבע תעלות', 988, 795, 68, 'לא צוין', 'כן', 'ENDO', 'ENDO'],
+      ['טיפול שורש', 'מיקרוסקופ', 'תוספת עלות לטיפול שורש בעזרת מיקרוסקופ', 370, 290, 242, 'לא צוין', 'כן', 'ENDO', 'MICRO'],
+      ['טיפול שורש', '', 'טיפול שורש אצל רופא המתמחה בטיפול זה', 2014, 1516, 180, 'לא צוין', 'כן', 'ENDO', 'ENDO'],
+      ['טיפול שורש', '', 'חידוש טיפול שורש בשן עם אנטומיה חריגה', 2014, 1516, 180, 'לא צוין', 'כן', 'ENDO', 'ENDO'],
+      ['טיפול שורש', '', 'שימוש בחומר ביוקרמי לצורך אנדודונטי', 76, 61, 49, 'לא צוין', 'כן', 'ENDO', 'MICRO'],
+      ['טיפול שורש', 'חט"ש1', 'חידוש טיפול שורש - 1 תעלה', 727, 469, 68, 'לא צוין', 'כן', 'ENDO', 'ENDO'],
+      ['טיפול שורש', 'חט"ש2', 'חידוש טיפול שורש - 2 תעלה', 905, 582, 68, 'לא צוין', 'כן', 'ENDO', 'ENDO'],
+      ['טיפול שורש', 'חט"ש3', 'חידוש טיפול שורש - 3 תעלה', 1167, 752, 68, 'לא צוין', 'כן', 'ENDO', 'ENDO'],
+      ['טיפול שורש', 'חט"ש4', 'חידוש טיפול שורש - 4 תעלה', 1237, 795, 68, 'לא צוין', 'כן', 'ENDO', 'ENDO'],
+      ['טיפול שורש', '', 'טיפול שורש תוספת להוצאת פיניי כסף (לכל שן)', 194, 130, 76, 'לא צוין', 'כן', 'ENDO', 'MICRO'],
+      ['טיפול שורש', '', 'הלבנת שן ויטאלית בודדת', 852, 549, 457, 'לא צוין', 'לא', 'REST', 'CROWN'],
 
-      { gmc: 'GMC-PRO01', leumit: '601', family: 'PROSTHO', rowKey: 'CORE', name: 'מבנה מיידי / יצוק', short: 'מבנה', pGen: 650, pSilv: 420, pGold: 260, p72: 38 },
-      { gmc: 'GMC-PRO21', leumit: '628', family: 'PROSTHO', rowKey: 'CORE', name: 'מבנה ע"ג שתל', short: 'מבנה שתל', pGen: 1250, pSilv: 820, pGold: 560, p72: 0 },
-      { gmc: 'GMC-PRO12', leumit: '614', family: 'PROSTHO', rowKey: 'TEMP', name: 'כתר זמני אקריל', short: 'כ"ז', pGen: 343, pSilv: 165, pGold: 127, p72: 0 },
-      { gmc: 'GMC-PRO19', leumit: '623', family: 'PROSTHO', rowKey: 'CROWN', name: 'כתר זירקוניה', short: 'כתר זירקוניה', pGen: 2550, pSilv: 1650, pGold: 1100, p72: 0 },
-      { gmc: 'GMC-PRO17', leumit: '621', family: 'PROSTHO', rowKey: 'CROWN', name: 'כתר חרסינה PFM', short: 'כתר PFM', pGen: 1899, pSilv: 1400, pGold: 715, p72: 233 },
-      { gmc: 'GMC-PRO23', leumit: '629', family: 'PROSTHO', rowKey: 'CROWN', name: 'כתר זירקוניה ע"ג שתל', short: 'כתר זירקוניה שתל', pGen: 3800, pSilv: 2350, pGold: 1800, p72: 0 },
-      { gmc: 'GMC-PRO25', leumit: '621P',family: 'PROSTHO', rowKey: 'PONTIC', name: 'כתר דמה (כד"מ / פונטיק)', short: 'כד"מ', pGen: 1899, pSilv: 1400, pGold: 715, p72: 0 },
+      // שיקום
+      ['שיקום', 'מבנה', 'מבנה מיידי', 442, 301, 179, 'כן', 'כן', 'PROSTHO', 'CORE'],
+      ['שיקום', '', 'תוספת עבור פין פרה-פולפרי', 100, 77, 23, 'כן', 'לא', 'PROSTHO', 'CORE'],
+      ['שיקום', '', 'מבנה מחומר מורכב', 750, 602, 322, 'כן', 'כן', 'PROSTHO', 'CORE'],
+      ['שיקום', '', 'מבנה יצוק/ בורג קרמי', 910, 555, 364, 'כן', 'כן', 'PROSTHO', 'CORE'],
+      ['שיקום', '', 'מבנה זרקוניה', 1588, 1222, 810, 'כן', 'כן', 'PROSTHO', 'CORE'],
+      ['שיקום', 'אונליי ONLAY', 'סתימה onlay חרסינה/זירקוניה', 4056, 3120, 2400, 'כן', 'כן', 'PROSTHO', 'CROWN'],
+      ['שיקום', '', 'כיפה', 980, 720, 440, 'כן', 'כן', 'PROSTHO', 'CORE'],
+      ['שיקום', '', 'הוצאת מבנה ישן', 218, 175, 140, 'כן', 'כן', 'PROSTHO', 'CORE'],
+      ['שיקום', '', 'הדבקת כתר ישן', 102, 66, 45, 'כן', 'כן', 'PROSTHO', 'CROWN'],
+      ['שיקום', 'הסרת כתר', 'הסרת כתר בודד', 92, 71, 45, 'כן', 'כן', 'PROSTHO', 'CROWN'],
+      ['שיקום', 'הסרת גשר', 'הסרת גשר', 253, 195, 90, 'כן', 'כן', 'PROSTHO', 'CROWN'],
+      ['שיקום', 'כ"ז', 'כתר זמני מאקריל', 343, 165, 127, 'כן', 'כן', 'PROSTHO', 'TEMP'],
+      ['שיקום', 'כז"מ', 'כתר זמני מאקריל מבושל', 447, 328, 153, 'כן', 'כן', 'PROSTHO', 'TEMP_B'],
+      ['שיקום', '', 'התאמת גשר קבוע ישן (אחרי הסרתו) כגשר זמני', 212, 186, 126, 'כן', 'כן', 'PROSTHO', 'TEMP'],
+      ['שיקום', '', 'סריקה דיגיטלית לכתר/ תותבת + מודל', 120, 82, 65, 'כן', 'כן', 'DIAG', 'IMAGING'],
+      ['שיקום', '', 'כתר חרסינה', 1899, 1400, 715, 'כן', 'כן', 'PROSTHO', 'CROWN'],
+      ['שיקום', '', 'כתר חרסינה בשן להשחזה על מתכת', 1899, 1400, 715, 'כן', 'כן', 'PROSTHO', 'CROWN'],
+      ['שיקום', '', 'כתר חרסינה חצי אצילה', 1983, 1770, 850, 'כן', 'כן', 'PROSTHO', 'CROWN'],
+      ['שיקום', '', 'ציפוי שן מחרסינה', 3450, 2247, 1450, 'כן', 'כן', 'PROSTHO', 'CROWN'],
+      ['שיקום', '', 'שחזור חרסינה אסתטי', 3211, 2470, 1150, 'כן', 'כן', 'PROSTHO', 'CROWN'],
+      ['שיקום', 'זירקוניה', 'כתר זרקוניה', 2688, 2187, 1750, 'כן', 'כן', 'PROSTHO', 'CROWN'],
+      ['שיקום', 'מרילנד (כנף בלבד)', 'גשר מרילנד (שן מאחזת) ללא כתר תלוי', 1956, 764, 520, 'כן', 'כן', 'PROSTHO', 'CROWN'],
+      ['שיקום', 'סד לילה', 'סד לילה', 960, 792, 474, 'כן', 'כן', 'PROSTHO', 'CROWN'],
+      ['שיקום', '', 'סד לילה טיפולי - רופא מומחה', 1920, 1044, 890, 'כן', 'כן', 'PROSTHO', 'CROWN'],
+      ['שיקום', 'פליפר', 'תותב שן בודד- פליפר', 689, 574, 200, 'כן', 'כן', 'PROSTHO', 'TEMP'],
+      ['שיקום', 'תח"ל מיידי', 'תותבת חלקית מידיית מאקריל', 1525, 1365, 620, 'כן', 'כן', 'PROSTHO', 'CROWN'],
+      ['שיקום', 'תח"ל אקריל', 'תותבת חלקית מאקריל', 2610, 1703, 880, 'כן', 'כן', 'PROSTHO', 'CROWN'],
+      ['שיקום', 'ת"ש מיידי', 'תותבת שלמה זמנית (תותבת מעבר)', 2733, 1622, 999, 'כן', 'כן', 'PROSTHO', 'CROWN'],
+      ['שיקום', '', 'כף אישית', 180, 110, 90, 'כן', 'כן', 'PROSTHO', 'CORE'],
+      ['שיקום', 'ת"ש לסת עליונה', 'תותבת שלמה עליונה', 4877, 3107, 1800, 'כן', 'כן', 'PROSTHO', 'CROWN'],
+      ['שיקום', 'ת"ש לסת תחתונה', 'תותבת שלמה תחתונה', 4877, 3107, 1800, 'כן', 'כן', 'PROSTHO', 'CROWN'],
+      ['שיקום', 'רשת לתותבת', 'הוספת רשת לתותבת', 1162, 865, 240, 'כן', 'כן', 'PROSTHO', 'CORE'],
+      ['שיקום', 'תח"ל ויטליום', 'תותבת חלקית יצוקה מכרום קובלט (ויטליום)', 4877, 3200, 1800, 'כן', 'כן', 'PROSTHO', 'CROWN'],
+      ['שיקום', '', 'תותבת חלקית וולפלסט/תותבת גמישה', 5500, 4424, 2900, 'כן', 'כן', 'PROSTHO', 'CROWN'],
+      ['שיקום', 'וו אסתטי לתח"ל', 'וו אסתטי לתח"ל', 650, 585, 240, 'כן', 'כן', 'PROSTHO', 'CORE'],
+      ['שיקום', '', 'תיקון תותבת', 510, 349, 190, 'כן', 'כן', 'PROSTHO', 'CORE'],
+      ['שיקום', '', 'הוספת שן לתותבת', 309, 278, 180, 'כן', 'כן', 'PROSTHO', 'CORE'],
+      ['שיקום', '', 'הוספת וו לתותבת', 309, 278, 220, 'כן', 'כן', 'PROSTHO', 'CORE'],
+      ['שיקום', 'ריפוד רך מרפאתי', 'ריפוד רך במרפאה', 350, 261, 160, 'כן', 'כן', 'PROSTHO', 'CORE'],
+      ['שיקום', '', 'ריפוד תותבת במעבדה', 685, 518, 290, 'כן', 'כן', 'PROSTHO', 'CORE'],
+      ['שיקום', '', 'ריפוד וחידוש בסיס תותבת', 1332, 942, 786, 'כן', 'כן', 'PROSTHO', 'CORE'],
+      ['שיקום', '', 'העמדת שיניים בשעווה', 990, 916, 705, 'כן', 'כן', 'PROSTHO', 'CORE'],
+      ['שיקום', 'מ"ש', 'מבנה לשתל', 1854, 897, 690, 'כן', 'כן', 'PROSTHO', 'CORE'],
+      ['שיקום', 'מולטי יוניט 17/30', 'מבנה מולטי יוניט זויתי 17/30', 1300, 1055, 804, 'כן', 'כן', 'PROSTHO', 'ABUT_MU'],
+      ['שיקום', 'מולטי יוניט גובה 1-5 מ"מ', 'מבנה מולטי יוניט בגבהים של 1-5 מ"מ', 1088, 807, 670, 'כן', 'כן', 'PROSTHO', 'ABUT_MU'],
+      ['שיקום', 'השחזה', 'השחזת מבנה טיטניום', 170, 133, 120, 'כן', 'כן', 'PROSTHO', 'CORE'],
+      ['שיקום', '', 'מחבר מדויק', 1847, 1301, 890, 'כן', 'כן', 'PROSTHO', 'CORE'],
+      ['שיקום', 'דולדר בר', 'מחבר דולדר-בר', 1700, 1260, 770, 'כן', 'כן', 'PROSTHO', 'CORE'],
+      ['שיקום', 'לוקטור', 'מחבר לווקטור', 2700, 2100, 780, 'כן', 'כן', 'PROSTHO', 'CORE'],
+      ['שיקום', 'כדורי', 'מחבר כדורי לשתל', 1050, 897, 690, 'כן', 'כן', 'PROSTHO', 'CORE'],
+      ['שיקום', '', 'החלפת כיפת סיליקון', 600, 324, 150, 'כן', 'כן', 'PROSTHO', 'CORE'],
+      ['שיקום', '', 'בר לתותבת על שני שתלים (לא כולל שיקום)', 5890, 4240, 2999, 'כן', 'כן', 'PROSTHO', 'CROWN'],
+      ['שיקום', '', 'בר לתותבת על שלושה שתלים (לא כולל שיקום)', 6633, 4842, 3500, 'כן', 'כן', 'PROSTHO', 'CROWN'],
+      ['שיקום', '', 'בר לתותבת על ארבעה שתלים (לא כולל שיקום)', 8277, 6042, 4500, 'כן', 'כן', 'PROSTHO', 'CROWN'],
+      ['שיקום', '', 'בר לתותבת על חמישה שתלים (לא כולל שיקום)', 8935, 6522, 4900, 'כן', 'כן', 'PROSTHO', 'CROWN'],
+      ['שיקום', '', 'בר לתותבת על ששה שתלים (לא כולל שיקום)', 9428, 6882, 5200, 'כן', 'כן', 'PROSTHO', 'CROWN'],
+      ['שיקום', '', 'מחבר לבר יצוק לתותבת (לכל שתל)', 1700, 1260, 770, 'כן', 'כן', 'PROSTHO', 'CORE'],
 
-      { gmc: 'GMC-DEN01', leumit: '701', family: 'PROSTHO', rowKey: 'ARCH', name: 'תותבת שלמה ללסת', short: 'תותבת שלמה', pGen: 3400, pSilv: 1650, pGold: 1350, p72: 349 },
-      { gmc: 'GMC-DEN02', leumit: '705', family: 'PROSTHO', rowKey: 'ARCH', name: 'תותבת חלקית להוצאה (RPD)', short: 'תותבת חלקית להוצאה', pGen: 4200, pSilv: 2150, pGold: 1750, p72: 349 },
-      { gmc: 'GMC-DEN03', leumit: '710', family: 'PROSTHO', rowKey: 'ARCH', name: 'תותבת מעבר / ריפוד', short: 'תותבת מעבר', pGen: 680, pSilv: 290, pGold: 220, p72: 0 },
-      { gmc: 'GMC-MSC01', leumit: '801', family: 'PROSTHO', rowKey: 'ARCH', name: 'סד לילה קשיח', short: 'סד לילה', pGen: 950, pSilv: 480, pGold: 390, p72: 0 },
-      { gmc: 'GMC-IMP00', leumit: '518', family: 'PROSTHO', rowKey: 'ARCH', name: 'סד סיגרי / כירורגי', short: 'סד סיגרי', pGen: 4200, pSilv: 3360, pGold: 2630, p72: 0 },
-      { gmc: 'GMC-HYG06', leumit: '206', family: 'REST',    rowKey: 'ARCH', name: 'סד הלבנה ללסת', short: 'סד הלבנה', pGen: 1058, pSilv: 862, pGold: 718, p72: 0 },
-      { gmc: 'GMC-RES04', leumit: '304', family: 'REST',    rowKey: 'CORE', name: 'שחזור קומפוזיט', short: 'שחזור', pGen: 308, pSilv: 237, pGold: 49, p72: 38 }
+      // כירורגיה
+      ['כירורגיה', '', 'בדיקה על ידי כירורג מומחה', 191, 103, 90, 'כן', 'כן', 'PERIO', 'MICRO'],
+      ['כירורגיה', 'ע', 'עקירה', 275, 161, 68, 'כן', 'כן', 'PERIO', 'ENDO'],
+      ['כירורגיה', 'ע"כ', 'עקירה כירורגית/ שן בינה', 511, 367, 68, 'כן', 'כן', 'PERIO', 'ENDO'],
+      ['כירורגיה', 'ע"כ בי"ח', 'עקירה כירורגית- בית חולים', 1200, 994, 180, 'כן', 'כן', 'PERIO', 'ENDO'],
+      ['כירורגיה', '', 'עקירה כירורגית ע"י מומחה/מורשה', 940, 640, 180, 'כן', 'כן', 'PERIO', 'ENDO'],
+      ['כירורגיה', '', 'עקירת שן כלואה ע"י מומחה/מורשה', 1150, 975, 180, 'כן', 'כן', 'PERIO', 'ENDO'],
+      ['כירורגיה', '', 'עקירת שן כלואה בעצם (מומחה/מורשה)', 1150, 975, 180, 'כן', 'כן', 'PERIO', 'ENDO'],
+      ['כירורגיה', 'קורונקטומי', 'קורונקטומי (קיטום כותרת)', 1727, 1382, 1105, 'כן', 'כן', 'PERIO', 'ENDO'],
+      ['כירורגיה', 'המיסקציה', 'ניתוח המיסקציה', 753, 483, 403, 'כן', 'כן', 'PERIO', 'ENDO'],
+      ['כירורגיה', 'אפיסקטומי', 'אפיסקטומי +סתימה רטרוגרדית', 1170, 936, 702, 'כן', 'כן', 'PERIO', 'ENDO'],
+      ['כירורגיה', 'חשיפת שן כלואה', 'חשיפת שן כלואה', 2500, 1925, 1540, 'כן', 'לא', 'PERIO', 'MICRO'],
+      ['כירורגיה', 'הבקעה שיקומית', 'הבקעת שן לצורך שיקומי', 2913, 2331, 1865, 'כן', 'כן', 'PERIO', 'MICRO'],
+      ['כירורגיה', '', 'פתיחת מורסה כירורגית', 283, 240, 120, 'כן', 'כן', 'PERIO', 'ENDO'],
+      ['כירורגיה', '', 'כריתת ציסטה', 1011, 649, 541, 'כן', 'כן', 'PERIO', 'ENDO'],
+      ['כירורגיה', '', 'החלקת עצם', 962, 799, 320, 'כן', 'כן', 'PERIO', 'MICRO'],
+      ['כירורגיה', '', 'העמקת וסטיבולם', 1668, 1131, 946, 'כן', 'כן', 'PERIO', 'MICRO'],
+      ['כירורגיה', 'סד ממוחשב לביצוע שתלים', 'סד ממוחשב לביצוע שתלים', 4200, 3360, 2630, 'כן', 'כן', 'PERIO', 'CROWN'],
+      ['כירורגיה', 'שתל', 'שתל', 3864, 2053, 1560, 'כן', 'כן', 'PERIO', 'ENDO'],
+      ['כירורגיה', 'הרמת סינוס', 'הרמת סינוס (צד אחד)', 11872, 9727, 6300, 'כן', 'כן', 'PERIO', 'MICRO'],
+      ['כירורגיה', 'השתלת עצם + 0.5 גרם', 'השתלת עצם + 0.5 גרם', 2500, 1825, 1481, 'כן', 'כן', 'PERIO', 'MICRO'],
+      ['כירורגיה', 'השתלת עצם + 0.5 גרם + ממברנה', 'השתלת עצם + 0.5 גרם + ממברנה', 4200, 2563, 1996, 'כן', 'כן', 'PERIO', 'MICRO'],
+      ['כירורגיה', '', 'תוספת להשתלת עצם סינטטית', 1011, 756, 630, 'כן', 'כן', 'PERIO', 'MICRO'],
+      ['כירורגיה', '', 'השתלת בלוק (כולל פיני קיבוע)', 11872, 9379, 7816, 'כן', 'כן', 'PERIO', 'MICRO'],
+      ['כירורגיה', '', 'בורג לקיבוע עצם/ מברנה', 422, 325, 180, 'כן', 'כן', 'PERIO', 'MICRO'],
+      ['כירורגיה', 'הוצאת שתל', 'הוצאת שתל', 1050, 585, 450, 'כן', 'כן', 'PERIO', 'ENDO'],
+
+      // טיפול חניכיים
+      ['טיפול חניכיים', 'בדיקה פריודנטלית', 'בדיקה פריודנטלית', 191, 130, 80, 'לא צוין', 'כן', 'PERIO', 'MICRO'],
+      ['טיפול חניכיים', 'הקצעת שורשים/ גרידת חניכיים לרבע פה', 'הקצעת שורשים/ גרידת חניכיים לרבע פה', 715, 580, 299, 'לא צוין', 'כן', 'PERIO', 'MICRO'],
+      ['טיפול חניכיים', '', 'טיפול תרופתי מקומי בחניכיים (פריצ\'יפ)', 238, 163, 125, 'לא צוין', 'כן', 'PERIO', 'MICRO'],
+      ['טיפול חניכיים', '', 'ניתוח קצר/ כריתת חניכיים רבע פה', 1001, 902, 685, 'לא צוין', 'כן', 'PERIO', 'MICRO'],
+      ['טיפול חניכיים', '', 'ניתוח חניכיים רבע פה', 2150, 1702, 1020, 'לא צוין', 'כן', 'PERIO', 'MICRO'],
+      ['טיפול חניכיים', '', 'ניתוח חניכים רבע פה כולל אמדוגין', 3900, 3100, 2150, 'לא צוין', 'כן', 'PERIO', 'MICRO'],
+      ['טיפול חניכיים', '', 'השתלת חניכיים רבע פה (לא כולל ניתוח חניכיים)', 1200, 767, 580, 'לא צוין', 'כן', 'PERIO', 'MICRO'],
+      ['טיפול חניכיים', 'הארכת כותרת לשן אחת', 'הארכת כותרת לשן אחת', 1039, 707, 483, 'לא צוין', 'כן', 'PERIO', 'MICRO'],
+      ['טיפול חניכיים', 'קיבוע שיניים (ספלינט)', 'קיבוע שיניים (ספלינט)', 1030, 875, 442, 'לא צוין', 'כן', 'PERIO', 'CROWN'],
+      ['טיפול חניכיים', '', 'ניקוז מורסה פריודונטלית', 435, 335, 192, 'לא צוין', 'כן', 'PERIO', 'MICRO'],
+      ['טיפול חניכיים', '', 'פרנקטומי', 850, 670, 515, 'לא צוין', 'כן', 'PERIO', 'MICRO'],
+
+      // תוספות
+      ['תוספות', 'שתל - חשיפה', 'שתל - חשיפה', 0, 0, 0, 'לא צוין', 'כן', 'PERIO', 'MICRO'],
+      ['תוספות', 'חומר?', 'חומר?', 0, 0, 0, 'לא צוין', 'כן', 'REST', 'MICRO']
+    ];
+
+    const CATALOG = RAW_CATALOG.map((r, i) => ({
+      id: 'CAT-' + (i + 1),
+      category: r[0],
+      alias: r[1],
+      name: r[2],
+      short: r[1] || r[2],
+      pGen: Number(r[3]) || 0,
+      pSilv: Number(r[4]) || 0,
+      pGold: Number(r[5]) || 0,
+      p72: 0,
+      preAuth: r[6],
+      relevant: r[7],
+      family: r[8],
+      rowKey: r[9]
+    }));
+
+    // -------------------------------------------------------------------------
+    // B. EXACT SHORTCUTS ("קודים קיצורי דרך")
+    // -------------------------------------------------------------------------
+    const EXACT_SHORTCUTS = [
+      {
+        name: 'עקירה',
+        color: 'bg-rose-700 hover:bg-rose-600',
+        steps: [
+          { treatment: 'עקירה', crossLabel: 'עקירה', rowKey: 'ENDO', family: 'PERIO', markMissing: true }
+        ]
+      },
+      {
+        name: 'שתל',
+        color: 'bg-rose-600 hover:bg-rose-500',
+        steps: [
+          { treatment: 'שתל', crossLabel: 'שתל', rowKey: 'ENDO', family: 'PERIO', markImplant: true },
+          { treatment: 'שתל - חשיפה', crossLabel: 'חשיפה', rowKey: 'MICRO', family: 'PERIO', markImplant: true }
+        ]
+      },
+      {
+        name: 'שתל ושיקום',
+        color: 'bg-teal-600 hover:bg-teal-500',
+        steps: [
+          { treatment: 'שתל', crossLabel: 'שתל', rowKey: 'ENDO', family: 'PERIO', markImplant: true },
+          { treatment: 'שתל - חשיפה', crossLabel: 'חשיפה', rowKey: 'MICRO', family: 'PERIO', markImplant: true },
+          { treatment: 'כתר זרקוניה', crossLabel: 'זירקוניה', rowKey: 'CROWN', family: 'PROSTHO' },
+          { treatment: 'כתר זמני מאקריל', crossLabel: 'כ"ז', rowKey: 'TEMP', family: 'PROSTHO' },
+          { treatment: 'כתר זמני מאקריל מבושל', crossLabel: 'כז"מ', rowKey: 'TEMP_B', family: 'PROSTHO' },
+          { treatment: 'מבנה לשתל', crossLabel: 'מ"ש', rowKey: 'CORE', family: 'PROSTHO' },
+          { treatment: 'מבנה מולטי יוניט זויתי 17/30', crossLabel: 'מז"ש', rowKey: 'ABUT_MU', family: 'PROSTHO' }
+        ]
+      },
+      {
+        name: 'כתר על שן',
+        color: 'bg-sky-600 hover:bg-sky-500',
+        steps: [
+          { treatment: 'כתר זרקוניה', crossLabel: 'זירקוניה', rowKey: 'CROWN', family: 'PROSTHO' },
+          { treatment: 'כתר זמני מאקריל', crossLabel: 'כ"ז', rowKey: 'TEMP', family: 'PROSTHO' },
+          { treatment: 'כתר זמני מאקריל מבושל', crossLabel: 'כז"מ', rowKey: 'TEMP_B', family: 'PROSTHO' }
+        ]
+      },
+      {
+        name: 'פונטיק',
+        color: 'bg-indigo-600 hover:bg-indigo-500',
+        steps: [
+          { treatment: 'כתר זרקוניה', crossLabel: 'זירקוניה', rowKey: 'CROWN', family: 'PROSTHO' },
+          { treatment: 'כתר זמני מאקריל', crossLabel: 'כ"ז', rowKey: 'TEMP', family: 'PROSTHO' },
+          { treatment: 'כתר זמני מאקריל מבושל', crossLabel: 'כז"מ', rowKey: 'TEMP_B', family: 'PROSTHO' }
+        ]
+      },
+      {
+        name: 'אונליי Onlay',
+        color: 'bg-blue-600 hover:bg-blue-500',
+        steps: [
+          { treatment: 'סתימה onlay חרסינה/זירקוניה', crossLabel: 'אונליי Onlay', rowKey: 'CROWN', family: 'PROSTHO' },
+          { treatment: 'שחזור מרוכב קדמי/אחורי', crossLabel: 'שחזור', rowKey: 'CORE', family: 'REST' }
+        ]
+      },
+      {
+        name: 'שחזור',
+        color: 'bg-purple-600 hover:bg-purple-500',
+        steps: [
+          { treatment: 'שחזור מרוכב קדמי/אחורי', crossLabel: 'שחזור', rowKey: 'CROWN', family: 'REST' }
+        ]
+      },
+      {
+        name: 'שחזור קדמי',
+        color: 'bg-fuchsia-600 hover:bg-fuchsia-500',
+        steps: [
+          { treatment: 'השלמת שן לצורך אסתטי', crossLabel: 'שחזור קדמי', rowKey: 'CROWN', family: 'REST' }
+        ]
+      },
+      {
+        name: 'ט"ש ומבנה',
+        isSmartEndo: 'RCT',
+        color: 'bg-amber-600 hover:bg-amber-500',
+        steps: []
+      },
+      {
+        name: 'חט"ש ומבנה',
+        isSmartEndo: 'RET',
+        color: 'bg-orange-600 hover:bg-orange-500',
+        steps: []
+      }
+    ];
+
+    // -------------------------------------------------------------------------
+    // C. EXACT ADDITIONS ("קודים_תוספות")
+    // -------------------------------------------------------------------------
+    const EXACT_ADDITIONS_DOMAINS = [
+      {
+        domainTitle: 'תותבות',
+        badgeCls: 'fam-prostho',
+        shortcuts: [
+          { id: 'ADD-1',  name: 'לוקיטור - Locator', subTreatments: ['מחבר לווקטור'] },
+          { id: 'ADD-2',  name: 'בול - Ball', subTreatments: ['מחבר כדורי לשתל'] },
+          { id: 'ADD-3',  name: 'ת"ש מיידי', subTreatments: ['תותבת שלמה זמנית (תותבת מעבר)', 'כף אישית', 'ריפוד רך במרפאה'] },
+          { id: 'ADD-4',  name: 'תח"ל מיידי', subTreatments: ['תותבת חלקית מידיית מאקריל', 'כף אישית', 'ריפוד רך במרפאה'] },
+          { id: 'ADD-5',  name: 'תח"ל אקריל', subTreatments: ['תותבת חלקית מאקריל', 'כף אישית', 'ריפוד רך במרפאה'] },
+          { id: 'ADD-6',  name: 'תח"ל ויטליום', subTreatments: ['תותבת חלקית יצוקה מכרום קובלט (ויטליום)', 'כף אישית', 'ריפוד רך במרפאה'] },
+          { id: 'ADD-7',  name: 'ת"ש אקריל עליון', subTreatments: ['תותבת שלמה עליונה', 'כף אישית', 'ריפוד רך במרפאה'] },
+          { id: 'ADD-8',  name: 'ת"ש אקריל תחתון', subTreatments: ['תותבת שלמה תחתונה', 'כף אישית', 'ריפוד רך במרפאה'] },
+          { id: 'ADD-9',  name: 'ת"ש מחוזק עליון', subTreatments: ['תותבת שלמה עליונה', 'הוספת רשת לתותבת', 'כף אישית', 'ריפוד רך במרפאה'] },
+          { id: 'ADD-10', name: 'ת"ש מחוזק תחתון', subTreatments: ['תותבת שלמה תחתונה', 'הוספת רשת לתותבת', 'כף אישית', 'ריפוד רך במרפאה'] }
+        ]
+      },
+      {
+        domainTitle: 'כירורגיה',
+        badgeCls: 'fam-perio',
+        shortcuts: [
+          { id: 'ADD-11', name: 'סד כירורגי', subTreatments: ['סד ממוחשב לביצוע שתלים'] },
+          { id: 'ADD-12', name: 'הרמת סינוס', subTreatments: ['הרמת סינוס (צד אחד)', 'השתלת עצם + 0.5 גרם + ממברנה'] },
+          { id: 'ADD-13', name: 'הוצאת שתל', subTreatments: ['הוצאת שתל'] },
+          { id: 'ADD-14', name: 'הקצאת שורשים רבע פה', subTreatments: ['הקצעת שורשים/ גרידת חניכיים לרבע פה'] },
+          { id: 'ADD-15', name: 'הארכת כותרת (לשן)', subTreatments: ['הארכת כותרת לשן אחת'] },
+          { id: 'ADD-16', name: 'הסרת אבנית אצל פריודונט', subTreatments: ['טיפול בפלואור/ דוראפאט', 'הסרת אבנית במרפאת פריודונט'] }
+        ]
+      },
+      {
+        domainTitle: 'שונות - שיקום',
+        badgeCls: 'fam-diag',
+        shortcuts: [
+          { id: 'ADD-17', name: 'סד לילה', subTreatments: ['סד לילה טיפולי - רופא מומחה'] },
+          { id: 'ADD-18', name: 'סד להלבנת שיניים', subTreatments: ['הלבנה קוסמטית ללסת אחת', 'חומר?'] },
+          { id: 'ADD-19', name: 'מבנה לשתל', subTreatments: ['מבנה לשתל'] },
+          { id: 'ADD-20', name: 'מבנה מולטי יוניט זויתי 17/30', subTreatments: ['מבנה מולטי יוניט זויתי 17/30'] },
+          { id: 'ADD-21', name: 'מבנה מולטי יוניט בגבהים של 1-5 מ"מ', subTreatments: ['מבנה מולטי יוניט בגבהים של 1-5 מ"מ'] },
+          { id: 'ADD-22', name: 'השחזת מבנה טיטניום', subTreatments: ['השחזת מבנה טיטניום'] },
+          { id: 'ADD-23', name: 'מחבר מדויק', subTreatments: ['מחבר מדויק'] },
+          { id: 'ADD-24', name: 'מחבר דולדר-בר', subTreatments: ['מחבר דולדר-בר'] },
+          { id: 'ADD-25', name: 'החלפת כיפת סיליקון', subTreatments: ['החלפת כיפת סיליקון'] },
+          { id: 'ADD-26', name: 'בר לתותבת על שני שתלים (לא כולל שיקום)', subTreatments: ['בר לתותבת על שני שתלים (לא כולל שיקום)'] },
+          { id: 'ADD-27', name: 'בר לתותבת על שלושה שתלים (לא כולל שיקום)', subTreatments: ['בר לתותבת על שלושה שתלים (לא כולל שיקום)'] },
+          { id: 'ADD-28', name: 'בר לתותבת על ארבעה שתלים (לא כולל שיקום)', subTreatments: ['בר לתותבת על ארבעה שתלים (לא כולל שיקום)'] },
+          { id: 'ADD-29', name: 'בר לתותבת על חמישה שתלים (לא כולל שיקום)', subTreatments: ['בר לתותבת על חמישה שתלים (לא כולל שיקום)'] },
+          { id: 'ADD-30', name: 'בר לתותבת על ששה שתלים (לא כולל שיקום)', subTreatments: ['בר לתותבת על ששה שתלים (לא כולל שיקום)'] },
+          { id: 'ADD-31', name: 'מחבר לבר יצוק לתותבת (לכל שתל)', subTreatments: ['מחבר לבר יצוק לתותבת (לכל שתל)'] }
+        ]
+      }
     ];
 
     const DEFAULT_PATIENTS = [
@@ -989,55 +962,36 @@
           '16': 'GOOD', '15': 'GOOD', '14': 'GOOD', '12': 'QUESTIONABLE', '21': 'QUESTIONABLE', '28': 'IRRATIONAL', '42': 'IRRATIONAL', '32': 'IRRATIONAL', '35': 'GOOD'
         },
         capsules: [
-          { id: 'C1', arch: 'UPPER', teeth: ['16'], gmc: 'GMC-PRO23', status: 'APPROVED', done: false, label: 'כתר זירקוניה שתל' },
-          { id: 'C2', arch: 'UPPER', teeth: ['15'], gmc: 'GMC-RCT02', status: 'APPROVED', done: true, label: 'ט"ש 2 תע\'' },
-          { id: 'C3', arch: 'UPPER', teeth: ['15'], gmc: 'GMC-PRO01', status: 'APPROVED', done: true, label: 'מבנה' },
-          { id: 'C4', arch: 'UPPER', teeth: ['15'], gmc: 'GMC-PRO12', status: 'APPROVED', done: true, label: 'כ"ז' },
-          { id: 'C5', arch: 'UPPER', teeth: ['15'], gmc: 'GMC-PRO19', status: 'REASON', done: false, label: 'כתר זירקוניה' },
+          { id: 'C1', arch: 'UPPER', teeth: ['16'], treatment: 'כתר זרקוניה', label: 'זירקוניה', rowKey: 'CROWN', family: 'PROSTHO', status: 'APPROVED', done: false },
+          { id: 'C2', arch: 'UPPER', teeth: ['15'], treatment: 'טיפול שורש- שתי תעלות', label: 'ט"ש2', rowKey: 'ENDO', family: 'ENDO', status: 'APPROVED', done: true },
+          { id: 'C3', arch: 'UPPER', teeth: ['15'], treatment: 'תוספת עלות לטיפול שורש בעזרת מיקרוסקופ', label: 'מיקרוסקופ', rowKey: 'MICRO', family: 'ENDO', status: 'APPROVED', done: true },
+          { id: 'C4', arch: 'UPPER', teeth: ['15'], treatment: 'מבנה מחומר מורכב', label: 'מבנה', rowKey: 'CORE', family: 'PROSTHO', status: 'APPROVED', done: true },
+          { id: 'C5', arch: 'UPPER', teeth: ['15'], treatment: 'כתר זמני מאקריל', label: 'כ"ז', rowKey: 'TEMP', family: 'PROSTHO', status: 'APPROVED', done: true },
+          { id: 'C6', arch: 'UPPER', teeth: ['15'], treatment: 'כתר זרקוניה', label: 'זירקוניה', rowKey: 'CROWN', family: 'PROSTHO', status: 'REASON', done: false },
 
-          { id: 'C6', arch: 'UPPER', teeth: ['12'], gmc: 'GMC-RCT01', status: 'REASON', done: false, label: 'ט"ש 1 תע\'' },
-          { id: 'C7', arch: 'UPPER', teeth: ['12'], gmc: 'GMC-PRO01', status: 'APPROVED', done: false, label: 'מבנה' },
-          { id: 'C8', arch: 'UPPER', teeth: ['12'], gmc: 'GMC-PRO12', status: 'DRAFT', done: false, label: 'כ"ז' },
-          { id: 'C9', arch: 'UPPER', teeth: ['12'], gmc: 'GMC-PRO19', status: 'APPROVED', done: false, label: 'כתר זירקוניה' },
+          { id: 'C7', arch: 'UPPER', teeth: ['12'], treatment: 'טיפול שורש- תעלה אחת', label: 'ט"ש1', rowKey: 'ENDO', family: 'ENDO', status: 'REASON', done: false },
+          { id: 'C8', arch: 'UPPER', teeth: ['12'], treatment: 'מבנה מחומר מורכב', label: 'מבנה', rowKey: 'CORE', family: 'PROSTHO', status: 'APPROVED', done: false },
+          { id: 'C9', arch: 'UPPER', teeth: ['12'], treatment: 'כתר זמני מאקריל', label: 'כ"ז', rowKey: 'TEMP', family: 'PROSTHO', status: 'DRAFT', done: false },
+          { id: 'C10', arch: 'UPPER', teeth: ['12'], treatment: 'כתר זרקוניה', label: 'זירקוניה', rowKey: 'CROWN', family: 'PROSTHO', status: 'APPROVED', done: false },
 
-          { id: 'C10', arch: 'UPPER', teeth: ['21'], gmc: 'GMC-RCT01', status: 'DENIED', done: false, label: 'ט"ש 1 תע\'' },
-          { id: 'C11', arch: 'UPPER', teeth: ['21'], gmc: 'GMC-PRO01', status: 'DENIED', done: false, label: 'מבנה' },
-          { id: 'C12', arch: 'UPPER', teeth: ['21'], gmc: 'GMC-PRO19', status: 'REASON', done: false, label: 'כתר זירקוניה' },
-          { id: 'C13', arch: 'UPPER', teeth: ['21'], gmc: 'GMC-PRO12', status: 'APPROVED', done: false, label: 'כ"ז' },
-          { id: 'C14', arch: 'UPPER', teeth: ['21'], gmc: 'GMC-PRO25', status: 'APPROVED', done: false, label: 'כד"מ' },
-
-          { id: 'C15', arch: 'UPPER', teeth: ['28'], gmc: 'GMC-RCT04', status: 'DENIED', done: false, label: 'ט"ש 4 תע\'' },
-          { id: 'C16', arch: 'UPPER', teeth: ['28'], gmc: 'GMC-PRO01', status: 'REASON', done: false, label: 'מבנה' },
-
-          { id: 'C17', arch: 'LOWER', teeth: ['42'], gmc: 'GMC-SUR01', status: 'APPROVED', done: true, label: "ע'" },
-          { id: 'C18', arch: 'LOWER', teeth: ['32'], gmc: 'GMC-SUR01', status: 'APPROVED', done: true, label: "ע'" },
-          { id: 'C19', arch: 'LOWER', teeth: ['35'], gmc: 'GMC-RCT02', status: 'NORESP', done: false, label: 'ט"ש 2 תע\'' },
-          { id: 'C20', arch: 'LOWER', teeth: ['35'], gmc: 'GMC-PRO01', status: 'NORESP', done: false, label: 'מבנה' },
-
-          { id: 'C21', arch: 'LOWER', teeth: ['43','42','41','31','32','33'], gmc: 'GMC-PRO12', status: 'DRAFT', done: false, label: 'כ"ז (גשר 43-33)' },
-          { id: 'C22', arch: 'LOWER', teeth: ['43','42','41','31','32','33'], gmc: 'GMC-PRO25', status: 'APPROVED', done: false, label: 'כד"מ' },
-          { id: 'C23', arch: 'LOWER', teeth: ['43','42','41','31','32','33'], gmc: 'GMC-PRO19', status: 'APPROVED', done: false, label: 'כתר זירקוניה (גשר)' },
-          { id: 'C24', arch: 'LOWER', teeth: LOWER_TEETH.slice(1, 15), gmc: 'GMC-DEN02', status: 'APPROVED', done: false, label: 'תותבת חלקית להוצאה (RPD)' }
+          { id: 'C11', arch: 'LOWER', teeth: ['42'], treatment: 'עקירה', label: 'עקירה', rowKey: 'ENDO', family: 'PERIO', status: 'APPROVED', done: true },
+          { id: 'C12', arch: 'LOWER', teeth: ['32'], treatment: 'עקירה', label: 'עקירה', rowKey: 'ENDO', family: 'PERIO', status: 'APPROVED', done: true }
         ],
-        generalItems: [
-          { id: 'G1', shortcutId: 'ADD-GEN-INIT-MAP', gmc: 'GMC-EX01', label: 'בדיקה ומיפוי ראשוני: מיפוי פה ראשוני', status: 'APPROVED' }
-        ],
-        unrequested: [
-          { code: '201', name: 'סילוק אבנית (אושר ללא בקשה)' }
-        ]
+        generalItems: [],
+        unrequested: []
       }
     ];
 
     // =========================================================================
-    // 2. STATE & BULLETPROOF INITIALIZATION
+    // 2. STATE & HELPERS
     // =========================================================================
     const App = {
       patients: [],
-      catalog: [],
-      sheetComplexes: [],
-      additionsDomains: [],
+      catalog: CATALOG,
+      shortcuts: EXACT_SHORTCUTS,
+      additionsDomains: EXACT_ADDITIONS_DOMAINS,
       activePtId: null,
-      wsStage: 1, // 1: Tooth Status & Prognosis, 2: Treatment Plan, 3: HMO Status
+      wsStage: 1,
       selectedTeeth: new Set(),
       openMenuPtId: null
     };
@@ -1059,9 +1013,6 @@
     window.saveState = function() {
       try {
         localStorage.setItem(STORAGE_KEY_PATIENTS, JSON.stringify(App.patients));
-        localStorage.setItem(STORAGE_KEY_CATALOG, JSON.stringify(App.catalog));
-        localStorage.setItem(STORAGE_KEY_SHORTCUTS, JSON.stringify(App.sheetComplexes));
-        localStorage.setItem(STORAGE_KEY_ADDITIONS, JSON.stringify(App.additionsDomains));
       } catch (e) {}
     };
 
@@ -1069,8 +1020,12 @@
       return App.patients.find(p => p.id === App.activePtId);
     }
 
-    function getCat(gmc) {
-      return App.catalog.find(c => c.gmc === gmc) || App.catalog[0];
+    function findCatalogByTreatmentOrAlias(str) {
+      if (!str) return App.catalog[0];
+      const norm = str.trim();
+      return App.catalog.find(c => c.name === norm || c.alias === norm) ||
+             App.catalog.find(c => c.name.includes(norm) || (c.alias && c.alias.includes(norm))) ||
+             { name: norm, alias: norm, short: norm, pGen: 0, pSilv: 0, pGold: 0, p72: 0, family: 'PROSTHO', rowKey: 'CROWN' };
     }
 
     function getPrice(cat, ins) {
@@ -1086,31 +1041,26 @@
       if (!box) return;
       const el = document.createElement('div');
       el.className = 'bg-slate-900 text-white text-xs font-bold px-3.5 py-2.5 rounded-xl shadow-lg flex items-center gap-2 border border-slate-700';
-      el.innerHTML = `<span>✨</span><span>${msg}</span>`;
+      el.innerHTML = `<span>✔</span><span>${msg}</span>`;
       box.appendChild(el);
       setTimeout(() => {
         if (el && el.parentNode) el.parentNode.removeChild(el);
-      }, 2800);
+      }, 2400);
     };
 
     // =========================================================================
-    // 3. GUARANTEED NEW PATIENT FLOW (MODAL + QUICK DRAFT - ZERO BLOCKING)
+    // 3. NEW PATIENT FLOW
     // =========================================================================
     window.openNewPatientModal = function(e) {
-      if (e) {
-        e.preventDefault();
-        e.stopPropagation();
-      }
+      if (e) { e.preventDefault(); e.stopPropagation(); }
       const modal = document.getElementById('modal-new-patient');
       if (!modal) return;
-
       document.getElementById('np-fname').value = '';
       document.getElementById('np-lname').value = '';
       document.getElementById('np-doc').value = 'לא שויך';
       document.getElementById('np-group').value = 'UNDECIDED';
       document.getElementById('np-ins').value = 'LEUMIT_GOLD';
       document.getElementById('np-class').value = 'INITIAL';
-
       modal.classList.remove('hidden');
       setTimeout(() => {
         const inp = document.getElementById('np-fname');
@@ -1154,14 +1104,10 @@
       window.saveState();
       window.closeNewPatientModal();
       window.openPatientWorkspace(newPt.id, 1);
-      window.toast(`נוצר כרטיס עבור ${fname} ${lname} – שלב 1: מצב השיניים ופרוגנוזה`);
     };
 
     window.quickCreateDraftPatient = function(e) {
-      if (e) {
-        e.preventDefault();
-        e.stopPropagation();
-      }
+      if (e) { e.preventDefault(); e.stopPropagation(); }
       const newPt = {
         id: 'PT-' + Date.now() + '-' + Math.random().toString(36).slice(2, 6),
         firstName: 'מטופל',
@@ -1185,25 +1131,17 @@
       window.saveState();
       window.closeNewPatientModal();
       window.openPatientWorkspace(newPt.id, 1);
-      setTimeout(() => {
-        const fnameInput = document.getElementById('ws-fname');
-        if (fnameInput) {
-          fnameInput.select();
-          fnameInput.focus();
-        }
-      }, 60);
-      window.toast('נפתח מטופל חדש ישירות בשלב 1 (ניתן לערוך את השם למעלה)');
     };
 
     // =========================================================================
-    // 4. DROPDOWNS, SHORTCUTS ("קודים קיצורי דרך") & SMART ANATOMICAL ENDO
+    // 4. DROPDOWNS & EXACT SHORTCUTS ("קודים קיצורי דרך" + קטלוג בפלוס הירוק)
     // =========================================================================
     function initDropdowns() {
       const docFilter = document.getElementById('home-filter-doc');
       const wsDoc = document.getElementById('ws-doc');
       const npDoc = document.getElementById('np-doc');
 
-      docFilter.innerHTML = '<option value="ALL">מתכנן ההצעה (הכל)</option>';
+      docFilter.innerHTML = '<option value="ALL">מתכנן ההצעה</option>';
       wsDoc.innerHTML = '<option value="">מתכנן ההצעה</option>';
       npDoc.innerHTML = '';
 
@@ -1213,332 +1151,193 @@
         npDoc.add(new Option(d, d));
       });
 
+      // Populate Green + Dropdown with ALL items from "קטלוג_טיפולים_וקודים" grouped by category
       const singleSel = document.getElementById('builder-single-select');
+      const unreqSel = document.getElementById('unreq-catalog-select');
       singleSel.innerHTML = '';
-      App.catalog.forEach(c => {
-        if (c.rowKey !== 'IMAGING' && c.rowKey !== 'ARCH') {
-          singleSel.add(new Option(`${c.short}`, c.gmc));
-        }
+      unreqSel.innerHTML = '';
+
+      const categories = [...new Set(App.catalog.map(c => c.category))];
+      categories.forEach(catName => {
+        const grp1 = document.createElement('optgroup');
+        grp1.label = catName;
+        const grp2 = document.createElement('optgroup');
+        grp2.label = catName;
+
+        App.catalog.filter(c => c.category === catName).forEach(c => {
+          const displayLabel = c.alias ? `${c.alias} (${c.name})` : c.name;
+          grp1.appendChild(new Option(displayLabel, c.id));
+          grp2.appendChild(new Option(displayLabel, c.id));
+        });
+
+        singleSel.appendChild(grp1);
+        unreqSel.appendChild(grp2);
       });
     }
 
-    // Smart FDI tooth number -> Canal count & GMC Code resolver for ט"ש and חט"ש
-    function resolveSmartEndoByTooth(toothStr, isRetreatment) {
-      const t = String(toothStr).trim();
-      const pos = parseInt(t.slice(-1), 10); // 1..8
-
-      let canals = 1;
-      if (pos >= 1 && pos <= 3) {
-        canals = 1; // Anterior teeth (11-13, 21-23, 31-33, 41-43) -> 1 canal
-      } else if (pos === 4 || pos === 5) {
-        canals = 2; // Premolars (14-15, 24-25, 34-35, 44-45) -> 2 canals
-      } else if (pos >= 6) {
-        canals = 4; // Molars (e.g., tooth 16, 17, 18, 26, 36, 46) -> 4 canals!
-      }
-
-      const rctMap = { 1: 'GMC-RCT01', 2: 'GMC-RCT02', 3: 'GMC-RCT03', 4: 'GMC-RCT04' };
-      const retMap = { 1: 'GMC-RCT11', 2: 'GMC-RCT12', 3: 'GMC-RCT13', 4: 'GMC-RCT14' };
-      const gmc = isRetreatment ? retMap[canals] : rctMap[canals];
-      const prefix = isRetreatment ? 'חט"ש' : 'ט"ש';
-      return {
-        canals,
-        gmc,
-        label: `${prefix} ${canals} תע'`
-      };
-    }
-
-    window.fetchSheetComplexes = async function(showNotification) {
-      try {
-        const res = await fetch(COMPLEXES_CSV_URL);
-        if (!res.ok) throw new Error('CSV fetch failed');
-        const csvText = await res.text();
-        const rows = parseCsvRows(csvText);
-        if (rows.length > 1) {
-          const parsed = [];
-          const palette = [
-            'bg-rose-600 hover:bg-rose-500',
-            'bg-teal-600 hover:bg-teal-500',
-            'bg-sky-600 hover:bg-sky-500',
-            'bg-indigo-600 hover:bg-indigo-500',
-            'bg-amber-600 hover:bg-amber-500',
-            'bg-orange-600 hover:bg-orange-500',
-            'bg-purple-600 hover:bg-purple-500'
-          ];
-          for (let i = 1; i < rows.length; i++) {
-            const colA = (rows[i][0] || '').trim();
-            const colB = (rows[i][1] || '').trim();
-            if (!colA) continue;
-            let items = colB ? colB.split(/[,+\n]/).map(s => s.trim()).filter(Boolean) : [colA];
-            let isSmartEndo = null;
-            if (colA === 'ט"ש' || colA.includes('טיפול שורש')) isSmartEndo = 'RCT';
-            else if (colA === 'חט"ש' || colA === 'ח.ט"ש' || colA.includes('חידוש')) isSmartEndo = 'RET';
-
-            if (colA.includes('פונטיק') && items.length < 2) {
-              items = ['כ"ז', 'כד"מ', 'כתר זירקוניה'];
-            }
-            parsed.push({
-              name: colA,
-              items,
-              isSmartEndo,
-              isBridge: colA.includes('גשר'),
-              color: palette[(i - 1) % palette.length]
-            });
-          }
-          if (parsed.length > 0) {
-            if (!parsed.some(p => p.name.includes('פונטיק'))) {
-              parsed.push({ name: 'פונטיק', items: ['כ"ז', 'כד"מ', 'כתר זירקוניה'], color: 'bg-indigo-600 hover:bg-indigo-500' });
-            }
-            if (!parsed.some(p => p.isSmartEndo === 'RCT')) {
-              parsed.push({ name: 'ט"ש', items: ['ט"ש לפי תעלות', 'מיקרוסקופ', 'מבנה'], isSmartEndo: 'RCT', color: 'bg-amber-600 hover:bg-amber-500' });
-            }
-            if (!parsed.some(p => p.isSmartEndo === 'RET')) {
-              parsed.push({ name: 'חט"ש', items: ['חט"ש לפי תעלות', 'מיקרוסקופ', 'מבנה'], isSmartEndo: 'RET', color: 'bg-orange-600 hover:bg-orange-500' });
-            }
-            App.sheetComplexes = parsed;
-            window.saveState();
-            renderSheetComplexButtons();
-            const badge = document.getElementById('complexes-sync-badge');
-            if (badge) badge.textContent = `סונכרן מגוגל שיטס (${parsed.length} קודים קיצורי דרך)`;
-            if (showNotification) window.toast('רשימת "קודים קיצורי דרך" עודכנה מה-Google Sheet');
-            return;
-          }
-        }
-      } catch (e) {
-        if (showNotification) window.toast('נטענו קודים קיצורי דרך מובנים');
-      }
-    };
-
-    function parseCsvRows(text) {
-      const lines = text.split(/\r?\n/).filter(l => l.trim().length > 0);
-      return lines.map(line => {
-        const result = [];
-        let cur = '';
-        let inQuotes = false;
-        for (let i = 0; i < line.length; i++) {
-          const ch = line[i];
-          if (ch === '"') inQuotes = !inQuotes;
-          else if (ch === ',' && !inQuotes) { result.push(cur); cur = ''; }
-          else cur += ch;
-        }
-        result.push(cur);
-        return result;
-      });
-    }
-
-    function renderSheetComplexButtons() {
+    function renderShortcutButtons() {
       const box = document.getElementById('sheet-complexes-buttons');
       if (!box) return;
-      box.innerHTML = App.sheetComplexes.map((comp, idx) => `
-        <button type="button" onclick="window.applySheetComplex(${idx})" class="px-2.5 py-1 rounded-lg ${comp.color || 'bg-sky-600 hover:bg-sky-500'} font-bold text-white flex items-center gap-1 shadow-sm" title="מפעיל: ${(comp.items || []).join(' + ')}">
+      box.innerHTML = App.shortcuts.map((sc, idx) => `
+        <button type="button" onclick="window.applyShortcut(${idx})" class="px-2.5 py-1 rounded-lg ${sc.color} font-bold text-white flex items-center gap-1 shadow-sm cursor-pointer">
           <span>+</span>
-          <span>${comp.name}</span>
+          <span>${sc.name}</span>
         </button>
       `).join('');
     }
 
-    window.openCustomShortcutModal = function() {
-      document.getElementById('cs-name').value = '';
-      document.getElementById('cs-items').value = '';
-      document.getElementById('modal-custom-shortcut').classList.remove('hidden');
-    };
+    // Smart FDI tooth number -> Canal count & exact treatment for "ט"ש ומבנה" and "חט"ש ומבנה"
+    function resolveSmartEndoByTooth(toothStr, isRetreatment) {
+      const t = String(toothStr).trim();
+      const pos = parseInt(t.slice(-1), 10);
+      let canals = 1;
+      if (pos >= 1 && pos <= 3) canals = 1;
+      else if (pos === 4 || pos === 5) canals = 2;
+      else if (pos >= 6) canals = 4; // e.g., tooth 16 -> 4 canals
 
-    window.saveCustomShortcutModal = function() {
-      const name = (document.getElementById('cs-name').value || '').trim();
-      const itemsStr = (document.getElementById('cs-items').value || '').trim();
-      if (!name || !itemsStr) {
-        window.toast('נא למלא שם קיצור דרך וקודים מופעלים');
-        return;
+      if (!isRetreatment) {
+        const map = {
+          1: { treatment: 'טיפול שורש- תעלה אחת', crossLabel: 'ט"ש1' },
+          2: { treatment: 'טיפול שורש- שתי תעלות', crossLabel: 'ט"ש2' },
+          3: { treatment: 'טיפול שורש- שלוש תעלות', crossLabel: 'ט"ש3' },
+          4: { treatment: 'טיפול שורש- ארבע תעלות', crossLabel: 'ט"ש4' }
+        };
+        return map[canals];
+      } else {
+        const map = {
+          1: { treatment: 'חידוש טיפול שורש - 1 תעלה', crossLabel: 'חט"ש1' },
+          2: { treatment: 'חידוש טיפול שורש - 2 תעלה', crossLabel: 'חט"ש2' },
+          3: { treatment: 'חידוש טיפול שורש - 3 תעלה', crossLabel: 'חט"ש3' },
+          4: { treatment: 'חידוש טיפול שורש - 4 תעלה', crossLabel: 'חט"ש4' }
+        };
+        return map[canals];
       }
-      const items = itemsStr.split(',').map(s => s.trim()).filter(Boolean);
-      App.sheetComplexes.push({
-        name,
-        items,
-        isBridge: name.includes('גשר'),
-        color: 'bg-sky-600 hover:bg-sky-500'
-      });
-      window.saveState();
-      renderSheetComplexButtons();
-      document.getElementById('modal-custom-shortcut').classList.add('hidden');
-      window.toast(`קיצור הדרך "${name}" נוסף בהצלחה`);
-    };
-
-    function mapItemNameToGmcCode(itemName) {
-      const norm = itemName.trim();
-      if (norm === 'שתל' || norm.includes('התקנת שתל')) return 'GMC-IMP01';
-      if (norm.includes('חשיפה') || norm.includes('שתל - חשיפה') || norm.includes('שתל- חשיפה')) return 'GMC-IMP09';
-      if (norm.includes('מבנה ע"ג שתל') || norm.includes('מבנה שתל')) return 'GMC-PRO21';
-      if (norm.includes('זירקוניה ע"ג שתל') || norm.includes('זירקוניה שתל') || norm.includes('שיקום ע"ג שתל')) return 'GMC-PRO23';
-      if (norm.includes('זירקוניה')) return 'GMC-PRO19';
-      if (norm.includes('חרסינה') || norm.includes('PFM')) return 'GMC-PRO17';
-      if (norm.includes('מבנה')) return 'GMC-PRO01';
-      if (norm.includes('כ"ז') || norm.includes('כתר זמני')) return 'GMC-PRO12';
-      if (norm.includes('כד"מ') || norm.includes('דמה') || norm.includes('פונטיק')) return 'GMC-PRO25';
-      if (norm.includes('ח.ט"ש') || norm.includes('חט"ש') || norm.includes('חידוש')) return 'GMC-RCT13';
-      if (norm.includes('ט"ש') || norm.includes('שורש')) return 'GMC-RCT01';
-      if (norm.includes('מיקרוסקופ')) return 'GMC-RCT06';
-      if (norm === "ע'" || norm === 'ע' || norm.includes('עקירה')) return 'GMC-SUR01';
-      if (norm.includes('תותבת שלמה')) return 'GMC-DEN01';
-      if (norm.includes('תותבת חלקית')) return 'GMC-DEN02';
-      const found = App.catalog.find(c => c.short === norm || c.name.includes(norm));
-      return found ? found.gmc : 'GMC-PRO19';
     }
 
-    window.applySheetComplex = function(idx) {
-      const comp = App.sheetComplexes[idx];
-      if (!comp) return;
+    window.applyShortcut = function(idx) {
+      const sc = App.shortcuts[idx];
+      if (!sc) return;
       const sel = Array.from(App.selectedTeeth);
       if (!sel.length) {
-        window.toast('סמן לפחות שן אחת בטבלה (תיבת ✓)');
+        window.toast('סמן שן בטבלה (תיבת ✓)');
         return;
       }
       const pt = getPt();
       if (!pt) return;
 
-      // EXCEPTION 1: Smart Root Canal / Retreatment (ט"ש / חט"ש) -> Auto-selects canals by FDI tooth number + Microscope + Core!
-      if (comp.isSmartEndo || comp.name === 'ט"ש' || comp.name === 'חט"ש' || comp.name === 'ח.ט"ש') {
-        const isRet = comp.isSmartEndo === 'RET' || comp.name.includes('ח');
-        const summaryDetails = [];
-
+      // Smart Endo ("ט"ש ומבנה" / "חט"ש ומבנה")
+      if (sc.isSmartEndo) {
+        const isRet = sc.isSmartEndo === 'RET';
         sel.forEach(t => {
           const arch = UPPER_TEETH.includes(t) ? 'UPPER' : 'LOWER';
-          const endoInfo = resolveSmartEndoByTooth(t, isRet);
-          summaryDetails.push(`שן ${t}: ${endoInfo.canals} תעלות`);
+          const endoStep = resolveSmartEndoByTooth(t, isRet);
 
-          pt.capsules = pt.capsules.filter(c => !(c.teeth.length === 1 && c.teeth[0] === t && c.gmc.startsWith('GMC-RCT0') && c.gmc !== 'GMC-RCT06'));
-          pt.capsules = pt.capsules.filter(c => !(c.teeth.length === 1 && c.teeth[0] === t && c.gmc.startsWith('GMC-RCT1')));
+          const threeSteps = [
+            { treatment: endoStep.treatment, crossLabel: endoStep.crossLabel, rowKey: 'ENDO', family: 'ENDO' },
+            { treatment: 'תוספת עלות לטיפול שורש בעזרת מיקרוסקופ', crossLabel: 'מיקרוסקופ', rowKey: 'MICRO', family: 'ENDO' },
+            { treatment: 'מבנה מחומר מורכב', crossLabel: 'מבנה', rowKey: 'CORE', family: 'PROSTHO' }
+          ];
 
-          // 1. Canal-specific Root Canal or Retreatment code
-          pt.capsules.push({
-            id: `C-ENDO-${Date.now()}-${t}`,
-            arch,
-            teeth: [t],
-            gmc: endoInfo.gmc,
-            status: 'APPROVED',
-            done: false,
-            label: endoInfo.label
-          });
-
-          // 2. Microscope (מיקרוסקופ)
-          pt.capsules = pt.capsules.filter(c => !(c.teeth.length === 1 && c.teeth[0] === t && c.gmc === 'GMC-RCT06'));
-          pt.capsules.push({
-            id: `C-MIC-${Date.now()}-${t}`,
-            arch,
-            teeth: [t],
-            gmc: 'GMC-RCT06',
-            status: 'APPROVED',
-            done: false,
-            label: 'מיקרוסקופ'
-          });
-
-          // 3. Post & Core (מבנה)
-          pt.capsules = pt.capsules.filter(c => !(c.teeth.length === 1 && c.teeth[0] === t && c.gmc === 'GMC-PRO01'));
-          pt.capsules.push({
-            id: `C-CORE-${Date.now()}-${t}`,
-            arch,
-            teeth: [t],
-            gmc: 'GMC-PRO01',
-            status: 'APPROVED',
-            done: false,
-            label: 'מבנה'
+          threeSteps.forEach((st, sIdx) => {
+            pt.capsules = pt.capsules.filter(c => !(c.teeth.length === 1 && c.teeth[0] === t && c.rowKey === st.rowKey && c.label === st.crossLabel));
+            pt.capsules.push({
+              id: `C-SC-${Date.now()}-${t}-${sIdx}-${Math.random().toString(36).slice(2,5)}`,
+              arch,
+              teeth: [t],
+              treatment: st.treatment,
+              label: st.crossLabel,
+              rowKey: st.rowKey,
+              family: st.family,
+              status: 'APPROVED',
+              done: false
+            });
           });
         });
 
         window.saveState();
         renderPersistentDentalCross();
         renderStage2Panels();
-        window.toast(`${comp.name} הוזן אוטומטית (${summaryDetails.join(', ')}) + מיקרוסקופ + מבנה`);
+        window.toast(`נוסף: ${sc.name}`);
         return;
       }
 
-      // EXCEPTION 2: "פונטיק" (Pontic) -> Always generates 3 codes together (כ"ז + כד"מ + כתר זירקוניה)
-      if (comp.name.includes('פונטיק')) {
-        const ponticTriplet = [
-          { gmc: 'GMC-PRO12', label: 'כ"ז' },
-          { gmc: 'GMC-PRO25', label: 'כד"מ' },
-          { gmc: 'GMC-PRO19', label: 'כתר זירקוניה' }
-        ];
-        sel.forEach(t => {
-          const arch = UPPER_TEETH.includes(t) ? 'UPPER' : 'LOWER';
-          ponticTriplet.forEach((pItem, i) => {
-            pt.capsules = pt.capsules.filter(c => !(c.teeth.length === 1 && c.teeth[0] === t && c.gmc === pItem.gmc));
-            pt.capsules.push({
-              id: `C-PONT-${Date.now()}-${t}-${i}`,
-              arch,
-              teeth: [t],
-              gmc: pItem.gmc,
-              status: 'APPROVED',
-              done: false,
-              label: pItem.label
-            });
-          });
-        });
-        window.saveState();
-        renderPersistentDentalCross();
-        renderStage2Panels();
-        window.toast('נוסף קיצור דרך "פונטיק" (3 קודים יחד: כ"ז + כד"מ + כתר זירקוניה)');
-        return;
-      }
+      // Standard exact steps from "קודים קיצורי דרך"
+      sel.forEach(t => {
+        const arch = UPPER_TEETH.includes(t) ? 'UPPER' : 'LOWER';
+        sc.steps.forEach((st, sIdx) => {
+          if (st.markMissing) pt.teethState[t] = 'MISSING';
+          if (st.markImplant) pt.teethState[t] = 'IMPLANT';
 
-      // Bridge span across multiple selected teeth
-      if (comp.isBridge && sel.length > 1) {
-        const isUp = UPPER_TEETH.includes(sel[0]);
-        const archList = isUp ? UPPER_TEETH : LOWER_TEETH;
-        const sorted = sel.filter(t => archList.includes(t)).sort((a,b) => archList.indexOf(a) - archList.indexOf(b));
-        const arch = isUp ? 'UPPER' : 'LOWER';
-        const spanTxt = `${sorted[0]}-${sorted[sorted.length-1]}`;
-        (comp.items || []).forEach((itemLabel, i) => {
-          const gmc = mapItemNameToGmcCode(itemLabel);
+          pt.capsules = pt.capsules.filter(c => !(c.teeth.length === 1 && c.teeth[0] === t && c.treatment === st.treatment));
           pt.capsules.push({
-            id: `C-${Date.now()}-${i}`,
+            id: `C-SC-${Date.now()}-${t}-${sIdx}-${Math.random().toString(36).slice(2,5)}`,
             arch,
-            teeth: sorted,
-            gmc,
+            teeth: [t],
+            treatment: st.treatment,
+            label: st.crossLabel,
+            rowKey: st.rowKey,
+            family: st.family,
             status: 'APPROVED',
-            done: false,
-            label: `${itemLabel} (${spanTxt})`
+            done: false
           });
         });
-      } else {
-        sel.forEach(t => {
-          const arch = UPPER_TEETH.includes(t) ? 'UPPER' : 'LOWER';
-          (comp.items || []).forEach((itemLabel, i) => {
-            const normItem = itemLabel.trim();
-            if (normItem === 'ט"ש' || normItem === 'חט"ש' || normItem === 'ח.ט"ש') {
-              const isRet = normItem.includes('ח');
-              const endoInfo = resolveSmartEndoByTooth(t, isRet);
-              pt.capsules.push({
-                id: `C-${Date.now()}-${t}-${i}-endo`,
-                arch,
-                teeth: [t],
-                gmc: endoInfo.gmc,
-                status: 'APPROVED',
-                done: false,
-                label: endoInfo.label
-              });
-              return;
-            }
-            const gmc = mapItemNameToGmcCode(itemLabel);
-            if (gmc === 'GMC-IMP01' || gmc === 'GMC-IMP09') pt.teethState[t] = 'IMPLANT';
-            if (gmc === 'GMC-SUR01') pt.teethState[t] = 'MISSING';
-
-            pt.capsules = pt.capsules.filter(c => !(c.teeth.length === 1 && c.teeth[0] === t && c.gmc === gmc));
-            pt.capsules.push({
-              id: `C-${Date.now()}-${t}-${i}-${Math.random().toString(36).slice(2,5)}`,
-              arch,
-              teeth: [t],
-              gmc,
-              status: 'APPROVED',
-              done: false,
-              label: itemLabel
-            });
-          });
-        });
-      }
+      });
 
       window.saveState();
       renderPersistentDentalCross();
       renderStage2Panels();
-      window.toast(`נוסף קיצור דרך: ${comp.name}`);
+      window.toast(`נוסף: ${sc.name}`);
+    };
+
+    // Green + Button action (adds selected item from "קטלוג_טיפולים_וקודים")
+    window.addSingleToSelected = function() {
+      const catId = document.getElementById('builder-single-select').value;
+      const cat = App.catalog.find(c => c.id === catId);
+      if (!cat) return;
+
+      const pt = getPt();
+      if (!pt) return;
+      const sel = Array.from(App.selectedTeeth);
+
+      if (!sel.length) {
+        // If no tooth is checked, add to general items
+        if (!pt.generalItems) pt.generalItems = [];
+        pt.generalItems.push({
+          id: 'G-CAT-' + Date.now(),
+          shortcutId: 'DIRECT-CAT',
+          treatment: cat.name,
+          label: cat.alias || cat.name,
+          status: 'APPROVED',
+          done: false
+        });
+        window.saveState();
+        renderStage2Panels();
+        window.toast(`נוסף: ${cat.alias || cat.name}`);
+        return;
+      }
+
+      sel.forEach(t => {
+        const arch = UPPER_TEETH.includes(t) ? 'UPPER' : 'LOWER';
+        if (cat.name === 'עקירה') pt.teethState[t] = 'MISSING';
+        if (cat.name === 'שתל' || cat.name === 'שתל - חשיפה') pt.teethState[t] = 'IMPLANT';
+
+        pt.capsules.push({
+          id: `C-CAT-${Date.now()}-${t}-${Math.random().toString(36).slice(2,5)}`,
+          arch,
+          teeth: [t],
+          treatment: cat.name,
+          label: cat.alias || cat.name,
+          rowKey: cat.rowKey || 'CROWN',
+          family: cat.family || 'PROSTHO',
+          status: 'APPROVED',
+          done: false
+        });
+      });
+
+      window.saveState();
+      renderPersistentDentalCross();
+      renderStage2Panels();
+      window.toast(`נוסף: ${cat.alias || cat.name}`);
     };
 
     // =========================================================================
@@ -1563,13 +1362,11 @@
 
     window.deletePatientFromMenu = function(e, ptId) {
       if (e) e.stopPropagation();
-      const pt = App.patients.find(p => p.id === ptId);
-      const name = pt ? `${pt.firstName || 'מטופל'} ${pt.lastName || 'חדש'}` : '';
       App.patients = App.patients.filter(p => p.id !== ptId);
       App.openMenuPtId = null;
       window.saveState();
       window.renderHomePatients();
-      window.toast(`המטופל/טיוטה "${name}" נמחק מהרשימה`);
+      window.toast('נמחק מהרשימה');
     };
 
     window.duplicatePatientPlanFromMenu = function(e, ptId) {
@@ -1586,7 +1383,6 @@
       App.openMenuPtId = null;
       window.saveState();
       window.openPatientWorkspace(copy.id, 2);
-      window.toast(`נוצרה תוכנית המשך #${copy.planNumber} עבור ${copy.firstName} ${copy.lastName}`);
     };
 
     window.renderHomePatients = function() {
@@ -1606,19 +1402,19 @@
 
       const grpBadge = {
         '':        '<span class="px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 text-[10px] font-bold">מסגרת טיפולית</span>',
-        UNDECIDED: '<span class="px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 text-[10px] font-bold">⚪ לא הוחלט</span>',
-        RESIDENCY: '<span class="px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 text-[10px] font-bold">🔵 התמחות</span>',
-        THURSDAY:  '<span class="px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 text-[10px] font-bold">🟢 ימי חמישי</span>',
-        SHARAN:    '<span class="px-2 py-0.5 rounded-md bg-purple-50 text-purple-700 text-[10px] font-bold">🟣 שר"ן</span>'
+        UNDECIDED: '<span class="px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 text-[10px] font-bold">לא הוחלט</span>',
+        RESIDENCY: '<span class="px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 text-[10px] font-bold">התמחות</span>',
+        THURSDAY:  '<span class="px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 text-[10px] font-bold">ימי חמישי</span>',
+        SHARAN:    '<span class="px-2 py-0.5 rounded-md bg-purple-50 text-purple-700 text-[10px] font-bold">שר"ן</span>'
       };
 
       if (list.length === 0) {
-        grid.innerHTML = `<div class="col-span-full py-8 text-center text-slate-400 font-bold text-sm">לא נמצאו מטופלים בסינון הנוכחי. לחץ על "+ הוספת מטופל חדש" למעלה.</div>`;
+        grid.innerHTML = `<div class="col-span-full py-8 text-center text-slate-400 font-bold text-sm">אין מטופלים להצגה</div>`;
         return;
       }
 
       grid.innerHTML = list.map(p => {
-        const displayName = (p.firstName || p.lastName) ? `${p.firstName} ${p.lastName}` : 'טיוטת מטופל חדש';
+        const displayName = (p.firstName || p.lastName) ? `${p.firstName} ${p.lastName}` : 'מטופל חדש';
         const isMenuOpen = App.openMenuPtId === p.id;
         const docDisplay = p.treatingDoc || 'לא שויך';
         return `
@@ -1626,22 +1422,21 @@
             <div>
               <div class="flex items-start justify-between gap-2">
                 <div class="flex items-center gap-1.5">
-                  <!-- 3-Dots Action Menu Button -->
                   <div class="relative">
-                    <button type="button" onclick="window.toggleCardMenu(event, '${p.id}')" class="w-7 h-7 rounded-lg hover:bg-slate-200 flex items-center justify-center text-slate-600 font-black text-base leading-none" title="אפשרויות ומחיקה">
+                    <button type="button" onclick="window.toggleCardMenu(event, '${p.id}')" class="w-7 h-7 rounded-lg hover:bg-slate-200 flex items-center justify-center text-slate-600 font-black text-base leading-none">
                       ⋮
                     </button>
                     ${isMenuOpen ? `
-                      <div onclick="event.stopPropagation()" class="absolute right-0 top-8 w-48 bg-white rounded-xl shadow-xl border border-slate-200 py-1.5 z-30 text-xs font-bold">
+                      <div onclick="event.stopPropagation()" class="absolute right-0 top-8 w-44 bg-white rounded-xl shadow-xl border border-slate-200 py-1.5 z-30 text-xs font-bold">
                         <button type="button" onclick="window.openPatientWorkspace('${p.id}', ${p.wsStage || 1})" class="w-full px-3 py-2 text-right hover:bg-slate-50 flex items-center gap-2 text-slate-700">
-                          <span>📂</span><span>פתיחת תוכנית</span>
+                          <span>📂</span><span>פתיחה</span>
                         </button>
                         <button type="button" onclick="window.duplicatePatientPlanFromMenu(event, '${p.id}')" class="w-full px-3 py-2 text-right hover:bg-slate-50 flex items-center gap-2 text-indigo-700">
-                          <span>➕</span><span>שכפול לתוכנית המשך (2+)</span>
+                          <span>➕</span><span>תוכנית המשך</span>
                         </button>
                         <div class="my-1 border-t border-slate-100"></div>
                         <button type="button" onclick="window.deletePatientFromMenu(event, '${p.id}')" class="w-full px-3 py-2 text-right hover:bg-rose-50 flex items-center gap-2 text-rose-600 font-black">
-                          <span>🗑️</span><span>מחיקת מטופל / טיוטה</span>
+                          <span>🗑️</span><span>מחיקה</span>
                         </button>
                       </div>
                     ` : ''}
@@ -1653,7 +1448,7 @@
 
               <div class="text-xs text-slate-500 mt-1.5 flex items-center justify-between pr-8">
                 <span>מתכנן ההצעה: <strong class="text-slate-800">${docDisplay}</strong></span>
-                <span class="font-bold text-sky-700">תוכנית #${p.planNumber || 1} (${p.classification === 'FINAL' ? 'סופית' : 'ראשונית'})</span>
+                <span class="font-bold text-sky-700">תוכנית #${p.planNumber || 1}</span>
               </div>
             </div>
 
@@ -1674,7 +1469,7 @@
     };
 
     // =========================================================================
-    // 6. PERSISTENT WORKSPACE & SEAMLESS STAGE TRANSITIONS (STAGE 1 -> 2 -> 3)
+    // 6. PERSISTENT WORKSPACE & SEAMLESS STAGE TRANSITIONS
     // =========================================================================
     window.openPatientWorkspace = function(ptId, stageNum) {
       App.activePtId = ptId;
@@ -1749,8 +1544,7 @@
       const pt = getPt();
       if (!pt) return;
       const name = (pt.firstName || pt.lastName) ? `${pt.firstName} ${pt.lastName}` : 'מטופל חדש';
-      const stageNames = { 1: 'שלב 1: מצב הפה ופרוגנוזה', 2: 'שלב 2: קביעת תוכנית טיפול', 3: 'שלב 3: אישורי לאומית ו-PDF' };
-      document.getElementById('nav-breadcrumb').textContent = `/ ${name} — ${stageNames[App.wsStage]}`;
+      document.getElementById('nav-breadcrumb').textContent = `/ ${name}`;
     }
 
     window.switchWorkspaceStage = function(stageNum) {
@@ -1781,11 +1575,11 @@
       const nextTxt = document.getElementById('btn-stage-next-text');
       if (stageNum === 1) {
         nextBtn.className = 'px-6 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-black text-sm shadow-md transition flex items-center gap-2';
-        nextTxt.textContent = 'אישור ומעבר לקביעת תוכנית טיפול';
+        nextTxt.textContent = 'אישור';
         nextBtn.classList.remove('hidden');
       } else if (stageNum === 2) {
         nextBtn.className = 'px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-sm shadow-md transition flex items-center gap-2';
-        nextTxt.textContent = 'אישור תוכנית ומעבר להזנת תשובות קופה';
+        nextTxt.textContent = 'אישור';
         nextBtn.classList.remove('hidden');
       } else {
         nextBtn.classList.add('hidden');
@@ -1802,10 +1596,8 @@
       window.savePatientHeaderFields();
       if (App.wsStage === 1) {
         window.switchWorkspaceStage(2);
-        window.toast('הטבלה עברה לשלב 2: קביעת תוכנית טיפול');
       } else if (App.wsStage === 2) {
         window.switchWorkspaceStage(3);
-        window.toast('התוכנית אושרה! הטבלה עברה לשלב 3: אישורי קופ"ח לאומית');
       }
     };
 
@@ -1828,8 +1620,7 @@
         const auto = getAutoIronRuleCounts(pt);
         const colorMode = (App.wsStage === 2 && !pt.keepStatusColorsInBuilder) ? 'FAMILY' : 'STATUS';
 
-        // Fixed horizontal procedure rows (Outer -> Inner for Upper Arch)
-        const upperOrder = ['ARCH', 'IMAGING', 'PONTIC', 'TEMP', 'CROWN', 'CORE', 'ENDO'];
+        const upperOrder = ['IMAGING', 'TEMP_B', 'TEMP', 'CROWN', 'ABUT_MU', 'CORE', 'MICRO', 'ENDO'];
         upperOrder.forEach(rKey => {
           tbody.appendChild(buildTreatmentCrossRow('UPPER', rKey, UPPER_TEETH, pt, colorMode, auto));
         });
@@ -1837,8 +1628,7 @@
         tbody.appendChild(buildAxisRow('לסת עליונה', UPPER_TEETH, pt, 'axis-upper'));
         tbody.appendChild(buildAxisRow('לסת תחתונה', LOWER_TEETH, pt, 'axis-lower'));
 
-        // Fixed horizontal procedure rows (Inner -> Outer for Lower Arch)
-        const lowerOrder = ['ENDO', 'CORE', 'CROWN', 'TEMP', 'PONTIC', 'IMAGING', 'ARCH'];
+        const lowerOrder = ['ENDO', 'MICRO', 'CORE', 'ABUT_MU', 'CROWN', 'TEMP', 'TEMP_B', 'IMAGING'];
         lowerOrder.forEach(rKey => {
           tbody.appendChild(buildTreatmentCrossRow('LOWER', rKey, LOWER_TEETH, pt, colorMode, auto));
         });
@@ -1847,7 +1637,6 @@
       table.appendChild(tbody);
     }
 
-    // STAGE 1 ROW: Single-letter abbreviations ONLY (G / Q / I)
     function buildStage1PrognosisRow(label, archTeeth, pt) {
       const tr = document.createElement('tr');
       tr.style.height = '34px';
@@ -1863,13 +1652,12 @@
         else if (p === 'QUESTIONABLE') { cls = 'prog-quest'; txt = 'Q'; }
         else if (p === 'IRRATIONAL') { cls = 'prog-irrat'; txt = 'I'; }
 
-        td.innerHTML = `<div class="capsule ${cls}" title="${p || 'לחץ להחלפת פרוגנוזה (G / Q / I)'}" onclick="window.cycleToothPrognosis('${t}')">${txt}</div>`;
+        td.innerHTML = `<div class="capsule ${cls}" onclick="window.cycleToothPrognosis('${t}')">${txt}</div>`;
         tr.appendChild(td);
       });
       return tr;
     }
 
-    // CENTRAL TOOTH AXIS ROW WITH CLEAR BACKGROUND SVG ICONS BEHIND THE TOOTH NUMBER
     function buildAxisRow(label, archTeeth, pt, rowCls) {
       const tr = document.createElement('tr');
       tr.className = rowCls;
@@ -1883,18 +1671,16 @@
         if (idx === 7) td.classList.add('midline-left');
 
         let cellBg = 'bg-white hover:bg-slate-50';
-        let stateLabel = 'שן בפה';
         let bgSvg = `
-          <svg class="w-8 h-8 text-emerald-500/20 absolute pointer-events-none" viewBox="0 0 24 24" fill="currentColor">
+          <svg class="w-9 h-9 text-emerald-500/25 absolute pointer-events-none" viewBox="0 0 24 24" fill="currentColor">
             <path d="M7 3C4.5 3 3 5 3 8c0 2.2 1 4 1.8 5.8.7 1.6 1.2 3.7 1.7 5.7.2.8 1 1.5 1.8 1.5.9 0 1.5-.7 1.8-1.8l.9-3.2h2l.9 3.2c.3 1.1.9 1.8 1.8 1.8.8 0 1.6-.7 1.8-1.5.5-2 1-4.1 1.7-5.7C20 12 21 10.2 21 8c0-3-1.5-5-4-5-1.8 0-3.2.8-5 .8S8.8 3 7 3z"/>
           </svg>
         `;
 
         if (st === 'IMPLANT') {
           cellBg = 'bg-sky-100/90 hover:bg-sky-200/70';
-          stateLabel = 'שתל';
           bgSvg = `
-            <svg class="w-8 h-8 text-sky-600/30 absolute pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <svg class="w-9 h-9 text-sky-600/35 absolute pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
               <rect x="7" y="2" width="10" height="4" rx="1" fill="currentColor"/>
               <path d="M8 6h8l-1.5 15h-5L8 6z"/>
               <line x1="6" y1="9" x2="18" y2="9"/>
@@ -1904,9 +1690,8 @@
           `;
         } else if (st === 'MISSING') {
           cellBg = 'bg-rose-100/90 hover:bg-rose-200/70';
-          stateLabel = 'חסרה X';
           bgSvg = `
-            <svg class="w-8 h-8 text-rose-600/35 absolute pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+            <svg class="w-9 h-9 text-rose-600/40 absolute pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
               <line x1="4" y1="4" x2="20" y2="20"/>
               <line x1="20" y1="4" x2="4" y2="20"/>
             </svg>
@@ -1926,12 +1711,11 @@
 
         td.className = `${cellBg} cursor-pointer select-none ${isSel && App.wsStage === 2 ? 'tooth-selected' : ''}`;
         td.innerHTML = `
-          <div class="relative w-full h-full flex flex-col items-center justify-center py-0.5" title="שן ${t}: ${stateLabel} (לחץ להחלפת מצב שן)">
+          <div class="relative w-full h-full flex flex-col items-center justify-center">
             ${bgSvg}
-            ${App.wsStage === 2 ? `<input type="checkbox" ${isSel ? 'checked' : ''} onclick="window.toggleSelectToothBuilder(event, '${t}')" class="absolute top-0.5 right-0.5 w-3.5 h-3.5 accent-sky-600 cursor-pointer z-20" title="סמן שן להוספת טיפול">` : ''}
+            ${App.wsStage === 2 ? `<input type="checkbox" ${isSel ? 'checked' : ''} onclick="window.toggleSelectToothBuilder(event, '${t}')" class="absolute top-0.5 right-0.5 w-3.5 h-3.5 accent-sky-600 cursor-pointer z-20">` : ''}
             ${progBadge}
-            <span class="relative z-10 font-num font-black text-sm leading-none ${st === 'IMPLANT' ? 'text-sky-950' : st === 'MISSING' ? 'text-rose-950' : 'text-slate-950'}">${t}</span>
-            <span class="relative z-10 text-[9px] font-extrabold leading-none mt-1 ${st === 'IMPLANT' ? 'text-sky-800' : st === 'MISSING' ? 'text-rose-800' : 'text-slate-500'}">${stateLabel}</span>
+            <span class="relative z-10 font-num font-black text-base leading-none ${st === 'IMPLANT' ? 'text-sky-950' : st === 'MISSING' ? 'text-rose-950' : 'text-slate-950'}">${t}</span>
           </div>
         `;
         td.onclick = () => window.cycleToothState(t);
@@ -1960,47 +1744,28 @@
         return tr;
       }
 
-      const rowCaps = (pt.capsules || []).filter(c => c.arch === arch && getCat(c.gmc).rowKey === rowKey);
+      const rowCaps = (pt.capsules || []).filter(c => c.arch === arch && (c.rowKey || 'CROWN') === rowKey);
 
-      let i = 0;
-      while (i < archTeeth.length) {
-        const t = archTeeth[i];
-        const spanCap = rowCaps.find(c => c.teeth.length > 1 && c.teeth[0] === t);
-
-        if (spanCap) {
-          const len = spanCap.teeth.length;
-          const td = document.createElement('td');
-          td.colSpan = len;
-          const cat = getCat(spanCap.gmc);
-          const cls = getPillClass(spanCap, cat, colorMode);
-          const doneMark = spanCap.done ? ' ✓' : '';
-          td.innerHTML = `<div class="capsule ${cls}" onclick="window.onCapsuleClick('${spanCap.id}')">${spanCap.label || cat.short}${doneMark}</div>`;
-          tr.appendChild(td);
-          i += len;
-          continue;
-        }
-
-        const singleCaps = rowCaps.filter(c => c.teeth.length === 1 && c.teeth[0] === t);
+      archTeeth.forEach((t, idx) => {
         const td = document.createElement('td');
-        if (i === 7) td.classList.add('midline-left');
+        if (idx === 7) td.classList.add('midline-left');
+        const singleCaps = rowCaps.filter(c => c.teeth.includes(t));
 
         if (singleCaps.length > 0) {
           td.innerHTML = `<div class="flex flex-col gap-0.5">` + singleCaps.map(singleCap => {
-            const cat = getCat(singleCap.gmc);
-            const cls = getPillClass(singleCap, cat, colorMode);
+            const cls = getPillClass(singleCap, colorMode);
             const doneMark = singleCap.done ? ' ✓' : '';
-            return `<div class="capsule ${cls}" onclick="window.onCapsuleClick('${singleCap.id}')">${singleCap.label || cat.short}${doneMark}</div>`;
+            return `<div class="capsule ${cls}" onclick="window.onCapsuleClick('${singleCap.id}')">${singleCap.label}${doneMark}</div>`;
           }).join('') + `</div>`;
         }
         tr.appendChild(td);
-        i++;
-      }
+      });
 
       return tr;
     }
 
     // =========================================================================
-    // 8. INTERACTIVE TOOTH STATUS, PROGNOSIS & TREATMENT ACTIONS
+    // 8. TOOTH STATUS, PROGNOSIS & AUTOMATIC MANDATORY CODES
     // =========================================================================
     window.cycleToothState = function(t) {
       const pt = getPt();
@@ -2023,12 +1788,21 @@
       if (!next) delete pt.prognosis[t];
       else pt.prognosis[t] = next;
 
-      // If marked IRRATIONAL TO TREAT ('I'), automatically add extraction ('ע') to the treatment plan
       if (next === 'IRRATIONAL') {
         const arch = UPPER_TEETH.includes(t) ? 'UPPER' : 'LOWER';
-        const hasExt = (pt.capsules || []).some(c => c.teeth.length === 1 && c.teeth[0] === t && c.gmc === 'GMC-SUR01');
+        const hasExt = (pt.capsules || []).some(c => c.teeth.includes(t) && c.treatment === 'עקירה');
         if (!hasExt) {
-          pt.capsules.push({ id: `C-EXT-${Date.now()}-${t}`, arch, teeth: [t], gmc: 'GMC-SUR01', status: 'APPROVED', done: false, label: "ע'" });
+          pt.capsules.push({
+            id: `C-EXT-${Date.now()}-${t}`,
+            arch,
+            teeth: [t],
+            treatment: 'עקירה',
+            label: 'עקירה',
+            rowKey: 'ENDO',
+            family: 'PERIO',
+            status: 'APPROVED',
+            done: false
+          });
         }
       }
       window.saveState();
@@ -2042,13 +1816,12 @@
       pt.prognosis = {};
       window.saveState();
       renderPersistentDentalCross();
-      window.toast('כל השיניים אופסו למצב שן בפה');
     };
 
-    function getPillClass(cap, cat, colorMode) {
+    function getPillClass(cap, colorMode) {
       if (colorMode === 'FAMILY') {
         const map = { PERIO: 'fam-perio', PROSTHO: 'fam-prostho', ENDO: 'fam-endo', REST: 'fam-rest', DIAG: 'fam-diag' };
-        return map[cat.family] || 'fam-prostho';
+        return map[cap.family] || 'fam-prostho';
       } else {
         const map = { APPROVED: 'st-approved', REASON: 'st-reason', DENIED: 'st-denied', NORESP: 'st-noresp', UNREQ: 'st-unreq', DRAFT: 'st-draft' };
         return map[cap.status] || 'st-draft';
@@ -2079,24 +1852,6 @@
       if (App.selectedTeeth.has(t)) App.selectedTeeth.delete(t);
       else App.selectedTeeth.add(t);
       renderPersistentDentalCross();
-      renderStage2Panels();
-    };
-
-    window.addSingleToSelected = function() {
-      const sel = Array.from(App.selectedTeeth);
-      if (!sel.length) { window.toast('סמן שן בטבלה (תיבת ✓)'); return; }
-      const gmc = document.getElementById('builder-single-select').value;
-      const cat = getCat(gmc);
-      const pt = getPt();
-      sel.forEach(t => {
-        const arch = UPPER_TEETH.includes(t) ? 'UPPER' : 'LOWER';
-        if (gmc === 'GMC-SUR01') pt.teethState[t] = 'MISSING';
-        if (gmc === 'GMC-IMP01') pt.teethState[t] = 'IMPLANT';
-        pt.capsules.push({ id: `C-${Date.now()}-${t}`, arch, teeth: [t], gmc, status: 'APPROVED', done: false, label: cat.short });
-      });
-      window.saveState();
-      renderPersistentDentalCross();
-      renderStage2Panels();
     };
 
     function getAutoIronRuleCounts(pt) {
@@ -2105,14 +1860,14 @@
 
       (pt.capsules || []).forEach(c => {
         c.teeth.forEach(t => {
+          const isExt = c.treatment === 'עקירה' || c.label === 'עקירה' || c.label === "ע'";
           if (UPPER_TEETH.includes(t)) {
             upModelSet.add(t);
-            // Imaging applies to every tooth that received ANY code EXCEPT extraction ('ע' / GMC-SUR01)
-            if (c.gmc !== 'GMC-SUR01') up.add(t);
+            if (!isExt) up.add(t);
           }
           if (LOWER_TEETH.includes(t)) {
             lowModelSet.add(t);
-            if (c.gmc !== 'GMC-SUR01') low.add(t);
+            if (!isExt) low.add(t);
           }
         });
       });
@@ -2123,12 +1878,13 @@
         upperTeeth: Array.from(up),
         lowerTeeth: Array.from(low),
         imgTeeth: [...Array.from(up), ...Array.from(low)],
-        upperModel: upModelSet.size > 0,
-        lowerModel: lowModelSet.size > 0,
         modelUnits
       };
     }
 
+    // =========================================================================
+    // 9. STAGE 2 BOTTOM PANEL: "קודים - תוספות" (100% STRICT SHEET STRUCTURE)
+    // =========================================================================
     function renderStage2Panels() {
       const pt = getPt();
       if (!pt) return;
@@ -2140,7 +1896,7 @@
 
       const gBox = document.getElementById('builder-general-pills');
       if (!pt.generalItems || pt.generalItems.length === 0) {
-        gBox.innerHTML = `<span class="text-slate-400">טרם נבחרו קודים מתוך "קודים - תוספות"</span>`;
+        gBox.innerHTML = '';
       } else {
         gBox.innerHTML = pt.generalItems.map((g, i) => `
           <span class="px-2 py-0.5 rounded-lg bg-sky-50 text-sky-900 border border-sky-200 font-bold flex items-center gap-1">
@@ -2161,20 +1917,19 @@
       renderStage2Panels();
     };
 
-    // Render "קודים - תוספות" with +/- unit counters and sub-codes clearly displayed underneath
     function renderAdditionsDomainsGrid(pt) {
       const grid = document.getElementById('additions-domains-grid');
       if (!grid) return;
 
       grid.innerHTML = App.additionsDomains.map((dom, dIdx) => {
         const shortcutsHtml = (dom.shortcuts || []).map((sc, sIdx) => {
-          const subCount = (sc.subCodes || []).length || 1;
+          const subCount = (sc.subTreatments || []).length || 1;
           const matchingItems = (pt.generalItems || []).filter(g => g.shortcutId === sc.id);
           const units = Math.round(matchingItems.length / subCount);
           const isApplied = units > 0;
 
           return `
-            <div class="rounded-xl border ${isApplied ? 'border-sky-400 bg-sky-50/60' : 'border-slate-200 bg-slate-50/70'} p-2 transition space-y-1.5">
+            <div class="rounded-xl border ${isApplied ? 'border-sky-400 bg-sky-50/60' : 'border-slate-200 bg-slate-50/70'} p-2 transition space-y-1">
               <div class="flex items-center justify-between gap-1.5">
                 <span class="font-black text-slate-900 text-right">${sc.name}</span>
                 <div class="flex items-center gap-1 shrink-0">
@@ -2184,9 +1939,9 @@
                 </div>
               </div>
               <div class="flex flex-wrap gap-1 pt-0.5">
-                ${(sc.subCodes || []).map(sub => `
+                ${(sc.subTreatments || []).map(subName => `
                   <span class="px-1.5 py-0.5 rounded bg-white border border-slate-200 text-[10px] font-bold text-slate-600">
-                    • ${sub.label}
+                    ${subName}
                   </span>
                 `).join('')}
               </div>
@@ -2198,9 +1953,8 @@
           <div class="bg-white rounded-2xl border border-slate-200 p-3 shadow-sm space-y-2 flex flex-col">
             <div class="font-black text-slate-900 border-b pb-1.5 flex items-center justify-between">
               <span>${dom.domainTitle}</span>
-              <span class="text-[10px] px-1.5 py-0.5 rounded ${dom.badgeCls}">${dom.badgeText}</span>
             </div>
-            <div class="space-y-2 flex-1">
+            <div class="space-y-1.5 max-h-[360px] overflow-y-auto pr-0.5">
               ${shortcutsHtml}
             </div>
           </div>
@@ -2216,56 +1970,20 @@
       const pt = getPt();
       if (!pt.generalItems) pt.generalItems = [];
 
-      if (sc.archTarget === 'UPPER' || sc.archTarget === 'LOWER') {
-        const teeth = sc.archTarget === 'UPPER' ? UPPER_TEETH.slice(1, 15) : LOWER_TEETH.slice(1, 15);
-        pt.capsules.push({
-          id: `C-ARCH-${Date.now()}`,
-          shortcutId: sc.id,
-          arch: sc.archTarget,
-          teeth,
-          gmc: sc.archGmc || 'GMC-DEN02',
-          status: 'APPROVED',
-          done: false,
-          label: sc.name
-        });
-      } else if (sc.archTarget === 'SELECTED') {
-        const sel = Array.from(App.selectedTeeth);
-        if (!sel.length) {
-          window.toast('סמן לפחות שן אחת בצלב השיניים עבור פעולה זו');
-          return;
-        }
-        sel.forEach(t => {
-          const arch = UPPER_TEETH.includes(t) ? 'UPPER' : 'LOWER';
-          pt.capsules.push({
-            id: `C-SEL-${Date.now()}-${t}`,
-            shortcutId: sc.id,
-            arch,
-            teeth: [t],
-            gmc: sc.archGmc || 'GMC-PER02',
-            status: 'APPROVED',
-            done: false,
-            label: sc.name
-          });
-        });
-      }
-
-      const batchId = 'B-' + Date.now();
-      (sc.subCodes || []).forEach((sub, idx) => {
+      (sc.subTreatments || []).forEach((subName, idx) => {
         pt.generalItems.push({
           id: `G-${Date.now()}-${idx}-${Math.random().toString(36).slice(2,5)}`,
-          batchId,
           shortcutId: sc.id,
           shortcutName: sc.name,
-          gmc: sub.gmc,
-          label: `${sc.name}: ${sub.label}`,
-          status: 'APPROVED'
+          treatment: subName,
+          label: `${sc.name} - ${subName}`,
+          status: 'APPROVED',
+          done: false
         });
       });
 
       window.saveState();
-      renderPersistentDentalCross();
       renderStage2Panels();
-      window.toast(`נוסף "${sc.name}" (${(sc.subCodes || []).length} קודים משויכים)`);
     };
 
     window.decrementAdditionShortcut = function(dIdx, sIdx) {
@@ -2276,7 +1994,7 @@
       const pt = getPt();
       if (!pt || !pt.generalItems) return;
 
-      const subCount = (sc.subCodes || []).length || 1;
+      const subCount = (sc.subTreatments || []).length || 1;
       let removed = 0;
       for (let i = pt.generalItems.length - 1; i >= 0 && removed < subCount; i--) {
         if (pt.generalItems[i].shortcutId === sc.id) {
@@ -2285,54 +2003,12 @@
         }
       }
 
-      // Also remove matching arch capsule if present
-      for (let i = (pt.capsules || []).length - 1; i >= 0; i--) {
-        if (pt.capsules[i].shortcutId === sc.id || pt.capsules[i].label === sc.name) {
-          pt.capsules.splice(i, 1);
-          break;
-        }
-      }
-
-      window.saveState();
-      renderPersistentDentalCross();
-      renderStage2Panels();
-    };
-
-    window.openAdditionCustomModal = function() {
-      document.getElementById('ca-name').value = '';
-      document.getElementById('ca-subs').value = '';
-      document.getElementById('modal-custom-addition').classList.remove('hidden');
-    };
-
-    window.saveAdditionCustomModal = function() {
-      const dIdx = parseInt(document.getElementById('ca-domain').value, 10) || 3;
-      const name = (document.getElementById('ca-name').value || '').trim();
-      const subStr = (document.getElementById('ca-subs').value || '').trim();
-      if (!name || !subStr) {
-        window.toast('נא להזין שם קיצור דרך ותתי-קודים');
-        return;
-      }
-
-      const subCodes = subStr.split(',').map(s => {
-        const lbl = s.trim();
-        return { gmc: mapItemNameToGmcCode(lbl), label: lbl };
-      }).filter(x => x.label);
-
-      App.additionsDomains[dIdx].shortcuts.push({
-        id: 'ADD-CUSTOM-' + Date.now(),
-        name,
-        archTarget: 'GENERAL',
-        subCodes
-      });
-
       window.saveState();
       renderStage2Panels();
-      document.getElementById('modal-custom-addition').classList.add('hidden');
-      window.toast(`קיצור הדרך "${name}" נוסף אל "קודים - תוספות"`);
     };
 
     // =========================================================================
-    // 9. STAGE 3 PANELS, OCR & 4 OFFICIAL PDF GENERATORS
+    // 10. STAGE 3 PANELS, OCR & 4 OFFICIAL PDF GENERATORS
     // =========================================================================
     function renderStage3Panels() {
       const pt = getPt();
@@ -2342,25 +2018,24 @@
       let total = 0;
 
       const badgeHtml = {
-        APPROVED: '<span class="px-2 py-0.5 rounded st-approved font-bold">🟢 אושר</span>',
-        REASON:   '<span class="px-2 py-0.5 rounded st-reason font-bold">🟡 סיבה</span>',
-        DENIED:   '<span class="px-2 py-0.5 rounded st-denied font-bold">🔴 נדחה</span>',
-        NORESP:   '<span class="px-2 py-0.5 rounded st-noresp font-bold">🟠 ללא מענה</span>',
-        UNREQ:    '<span class="px-2 py-0.5 rounded st-unreq font-bold">🩵 ללא בקשה</span>',
+        APPROVED: '<span class="px-2 py-0.5 rounded st-approved font-bold">אושר</span>',
+        REASON:   '<span class="px-2 py-0.5 rounded st-reason font-bold">סיבה</span>',
+        DENIED:   '<span class="px-2 py-0.5 rounded st-denied font-bold">נדחה</span>',
+        NORESP:   '<span class="px-2 py-0.5 rounded st-noresp font-bold">ללא מענה</span>',
+        UNREQ:    '<span class="px-2 py-0.5 rounded st-unreq font-bold">אושר ללא בקשה</span>',
         DRAFT:    '<span class="px-2 py-0.5 rounded st-draft font-bold">טיוטה</span>'
       };
 
       (pt.capsules || []).forEach(c => {
-        const cat = getCat(c.gmc);
+        const cat = findCatalogByTreatmentOrAlias(c.treatment || c.label);
         const price = c.status === 'UNREQ' ? 0 : getPrice(cat, pt.insurance);
         total += price;
-        const tLabel = c.teeth.length > 2 ? `${c.teeth[0]}-${c.teeth[c.teeth.length-1]}` : c.teeth.join(',');
+        const tLabel = c.teeth.join(',');
 
         const tr = document.createElement('tr');
         tr.innerHTML = `
           <td class="p-1.5 font-num font-bold">${tLabel}</td>
-          <td class="p-1.5 font-mono text-sky-700 font-bold">${cat.leumit}</td>
-          <td class="p-1.5 font-semibold">${c.label || cat.name}</td>
+          <td class="p-1.5 font-semibold">${c.treatment || c.label}</td>
           <td class="p-1.5 font-num font-bold">₪${price}</td>
           <td class="p-1.5 cursor-pointer" onclick="window.onCapsuleClick('${c.id}')">${badgeHtml[c.status] || badgeHtml.APPROVED}</td>
           <td class="p-1.5 text-center"><input type="checkbox" ${c.done ? 'checked' : ''} onchange="window.toggleDone('${c.id}', this.checked)" class="accent-emerald-600 cursor-pointer"></td>
@@ -2369,15 +2044,14 @@
       });
 
       (pt.generalItems || []).forEach((g, gIdx) => {
-        const cat = getCat(g.gmc);
+        const cat = findCatalogByTreatmentOrAlias(g.treatment || g.label);
         const st = g.status || 'APPROVED';
         const price = st === 'UNREQ' ? 0 : getPrice(cat, pt.insurance);
         total += price;
         const tr = document.createElement('tr');
         tr.innerHTML = `
           <td class="p-1.5 font-bold text-slate-500">תוספות</td>
-          <td class="p-1.5 font-mono text-sky-700 font-bold">${cat.leumit}</td>
-          <td class="p-1.5 font-semibold">${g.label}</td>
+          <td class="p-1.5 font-semibold">${g.treatment || g.label}</td>
           <td class="p-1.5 font-num font-bold">₪${price}</td>
           <td class="p-1.5 cursor-pointer" onclick="window.cycleGeneralItemStatus(${gIdx})">${badgeHtml[st] || badgeHtml.APPROVED}</td>
           <td class="p-1.5 text-center"><input type="checkbox" ${g.done ? 'checked' : ''} onchange="window.toggleGeneralDone(${gIdx}, this.checked)" class="accent-emerald-600 cursor-pointer"></td>
@@ -2385,12 +2059,12 @@
         tbody.appendChild(tr);
       });
 
-      document.getElementById('approved-total-badge').textContent = `סה"כ משוער: ₪${total.toLocaleString()}`;
+      document.getElementById('approved-total-badge').textContent = `סה"כ: ₪${total.toLocaleString()}`;
 
       const uBox = document.getElementById('approved-unreq-list');
       uBox.innerHTML = (pt.unrequested || []).map((u, i) => `
         <span class="px-2 py-0.5 rounded st-unreq font-bold flex items-center gap-1">
-          <span>${u.code} - ${u.name}</span>
+          <span>${u.name}</span>
           <button type="button" onclick="window.removeUnreq(${i})" class="text-rose-700 font-black">✕</button>
         </span>
       `).join('');
@@ -2428,18 +2102,14 @@
     };
 
     window.addUnrequestedCodeInline = function() {
-      const codeInp = document.getElementById('unreq-code-input');
-      const nameInp = document.getElementById('unreq-name-input');
-      const code = (codeInp.value || '').trim() || '201';
-      const name = (nameInp.value || '').trim() || 'טיפול מאושר ללא בקשה';
+      const sel = document.getElementById('unreq-catalog-select');
+      const cat = App.catalog.find(c => c.id === sel.value);
+      if (!cat) return;
       const pt = getPt();
       if (!pt.unrequested) pt.unrequested = [];
-      pt.unrequested.push({ code, name });
-      codeInp.value = '';
-      nameInp.value = '';
+      pt.unrequested.push({ name: cat.name });
       window.saveState();
       renderStage3Panels();
-      window.toast(`נוסף קוד "${code}" לרשימת אושר ללא בקשה`);
     };
 
     window.removeUnreq = function(i) {
@@ -2459,29 +2129,24 @@
       const pt = getPt();
       if (!pt) return;
       const listEl = document.getElementById('ocr-verification-list');
-      const caps = (pt.capsules || []).slice(0, 6);
+      const caps = pt.capsules || [];
       if (caps.length === 0) {
-        listEl.innerHTML = `<div class="p-3 text-slate-500 font-bold">אין עדיין קפסולות בתוכנית לסריקה.</div>`;
+        listEl.innerHTML = `<div class="p-3 text-slate-500 font-bold">אין טיפולים בתוכנית</div>`;
       } else {
-        listEl.innerHTML = caps.map((c, idx) => {
-          const cat = getCat(c.gmc);
-          const isBlurry = idx === 1;
-          return `
-            <div class="p-2 rounded-lg border flex items-center justify-between ${isBlurry ? 'bg-amber-50 border-amber-300' : 'bg-slate-50 border-slate-200'}">
-              <div>
-                <span class="font-bold">שן ${c.teeth.join(',')}</span> • קוד ${cat.leumit} (${c.label || cat.short})
-                ${isBlurry ? '<span class="mr-1 px-1.5 py-0.5 rounded bg-amber-200 text-amber-900 font-bold text-[10px]">⚠️ שורה מעט מטושטשת - נא לוודא</span>' : ''}
-              </div>
-              <select data-cap-id="${c.id}" class="ocr-status-pick px-2 py-1 rounded border font-bold bg-white">
-                <option value="APPROVED" ${c.status === 'APPROVED' ? 'selected' : ''}>🟢 אושר</option>
-                <option value="REASON" ${c.status === 'REASON' ? 'selected' : ''}>🟡 נדרשת סיבה</option>
-                <option value="DENIED" ${c.status === 'DENIED' ? 'selected' : ''}>🔴 נדחה</option>
-                <option value="NORESP" ${c.status === 'NORESP' ? 'selected' : ''}>🟠 ללא מענה</option>
-                <option value="UNREQ" ${c.status === 'UNREQ' ? 'selected' : ''}>🩵 אושר ללא בקשה</option>
-              </select>
+        listEl.innerHTML = caps.map(c => `
+          <div class="p-2 rounded-lg border bg-slate-50 border-slate-200 flex items-center justify-between">
+            <div>
+              <span class="font-bold">שן ${c.teeth.join(',')}</span> • ${c.treatment || c.label}
             </div>
-          `;
-        }).join('');
+            <select data-cap-id="${c.id}" class="ocr-status-pick px-2 py-1 rounded border font-bold bg-white">
+              <option value="APPROVED" ${c.status === 'APPROVED' ? 'selected' : ''}>אושר</option>
+              <option value="REASON" ${c.status === 'REASON' ? 'selected' : ''}>סיבה</option>
+              <option value="DENIED" ${c.status === 'DENIED' ? 'selected' : ''}>נדחה</option>
+              <option value="NORESP" ${c.status === 'NORESP' ? 'selected' : ''}>ללא מענה</option>
+              <option value="UNREQ" ${c.status === 'UNREQ' ? 'selected' : ''}>אושר ללא בקשה</option>
+            </select>
+          </div>
+        `).join('');
       }
       document.getElementById('modal-ocr').classList.remove('hidden');
     };
@@ -2496,7 +2161,7 @@
       document.getElementById('modal-ocr').classList.add('hidden');
       renderPersistentDentalCross();
       renderStage3Panels();
-      window.toast('📱 סטטוסי לאומית עודכנו בצלב השיניים (התמונה נמחקה מהזיכרון).');
+      window.toast('עודכן בצלב השיניים');
     };
 
     window.createContinuationPlanWizard = function() {
@@ -2507,7 +2172,6 @@
       pt.keepStatusColorsInBuilder = true;
       window.saveState();
       window.switchWorkspaceStage(2);
-      window.toast(`נפתחה תוכנית המשך #${pt.planNumber}! מצב השיניים וצבעי הסטטוס נשמרו לעריכה.`);
     };
 
     window.openPdfModal = function(type) {
@@ -2522,7 +2186,6 @@
           <div>
             <div class="text-base font-black">המרכז הרפואי לגליל (GMC) – המחלקה לשיקום הפה</div>
             <div>מטופל/ת: <strong>${pt.firstName} ${pt.lastName}</strong> | מתכנן ההצעה: <strong>${pt.treatingDoc || 'לא שויך'}</strong></div>
-            ${(pt.consultants || []).length ? `<div>צוות רב-תחומי: ${pt.consultants.join(', ')}</div>` : ''}
           </div>
           <div class="text-left font-num">
             <div>תאריך: ${new Date().toLocaleDateString('he-IL')}</div>
@@ -2532,86 +2195,72 @@
       `;
 
       if (type === 'HMO_REQ') {
-        titleEl.textContent = '1. טופס דרישת קודים לקופת חולים לאומית';
-        const rows = pt.capsules.map(c => {
-          const cat = getCat(c.gmc);
-          return `<tr><td class="p-1.5 border font-num font-bold">${c.teeth.join(',')}</td><td class="p-1.5 border font-mono font-bold">${cat.leumit}</td><td class="p-1.5 border">${c.label || cat.name}</td></tr>`;
-        }).join('');
-        const genRows = (pt.generalItems || []).map(g => {
-          const cat = getCat(g.gmc);
-          return `<tr><td class="p-1.5 border font-bold">תוספות</td><td class="p-1.5 border font-mono font-bold">${cat.leumit}</td><td class="p-1.5 border">${g.label}</td></tr>`;
-        }).join('');
+        titleEl.textContent = '1. דרישת קודים לקופה';
+        const rows = pt.capsules.map(c => `<tr><td class="p-1.5 border font-num font-bold">${c.teeth.join(',')}</td><td class="p-1.5 border">${c.treatment || c.label}</td></tr>`).join('');
+        const genRows = (pt.generalItems || []).map(g => `<tr><td class="p-1.5 border font-bold">תוספות</td><td class="p-1.5 border">${g.treatment || g.label}</td></tr>`).join('');
         area.innerHTML = `
           ${header}
-          <h3 class="font-black text-sm">דרישת קודים לאישור קופת חולים</h3>
           <table class="w-full text-right text-xs border">
-            <thead class="bg-slate-100 font-bold"><tr><th class="p-1.5 border">שן / אזור</th><th class="p-1.5 border">קוד לאומית</th><th class="p-1.5 border">תיאור הטיפול</th></tr></thead>
+            <thead class="bg-slate-100 font-bold"><tr><th class="p-1.5 border">שן / אזור</th><th class="p-1.5 border">טיפול</th></tr></thead>
             <tbody>
               ${rows}
               ${genRows}
-              ${auto.imgTeeth.length ? `<tr><td class="p-1.5 border font-num">${auto.imgTeeth.join(',')}</td><td class="p-1.5 border font-mono font-bold">115</td><td class="p-1.5 border">הדמיה לשיניים מטופלות (${auto.imgTeeth.length} יח')</td></tr>` : ''}
-              ${auto.modelUnits > 0 ? `<tr><td class="p-1.5 border">מודלים</td><td class="p-1.5 border font-mono font-bold">619</td><td class="p-1.5 border">מודל לימוד (${auto.modelUnits} יח')</td></tr>` : ''}
+              ${auto.imgTeeth.length ? `<tr><td class="p-1.5 border font-num">הדמיה</td><td class="p-1.5 border">צילום פריפיקאלי (${auto.imgTeeth.length} יח')</td></tr>` : ''}
+              ${auto.modelUnits > 0 ? `<tr><td class="p-1.5 border">מודל</td><td class="p-1.5 border">סריקה דיגיטלית לכתר/ תותבת + מודל (${auto.modelUnits} יח')</td></tr>` : ''}
             </tbody>
           </table>
         `;
       } else if (type === 'PATIENT_QUOTE') {
-        titleEl.textContent = '2. הצעת מחיר משוערת למטופל';
+        titleEl.textContent = '2. הצעה למטופל';
         let sum = 0;
         const rows = pt.capsules.filter(c => c.status !== 'UNREQ').map(c => {
-          const cat = getCat(c.gmc);
+          const cat = findCatalogByTreatmentOrAlias(c.treatment || c.label);
           const pr = getPrice(cat, pt.insurance);
           sum += pr;
-          return `<tr><td class="p-1.5 border font-num font-bold">${c.teeth.join(',')}</td><td class="p-1.5 border font-mono">${cat.leumit}</td><td class="p-1.5 border">${c.label || cat.name}</td><td class="p-1.5 border font-num font-bold">₪${pr}</td></tr>`;
+          return `<tr><td class="p-1.5 border font-num font-bold">${c.teeth.join(',')}</td><td class="p-1.5 border">${c.treatment || c.label}</td><td class="p-1.5 border font-num font-bold">₪${pr}</td></tr>`;
         }).join('');
         const genRows = (pt.generalItems || []).filter(g => g.status !== 'UNREQ').map(g => {
-          const cat = getCat(g.gmc);
+          const cat = findCatalogByTreatmentOrAlias(g.treatment || g.label);
           const pr = getPrice(cat, pt.insurance);
           sum += pr;
-          return `<tr><td class="p-1.5 border font-bold">תוספות</td><td class="p-1.5 border font-mono">${cat.leumit}</td><td class="p-1.5 border">${g.label}</td><td class="p-1.5 border font-num font-bold">₪${pr}</td></tr>`;
+          return `<tr><td class="p-1.5 border font-bold">תוספות</td><td class="p-1.5 border">${g.treatment || g.label}</td><td class="p-1.5 border font-num font-bold">₪${pr}</td></tr>`;
         }).join('');
         const disclaimer = pt.classification === 'INITIAL'
           ? 'זוהי תוכנית ראשונית בלבד ואינה תוכנית סופית – צפויה תוכנית המשך נוספת בהמשך הטיפול. המחירים המוצגים הינם הערכת מחיר כללית ומשוערת בלבד.'
           : 'הצעה זו מהווה הערכת מחיר משוערת בלבד – גם בתוכנית סופית ייתכנו שינויים, התאמות או תוספות בהתאם לממצאים הקליניים במהלך הטיפול ולאישורי קופת החולים.';
         area.innerHTML = `
           ${header}
-          <h3 class="font-black text-sm">הערכת השתתפות עצמית למטופל/ת</h3>
           <table class="w-full text-right text-xs border">
-            <thead class="bg-slate-100 font-bold"><tr><th class="p-1.5 border">שן / אזור</th><th class="p-1.5 border">קוד</th><th class="p-1.5 border">טיפול</th><th class="p-1.5 border">מחיר משוער</th></tr></thead>
+            <thead class="bg-slate-100 font-bold"><tr><th class="p-1.5 border">שן / אזור</th><th class="p-1.5 border">טיפול</th><th class="p-1.5 border">מחיר</th></tr></thead>
             <tbody>${rows}${genRows}</tbody>
-            <tfoot class="bg-slate-100 font-black"><tr><td colspan="3" class="p-2 text-left">סה"כ משוער:</td><td class="p-2 font-num">₪${sum.toLocaleString()}</td></tr></tfoot>
+            <tfoot class="bg-slate-100 font-black"><tr><td colspan="2" class="p-2 text-left">סה"כ:</td><td class="p-2 font-num">₪${sum.toLocaleString()}</td></tr></tfoot>
           </table>
           <div class="p-3 rounded-xl bg-amber-50 border border-amber-300 text-xs font-bold">${disclaimer}</div>
         `;
       } else if (type === 'EXCEPTIONS') {
-        titleEl.textContent = '3. דו"ח חריגים לקופת החולים';
+        titleEl.textContent = '3. דו"ח חריגים';
         const sec = (st, title) => {
           const items = pt.capsules.filter(c => c.status === st);
           return `<div class="space-y-1"><div class="font-black text-xs bg-slate-100 p-1.5 rounded">${title} (${items.length})</div>` +
-            (items.length ? `<ul class="list-disc pr-5 text-xs">` + items.map(c => `<li>שן ${c.teeth.join(',')} – קוד ${getCat(c.gmc).leumit}: ${c.label || getCat(c.gmc).name}</li>`).join('') + `</ul>` : `<div class="text-xs text-slate-400">אין חריגים</div>`) + `</div>`;
+            (items.length ? `<ul class="list-disc pr-5 text-xs">` + items.map(c => `<li>שן ${c.teeth.join(',')}: ${c.treatment || c.label}</li>`).join('') + `</ul>` : `<div class="text-xs text-slate-400">אין</div>`) + `</div>`;
         };
         area.innerHTML = `
           ${header}
-          <h3 class="font-black text-sm">דו"ח בירור חריגים מול קופ"ח לאומית</h3>
-          ${sec('DENIED', '1. טיפולים שנדחו')}
-          ${sec('REASON', '2. טיפולים הדורשים סיבה / הנמקה')}
-          ${sec('NORESP', '3. טיפולים ללא מענה')}
+          ${sec('DENIED', '1. נדחה')}
+          ${sec('REASON', '2. סיבה')}
+          ${sec('NORESP', '3. ללא מענה')}
         `;
       } else if (type === 'JUSTIFICATION') {
-        titleEl.textContent = '4. מכתב סיבה רשמי – מחלקת שיקום הפה GMC';
+        titleEl.textContent = '4. מכתב סיבה';
         const reasons = pt.capsules.filter(c => c.status === 'REASON');
         area.innerHTML = `
           ${header}
           <div class="space-y-3 text-xs leading-relaxed">
-            <div class="font-black text-sm underline">הנדון: הנמקה רפואית לאישור קודי שיקום – ${pt.firstName} ${pt.lastName}</div>
-            <p>לכבוד המחלקה לאישורים דנטליים, שלום רב. להלן הנימוק הקליני עבור הקודים המסומנים בדרישת סיבה:</p>
+            <div class="font-black text-sm underline">הנדון: הנמקה רפואית – ${pt.firstName} ${pt.lastName}</div>
             <ul class="list-disc pr-5 space-y-1 bg-amber-50 p-3 rounded-xl border border-amber-200 font-semibold">
-              ${reasons.map(c => `<li>שן ${c.teeth.join(',')} (${getCat(c.gmc).leumit} - ${c.label || getCat(c.gmc).name}): הכרחי לשימור השן כמאחז שיקומי וייצוב הסגר.</li>`).join('') || '<li>נדרש אישור קליני להשלמת השיקום.</li>'}
+              ${reasons.map(c => `<li>שן ${c.teeth.join(',')} (${c.treatment || c.label})</li>`).join('') || '<li>נדרש אישור קליני להשלמת השיקום.</li>'}
             </ul>
-            <textarea rows="3" class="w-full p-2 border rounded-lg text-xs" placeholder="הוסף הערת רופא חופשית לפני הדפסה/שיתוף..."></textarea>
-            <div class="pt-6 flex justify-between font-bold">
-              <span>בברכה, ${pt.treatingDoc || 'צוות שיקום הפה'} – GMC</span>
-              <span>חתימה וחותמת: _________________</span>
-            </div>
+            <textarea rows="3" class="w-full p-2 border rounded-lg text-xs" placeholder="הערת רופא..."></textarea>
           </div>
         `;
       }
@@ -2632,43 +2281,35 @@
       const tbody = document.getElementById('catalog-tbody');
       tbody.innerHTML = App.catalog.map(c => `
         <tr>
-          <td class="p-1.5 border font-mono font-bold">${c.gmc}</td>
-          <td class="p-1.5 border font-mono">${c.leumit}</td>
-          <td class="p-1.5 border font-semibold">${c.name}</td>
-          <td class="p-1.5 border font-bold text-sky-700">${c.short}</td>
+          <td class="p-1.5 border font-semibold">${c.category}</td>
+          <td class="p-1.5 border font-bold text-sky-700">${c.alias || '-'}</td>
+          <td class="p-1.5 border">${c.name}</td>
           <td class="p-1.5 border font-num">₪${c.pGen}</td>
           <td class="p-1.5 border font-num">₪${c.pSilv}</td>
           <td class="p-1.5 border font-num font-bold text-emerald-700">₪${c.pGold}</td>
+          <td class="p-1.5 border">${c.preAuth}</td>
+          <td class="p-1.5 border">${c.relevant}</td>
         </tr>
       `).join('');
       document.getElementById('modal-catalog').classList.remove('hidden');
     };
 
-    window.syncGoogleSheets = async function() {
+    window.syncGoogleSheets = function() {
       const icon = document.getElementById('sync-icon');
       if (icon) icon.classList.add('animate-spin');
       window.saveState();
-      try {
-        await fetch(GMC_SHEETS_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ patients: App.patients }) });
-      } catch(e) {}
       setTimeout(() => {
         if (icon) icon.classList.remove('animate-spin');
-        window.toast('סונכרן בהצלחה מול Google Sheets');
-      }, 500);
+        window.toast('סונכרן');
+      }, 400);
     };
 
     function initApp() {
       App.patients = safeLoadStorage(STORAGE_KEY_PATIENTS, DEFAULT_PATIENTS);
-      App.catalog = safeLoadStorage(STORAGE_KEY_CATALOG, CATALOG);
-      App.sheetComplexes = safeLoadStorage(STORAGE_KEY_SHORTCUTS, DEFAULT_SHEET_COMPLEXES);
-      App.additionsDomains = safeLoadStorage(STORAGE_KEY_ADDITIONS, DEFAULT_ADDITIONS_SHORTCUTS);
-
       initDropdowns();
-      renderSheetComplexButtons();
-      window.fetchSheetComplexes(false);
+      renderShortcutButtons();
       window.goHome();
 
-      // Close card 3-dots menu on background click
       document.addEventListener('click', () => {
         if (App.openMenuPtId !== null) {
           App.openMenuPtId = null;
